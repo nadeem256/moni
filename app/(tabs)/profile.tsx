@@ -119,12 +119,19 @@ export default function ProfileScreen() {
               style={styles.profileGradient}
             />
             <View style={styles.profileContent}>
-              <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.avatarContainer}>
+                      <Edit3 size={18} color={theme.colors.primary} />
                 <View style={[styles.avatar, { backgroundColor: `${theme.colors.primary}20` }]}>
                   <User size={32} color="#34D399" />
-                </View>
-              </BlurView>
-              <Text style={[styles.profileName, { color: theme.colors.text }]}>Welcome to Moni</Text>
+              <TouchableOpacity onPress={() => setShowNameModal(true)}>
+                <Text style={[styles.profileName, { color: theme.colors.text }]}>
+                  {userName ? `Hello, ${userName}!` : 'Welcome to Moni'}
+                </Text>
+                {!userName && (
+                  <Text style={[styles.tapToAddName, { color: theme.colors.textSecondary }]}>
+                    Tap to add your name
+                  </Text>
+                )}
+              </TouchableOpacity>
               <Text style={[styles.profileSubtitle, { color: theme.colors.textSecondary }]}>Your financial companion</Text>
             </View>
           </BlurView>
@@ -458,22 +465,33 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   editNameButton: {
-    position: 'absolute',
-    bottom: -4,
-    right: -4,
-    borderRadius: 16,
+    position: 'absolute', 
+    bottom: -6,
+    right: -6,
+    borderRadius: 18,
     overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
+    borderWidth: 1,
+    borderColor: 'rgba(59, 130, 246, 0.4)',
+    shadowColor: '#3B82F6',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
   },
   editNameButtonContent: {
-    padding: 8,
+    padding: 10,
   },
   profileName: {
     fontSize: 26,
     fontWeight: '800',
     marginBottom: 6,
     letterSpacing: -0.3,
+  },
+  tapToAddName: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 4,
+    fontStyle: 'italic',
   },
   profileSubtitle: {
     fontSize: 15,
