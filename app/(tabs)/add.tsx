@@ -122,12 +122,12 @@ export default function AddScreen() {
               >
                 {selectedType === 'income' && (
                   <LinearGradient
-                    colors={['#10B981', '#059669']}
+                    colors={['#34D399', '#10B981']}
                     style={styles.typeButtonGradient}
                   />
                 )}
                 <View style={styles.typeButtonContentInner}>
-                  <ArrowUp size={20} color={selectedType === 'income' ? '#FFFFFF' : '#10B981'} />
+                  <ArrowUp size={20} color={selectedType === 'income' ? '#FFFFFF' : '#34D399'} />
                   <Text style={[
                     styles.typeButtonText, 
                     { color: selectedType === 'income' ? '#FFFFFF' : theme.colors.textSecondary }
