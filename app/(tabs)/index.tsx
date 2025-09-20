@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect } from 'react';
-import { Bell, TrendingUp, TrendingDown, Plus } from 'lucide-react-native';
+import { TrendingUp, TrendingDown, Plus } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { useBalance, useAnalytics, useSubscriptions } from '../../hooks/useData';
 import { useFocusEffect } from '@react-navigation/native';
@@ -8,7 +8,6 @@ import { useCallback } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { Alert } from 'react-native';
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -36,33 +35,6 @@ export default function HomeScreen() {
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { theme, isDark } = useTheme();
 
-  const handleNotificationPress = () => {
-    // Get upcoming subscriptions for notifications
-    const upcomingCount = subscriptions.filter(sub => {
-      const renewDate = new Date(sub.renewDate);
-      const today = new Date();
-      const diffTime = renewDate.getTime() - today.getTime();
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays >= 0 && diffDays <= 7; // Next 7 days
-    }).length;
-
-    if (upcomingCount > 0) {
-      Alert.alert(
-        'Upcoming Renewals',
-        `You have ${upcomingCount} subscription${upcomingCount !== 1 ? 's' : ''} renewing in the next 7 days.`,
-        [
-          { text: 'Dismiss', style: 'cancel' },
-          { text: 'View All', onPress: () => router.push('/(tabs)/subscriptions') }
-        ]
-      );
-    } else {
-      Alert.alert(
-        'No Notifications',
-        'You have no upcoming subscription renewals in the next 7 days.',
-        [{ text: 'OK' }]
-      );
-    }
-  };
   const formatRenewalDate = (dateString: string) => {
     const date = new Date(dateString);
     const today = new Date();
@@ -116,14 +88,6 @@ export default function HomeScreen() {
               <Text style={[styles.greeting, { color: theme.colors.text }]}>{getGreeting()}</Text>
               <Text style={[styles.subGreeting, { color: theme.colors.textSecondary }]}>{getWelcomeMessage()}</Text>
             </View>
-            <BlurView intensity={60} tint="light" style={styles.notificationButton}>
-              <TouchableOpacity style={styles.notificationButtonInner} onPress={handleNotificationPress}>
-                <Bell size={20} color={theme.colors.text} />
-                {upcomingSubscriptions.length > 0 && (
-                  <View style={[styles.notificationDot, { borderColor: theme.colors.surface }]} />
-                )}
-              </TouchableOpacity>
-            </BlurView>
           </View>
           
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.heroCard}>
@@ -269,31 +233,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     opacity: 0.75,
     letterSpacing: 0.3,
-  },
-  notificationButton: {
-    borderRadius: 24,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
-  },
-  notificationButtonInner: {
-    padding: 14,
-    position: 'relative',
-  },
-  notificationDot: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#EF4444',
-    borderWidth: 2,
   },
   heroSection: {
     paddingHorizontal: 24,
