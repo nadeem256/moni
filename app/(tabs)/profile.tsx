@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useCallback } from 'react';
-import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, Edit3 } from 'lucide-react-native';
+import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, CreditCard as Edit3 } from 'lucide-react-native';
 import { Switch } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { usePremium } from '../../contexts/PremiumContext';
