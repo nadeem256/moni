@@ -113,7 +113,7 @@ export default function ProfileScreen() {
             <View style={styles.profileContent}>
               <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.avatarContainer}>
                 <View style={[styles.avatar, { backgroundColor: `${theme.colors.primary}20` }]}>
-                  <User size={32} color={theme.colors.primary} />
+                  <User size={32} color="#34D399" />
                 </View>
               </BlurView>
               <Text style={[styles.profileName, { color: theme.colors.text }]}>Welcome to Moni</Text>
