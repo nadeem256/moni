@@ -8,6 +8,7 @@ import { useCallback } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import { Alert } from 'react-native';
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -35,6 +36,33 @@ export default function HomeScreen() {
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { theme, isDark } = useTheme();
 
+  const handleNotificationPress = () => {
+    // Get upcoming subscriptions for notifications
+    const upcomingCount = subscriptions.filter(sub => {
+      const renewDate = new Date(sub.renewDate);
+      const today = new Date();
+      const diffTime = renewDate.getTime() - today.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays >= 0 && diffDays <= 7; // Next 7 days
+    }).length;
+
+    if (upcomingCount > 0) {
+      Alert.alert(
+        'Upcoming Renewals',
+        `You have ${upcomingCount} subscription${upcomingCount !== 1 ? 's' : ''} renewing in the next 7 days.`,
+        [
+          { text: 'Dismiss', style: 'cancel' },
+          { text: 'View All', onPress: () => router.push('/(tabs)/subscriptions') }
+        ]
+      );
+    } else {
+      Alert.alert(
+        'No Notifications',
+        'You have no upcoming subscription renewals in the next 7 days.',
+        [{ text: 'OK' }]
+      );
+    }
+  };
   const formatRenewalDate = (dateString: string) => {
     const date = new Date(dateString);
     const today = new Date();
@@ -89,9 +117,11 @@ export default function HomeScreen() {
               <Text style={[styles.subGreeting, { color: theme.colors.textSecondary }]}>{getWelcomeMessage()}</Text>
             </View>
             <BlurView intensity={60} tint="light" style={styles.notificationButton}>
-              <TouchableOpacity style={styles.notificationButtonInner}>
+              <TouchableOpacity style={styles.notificationButtonInner} onPress={handleNotificationPress}>
                 <Bell size={20} color={theme.colors.text} />
-                <View style={[styles.notificationDot, { borderColor: theme.colors.surface }]} />
+                {upcomingSubscriptions.length > 0 && (
+                  <View style={[styles.notificationDot, { borderColor: theme.colors.surface }]} />
+                )}
               </TouchableOpacity>
             </BlurView>
           </View>
