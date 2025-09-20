@@ -145,7 +145,7 @@ export default function AddScreen() {
           <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.amountCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(96, 165, 250, 0.15)', 'rgba(96, 165, 250, 0.08)'] 
+                ? ['rgba(30, 41, 59, 0.8)', 'rgba(51, 65, 85, 0.6)'] 
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
               style={styles.amountGradient}
             />
@@ -169,6 +169,12 @@ export default function AddScreen() {
         <View style={styles.categorySection}>
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Category</Text>
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.categoryButton}>
+            <LinearGradient
+              colors={isDark 
+                ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+              style={styles.categoryButtonGradient}
+            />
             <TouchableOpacity
               style={styles.categoryButtonContent}
               onPress={() => setShowCategoryModal(true)}
@@ -190,6 +196,12 @@ export default function AddScreen() {
         <View style={styles.descriptionSection}>
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Description (Optional)</Text>
           <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.descriptionInput}>
+            <LinearGradient
+              colors={isDark 
+                ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+              style={styles.descriptionInputGradient}
+            />
             <TextInput
               style={[styles.descriptionInputText, { color: theme.colors.text }]}
               value={description}
@@ -203,6 +215,12 @@ export default function AddScreen() {
 
         {/* Save Button */}
         <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.saveButton}>
+          <LinearGradient
+            colors={isDark 
+              ? ['rgba(30, 41, 59, 0.8)', 'rgba(51, 65, 85, 0.6)'] 
+              : ['rgba(255, 255, 255, 0.9)', 'rgba(248, 250, 252, 0.7)']}
+            style={styles.saveButtonBackgroundGradient}
+          />
           <TouchableOpacity 
             style={[styles.saveButtonContent, (!amount || !selectedCategory || saving) && styles.saveButtonDisabled]}
             onPress={handleSave}
@@ -227,7 +245,7 @@ export default function AddScreen() {
           <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.modalContent}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(30, 41, 59, 0.95)', 'rgba(15, 23, 42, 0.9)'] 
+                ? ['rgba(30, 41, 59, 0.95)', 'rgba(51, 65, 85, 0.9)'] 
                 : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
               style={styles.modalGradient}
             />
@@ -242,6 +260,12 @@ export default function AddScreen() {
             <ScrollView style={styles.categoriesList}>
               {categories[selectedType].map((category, index) => (
                 <BlurView key={index} intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.categoryOption}>
+                  <LinearGradient
+                    colors={isDark 
+                      ? ['rgba(30, 41, 59, 0.6)', 'rgba(51, 65, 85, 0.4)'] 
+                      : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                    style={styles.categoryOptionGradient}
+                  />
                   <TouchableOpacity
                     style={styles.categoryOptionContent}
                     onPress={() => {
@@ -418,6 +442,13 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
+  categoryButtonGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
   categoryButtonContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -455,6 +486,13 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 2,
   },
+  descriptionInputGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
   descriptionInputText: {
     padding: 20,
     fontSize: 16,
@@ -472,6 +510,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 16,
     elevation: 8,
+  },
+  saveButtonBackgroundGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   saveButtonContent: {
     padding: 20,
@@ -546,6 +591,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 0.5,
     borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  categoryOptionGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   categoryOptionContent: {
     padding: 16,

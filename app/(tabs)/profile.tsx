@@ -106,7 +106,7 @@ export default function ProfileScreen() {
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.profileCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(96, 165, 250, 0.15)', 'rgba(251, 191, 36, 0.08)'] 
+                ? ['rgba(30, 41, 59, 0.8)', 'rgba(51, 65, 85, 0.6)'] 
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(245, 158, 11, 0.02)']}
               style={styles.profileGradient}
             />
@@ -128,6 +128,12 @@ export default function ProfileScreen() {
           
           <View style={styles.statsGrid}>
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.statCardGradient}
+              />
               <View style={styles.statContent}>
                 <View style={[styles.statIconContainer, { backgroundColor: `${theme.colors.primary}20` }]}>
                   <Calendar size={20} color={theme.colors.primary} />
@@ -138,6 +144,12 @@ export default function ProfileScreen() {
             </BlurView>
 
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.statCardGradient}
+              />
               <View style={styles.statContent}>
                 <View style={[styles.statIconContainer, { backgroundColor: `${theme.colors.success}20` }]}>
                   <TrendingUp size={20} color={theme.colors.success} />
@@ -148,6 +160,12 @@ export default function ProfileScreen() {
             </BlurView>
 
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.statCardGradient}
+              />
               <View style={styles.statContent}>
                 <View style={[styles.statIconContainer, { backgroundColor: `${theme.colors.warning}20` }]}>
                   <Crown size={20} color={theme.colors.warning} />
@@ -158,6 +176,12 @@ export default function ProfileScreen() {
             </BlurView>
 
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.statCardGradient}
+              />
               <View style={styles.statContent}>
                 <View style={[styles.statIconContainer, { backgroundColor: `${theme.colors.primary}20` }]}>
                   <DollarSign size={20} color={theme.colors.primary} />
@@ -175,7 +199,7 @@ export default function ProfileScreen() {
             <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.premiumCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(251, 191, 36, 0.2)', 'rgba(251, 191, 36, 0.1)'] 
+                  ? ['rgba(30, 41, 59, 0.8)', 'rgba(51, 65, 85, 0.6)'] 
                   : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
                 style={styles.premiumGradient}
               />
@@ -226,7 +250,7 @@ export default function ProfileScreen() {
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.premiumStatusCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(251, 191, 36, 0.2)', 'rgba(251, 191, 36, 0.1)'] 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
                   : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
                 style={styles.premiumStatusGradient}
               />
@@ -246,16 +270,16 @@ export default function ProfileScreen() {
             </BlurView>
 
             <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.cancelSubscriptionCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(239, 68, 68, 0.1)', 'rgba(239, 68, 68, 0.05)']}
+                style={styles.cancelSubscriptionGradient}
+              />
               <TouchableOpacity 
                 style={styles.cancelSubscriptionContent}
                 onPress={() => handleCancelSubscription()}
               >
-                <LinearGradient
-                  colors={isDark 
-                    ? ['rgba(248, 113, 113, 0.2)', 'rgba(248, 113, 113, 0.1)'] 
-                    : ['rgba(239, 68, 68, 0.1)', 'rgba(239, 68, 68, 0.05)']}
-                  style={styles.cancelSubscriptionGradient}
-                />
                 <View style={styles.cancelSubscriptionLeft}>
                   <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.cancelIconContainer}>
                     <Crown size={20} color={theme.colors.error} />
@@ -277,6 +301,12 @@ export default function ProfileScreen() {
         {/* Settings */}
         <View style={styles.settingsSection}>
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard}>
+            <LinearGradient
+              colors={isDark 
+                ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+              style={styles.settingCardGradient}
+            />
             <TouchableOpacity 
               style={styles.settingContent}
               onPress={() => router.push('/settings')}
@@ -426,6 +456,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 12,
     elevation: 3,
+  },
+  statCardGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   statContent: {
     padding: 20,
@@ -598,15 +635,15 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 3,
   },
-  cancelSubscriptionContent: {
-    padding: 20,
-  },
   cancelSubscriptionGradient: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  cancelSubscriptionContent: {
+    padding: 20,
   },
   cancelSubscriptionLeft: {
     flexDirection: 'row',
@@ -644,6 +681,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 12,
     elevation: 3,
+  },
+  settingCardGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   settingContent: {
     flexDirection: 'row',
