@@ -642,7 +642,7 @@ const styles = StyleSheet.create({
   ringChart: {
     alignItems: 'center',
     marginBottom: 24,
-    borderRadius: 20,
+    borderRadius: 80,
     overflow: 'hidden',
     borderWidth: 0.5,
     borderColor: 'rgba(255, 255, 255, 0.2)',
