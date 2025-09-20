@@ -112,7 +112,7 @@ export default function SubscriptionsScreen() {
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.totalCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
+                ? ['rgba(26, 26, 46, 0.9)', 'rgba(52, 211, 153, 0.08)'] 
                 : ['rgba(59, 130, 246, 0.08)', 'rgba(16, 185, 129, 0.04)']}
               style={styles.totalGradient}
             />
@@ -123,7 +123,7 @@ export default function SubscriptionsScreen() {
               <Text style={[styles.totalAmount, { color: theme.colors.text }]}>${totalMonthly.toFixed(2)}</Text>
               <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.totalSubtextContainer}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                  <Sparkles size={14} color={theme.colors.primary} />
+                  <Sparkles size={14} color="#34D399" />
                   <Text style={[styles.totalSubtext, { color: theme.colors.textSecondary }]}>
                     Across {subscriptions.length} subscriptions
                   </Text>

@@ -99,7 +99,7 @@ export default function HomeScreen() {
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.heroCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
+                ? ['rgba(26, 26, 46, 0.9)', 'rgba(52, 211, 153, 0.08)'] 
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(16, 185, 129, 0.02)']}
               style={styles.heroGradient}
             />
@@ -108,7 +108,7 @@ export default function HomeScreen() {
               <Text style={[styles.balanceAmount, { color: theme.colors.text }]}>${balance.toFixed(2)}</Text>
               <View style={styles.balanceInsight}>
                 <BlurView intensity={40} tint="light" style={styles.insightPill}>
-                  <TrendingUp size={14} color={theme.colors.success} />
+                  <TrendingUp size={14} color="#34D399" />
                   <Text style={[styles.insightText, { color: theme.colors.success }]}>
                     +2.4% this month
                   </Text>
