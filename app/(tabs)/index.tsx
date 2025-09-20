@@ -96,10 +96,10 @@ export default function HomeScreen() {
             </BlurView>
           </View>
           
-          <BlurView intensity={100} tint="light" style={styles.heroCard}>
+          <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.heroCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(96, 165, 250, 0.15)', 'rgba(52, 211, 153, 0.08)'] 
+                ? ['rgba(30, 41, 59, 0.8)', 'rgba(51, 65, 85, 0.6)'] 
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(16, 185, 129, 0.02)']}
               style={styles.heroGradient}
             />
@@ -120,7 +120,13 @@ export default function HomeScreen() {
 
         {/* Quick Stats with Glass Cards */}
         <View style={styles.quickStats}>
-          <BlurView intensity={60} tint="light" style={styles.statCard}>
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
+            <LinearGradient
+              colors={isDark 
+                ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+              style={styles.statCardGradient}
+            />
             <View style={styles.statContent}>
               <View style={[styles.statIcon, { backgroundColor: `${theme.colors.error}20` }]}>
                 <TrendingDown size={18} color={theme.colors.error} />
@@ -130,7 +136,13 @@ export default function HomeScreen() {
             </View>
           </BlurView>
 
-          <BlurView intensity={60} tint="light" style={styles.statCard}>
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
+            <LinearGradient
+              colors={isDark 
+                ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+              style={styles.statCardGradient}
+            />
             <View style={styles.statContent}>
               <View style={[styles.statIcon, { backgroundColor: `${theme.colors.warning}20` }]}>
                 <TrendingDown size={18} color={theme.colors.warning} />
@@ -153,7 +165,13 @@ export default function HomeScreen() {
           </View>
 
           {upcomingSubscriptions.length > 0 ? upcomingSubscriptions.map((subscription, index) => (
-            <BlurView key={index} intensity={50} tint="light" style={styles.subscriptionCard}>
+            <BlurView key={index} intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.subscriptionCardGradient}
+              />
               <View style={styles.subscriptionContent}>
                 <View style={styles.subscriptionLeft}>
                   <BlurView intensity={30} tint="light" style={styles.subscriptionIconContainer}>
@@ -174,7 +192,13 @@ export default function HomeScreen() {
               </View>
             </BlurView>
           )) : (
-            <BlurView intensity={40} tint="light" style={styles.emptyState}>
+            <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.emptyState}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.emptyStateGradient}
+              />
               <View style={styles.emptyContent}>
                 <View style={[styles.emptyIcon, { backgroundColor: `${theme.colors.primary}15` }]}>
                   <Plus size={24} color={theme.colors.primary} />
@@ -329,6 +353,13 @@ const styles = StyleSheet.create({
     shadowRadius: 16,
     elevation: 6,
   },
+  statCardGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
   statContent: {
     padding: 24,
     alignItems: 'center',
@@ -399,6 +430,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 16,
     elevation: 6,
+  },
+  subscriptionCardGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   subscriptionContent: {
     flexDirection: 'row',
@@ -478,6 +516,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 12,
     elevation: 4,
+  },
+  emptyStateGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   emptyContent: {
     padding: 40,
