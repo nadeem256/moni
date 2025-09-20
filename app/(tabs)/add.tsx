@@ -16,7 +16,7 @@ export default function AddScreen() {
   const [saving, setSaving] = useState(false);
 
   const { addTransaction } = useTransactions();
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const categories = {
     expense: ['Food & Dining', 'Transportation', 'Shopping', 'Entertainment', 'Bills', 'Health', 'Other'],
@@ -62,7 +62,7 @@ export default function AddScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <LinearGradient
-        colors={['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0F172A', '#1E293B', '#334155'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -76,7 +76,7 @@ export default function AddScreen() {
         <View style={styles.typeSection}>
           <View style={styles.headerContent}>
             <Text style={[styles.title, { color: theme.colors.text }]}>Add Transaction</Text>
-            <BlurView intensity={40} tint="light" style={styles.sparkleContainer}>
+            <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.sparkleContainer}>
               <Sparkles size={20} color={theme.colors.primary} />
             </BlurView>
           </View>
@@ -85,7 +85,7 @@ export default function AddScreen() {
           <View style={styles.typeSelection}>
             <BlurView 
               intensity={selectedType === 'expense' ? 80 : 40}
-              tint="light"
+              tint={isDark ? 'dark' : 'light'}
               style={[styles.typeButton, selectedType === 'expense' && styles.typeButtonActive]}
             >
               <TouchableOpacity
@@ -112,7 +112,7 @@ export default function AddScreen() {
             
             <BlurView 
               intensity={selectedType === 'income' ? 80 : 40}
-              tint="light"
+              tint={isDark ? 'dark' : 'light'}
               style={[styles.typeButton, selectedType === 'income' && styles.typeButtonActive]}
             >
               <TouchableOpacity
@@ -142,13 +142,15 @@ export default function AddScreen() {
         {/* Amount Input */}
         <View style={styles.amountSection}>
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Amount</Text>
-          <BlurView intensity={80} tint="light" style={styles.amountCard}>
+          <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.amountCard}>
             <LinearGradient
-              colors={['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
+              colors={isDark 
+                ? ['rgba(96, 165, 250, 0.15)', 'rgba(96, 165, 250, 0.08)'] 
+                : ['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
               style={styles.amountGradient}
             />
             <View style={styles.amountInputContent}>
-              <BlurView intensity={40} tint="light" style={styles.dollarContainer}>
+              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.dollarContainer}>
                 <DollarSign size={32} color={theme.colors.primary} />
               </BlurView>
               <TextInput
@@ -166,7 +168,7 @@ export default function AddScreen() {
         {/* Category Selection */}
         <View style={styles.categorySection}>
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Category</Text>
-          <BlurView intensity={60} tint="light" style={styles.categoryButton}>
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.categoryButton}>
             <TouchableOpacity
               style={styles.categoryButtonContent}
               onPress={() => setShowCategoryModal(true)}
@@ -177,7 +179,7 @@ export default function AddScreen() {
               ]}>
                 {selectedCategory || 'Select Category'}
               </Text>
-              <BlurView intensity={30} tint="light" style={styles.categoryArrow}>
+              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.categoryArrow}>
                 <Text style={[styles.categoryArrowText, { color: theme.colors.textSecondary }]}>›</Text>
               </BlurView>
             </TouchableOpacity>
@@ -187,7 +189,7 @@ export default function AddScreen() {
         {/* Description Input */}
         <View style={styles.descriptionSection}>
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Description (Optional)</Text>
-          <BlurView intensity={50} tint="light" style={styles.descriptionInput}>
+          <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.descriptionInput}>
             <TextInput
               style={[styles.descriptionInputText, { color: theme.colors.text }]}
               value={description}
@@ -200,7 +202,7 @@ export default function AddScreen() {
         </View>
 
         {/* Save Button */}
-        <BlurView intensity={80} tint="light" style={styles.saveButton}>
+        <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.saveButton}>
           <TouchableOpacity 
             style={[styles.saveButtonContent, (!amount || !selectedCategory || saving) && styles.saveButtonDisabled]}
             onPress={handleSave}
@@ -222,14 +224,16 @@ export default function AddScreen() {
       {/* Category Modal */}
       <Modal visible={showCategoryModal} transparent animationType="fade">
         <View style={styles.modalOverlay}>
-          <BlurView intensity={80} tint="light" style={styles.modalContent}>
+          <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.modalContent}>
             <LinearGradient
-              colors={['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
+              colors={isDark 
+                ? ['rgba(30, 41, 59, 0.95)', 'rgba(15, 23, 42, 0.9)'] 
+                : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
               style={styles.modalGradient}
             />
             <View style={styles.modalHeader}>
               <Text style={[styles.modalTitle, { color: theme.colors.text }]}>Select Category</Text>
-              <BlurView intensity={40} tint="light" style={styles.closeButtonContainer}>
+              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
                 <TouchableOpacity onPress={() => setShowCategoryModal(false)} style={styles.closeButton}>
                   <X size={24} color={theme.colors.textSecondary} />
                 </TouchableOpacity>
@@ -237,7 +241,7 @@ export default function AddScreen() {
             </View>
             <ScrollView style={styles.categoriesList}>
               {categories[selectedType].map((category, index) => (
-                <BlurView key={index} intensity={30} tint="light" style={styles.categoryOption}>
+                <BlurView key={index} intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.categoryOption}>
                   <TouchableOpacity
                     style={styles.categoryOptionContent}
                     onPress={() => {

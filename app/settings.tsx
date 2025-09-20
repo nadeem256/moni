@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
-import { ArrowLeft, Moon, RotateCcw, Bell, Shield, CircleHelp as HelpCircle, Download, Crown, ChevronRight } from 'lucide-react-native';
+import { ArrowLeft, Moon, Sun, RotateCcw, Bell, Shield, CircleHelp as HelpCircle, Download, Crown, ChevronRight } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { usePremium } from '../contexts/PremiumContext';
@@ -9,7 +9,7 @@ import { usePremium } from '../contexts/PremiumContext';
 export default function SettingsScreen() {
   const [notifications, setNotifications] = useState(true);
   const [biometrics, setBiometrics] = useState(false);
-  const { theme } = useTheme();
+  const { theme, isDark, toggleTheme } = useTheme();
   const { isPremium, cancelSubscription } = usePremium();
 
   useEffect(() => {
@@ -164,6 +164,31 @@ export default function SettingsScreen() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Notifications Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Appearance</Text>
+          
+          <View style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+            <View style={styles.settingLeft}>
+              {isDark ? (
+                <Moon size={20} color={theme.colors.textSecondary} />
+              ) : (
+                <Sun size={20} color={theme.colors.textSecondary} />
+              )}
+              <View style={styles.settingInfo}>
+                <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Dark Mode</Text>
+                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Switch between light and dark theme</Text>
+              </View>
+            </View>
+            <Switch
+              value={isDark}
+              onValueChange={toggleTheme}
+              trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
+              thumbColor="#FFFFFF"
+            />
+          </View>
+        </View>
+
         {/* Notifications Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Notifications</Text>

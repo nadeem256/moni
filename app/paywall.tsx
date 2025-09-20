@@ -13,7 +13,7 @@ export default function PaywallScreen() {
   const { purchasePremium, restorePurchases, isLoading } = usePremium();
   const [purchasing, setPurchasing] = useState(false);
   const [restoring, setRestoring] = useState(false);
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const premiumFeatures = [
     {
@@ -93,14 +93,14 @@ export default function PaywallScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0F172A', '#1E293B', '#334155'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <BlurView intensity={60} tint="light" style={styles.closeButton}>
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.closeButton}>
             <TouchableOpacity style={styles.closeButtonInner} onPress={() => router.back()}>
               <X size={24} color={theme.colors.textSecondary} />
             </TouchableOpacity>
@@ -109,9 +109,11 @@ export default function PaywallScreen() {
 
         {/* Hero Section */}
         <View style={styles.heroSection}>
-          <BlurView intensity={100} tint="light" style={styles.heroCard}>
+          <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.heroCard}>
             <LinearGradient
-              colors={['rgba(245, 158, 11, 0.2)', 'rgba(245, 158, 11, 0.1)']}
+              colors={isDark 
+                ? ['rgba(251, 191, 36, 0.3)', 'rgba(251, 191, 36, 0.15)'] 
+                : ['rgba(245, 158, 11, 0.2)', 'rgba(245, 158, 11, 0.1)']}
               style={styles.heroGradient}
             />
             <View style={styles.heroContent}>
@@ -123,7 +125,7 @@ export default function PaywallScreen() {
               </View>
               <Text style={[styles.heroTitle, { color: theme.colors.text }]}>Unlock Premium</Text>
               <Text style={styles.heroSubtitle}>Your AI-Powered Financial Command Center</Text>
-              <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.heroBadge}>
+              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.heroBadge}>
                 <Text style={[styles.heroBadgeText, { color: theme.colors.textSecondary }]}>
                   Join 50,000+ users who've improved their financial health by 40%
                 </Text>
@@ -140,13 +142,15 @@ export default function PaywallScreen() {
             {premiumFeatures.map((feature, index) => {
               const IconComponent = feature.icon;
               return (
-                <BlurView key={index} intensity={70} tint="light" style={styles.featureCard}>
+                <BlurView key={index} intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.featureCard}>
                   <LinearGradient
-                    colors={[`${feature.color}08`, `${feature.color}04`]}
+                    colors={isDark 
+                      ? [`${feature.color}20`, `${feature.color}10`] 
+                      : [`${feature.color}08`, `${feature.color}04`]}
                     style={styles.featureGradient}
                   />
                   <View style={styles.featureContent}>
-                    <BlurView intensity={50} tint="light" style={styles.featureIconContainer}>
+                    <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.featureIconContainer}>
                       <View style={[styles.featureIcon, { backgroundColor: `${feature.color}20` }]}>
                         <IconComponent size={24} color={feature.color} />
                       </View>
@@ -155,7 +159,7 @@ export default function PaywallScreen() {
                     <Text style={[styles.featureDescription, { color: theme.colors.textSecondary }]}>
                       {feature.description}
                     </Text>
-                    <BlurView intensity={30} tint={theme.isDark ? 'dark' : 'light'} style={styles.checkContainer}>
+                    <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.checkContainer}>
                       <Check size={16} color="#10B981" />
                     </BlurView>
                   </View>
@@ -167,14 +171,16 @@ export default function PaywallScreen() {
 
         {/* Pricing Section */}
         <View style={styles.pricingSection}>
-          <BlurView intensity={90} tint="light" style={styles.pricingCard}>
+          <BlurView intensity={90} tint={isDark ? 'dark' : 'light'} style={styles.pricingCard}>
             <LinearGradient
-              colors={['rgba(245, 158, 11, 0.08)', 'rgba(245, 158, 11, 0.04)']}
+              colors={isDark 
+                ? ['rgba(251, 191, 36, 0.2)', 'rgba(251, 191, 36, 0.1)'] 
+                : ['rgba(245, 158, 11, 0.08)', 'rgba(245, 158, 11, 0.04)']}
               style={styles.pricingGradient}
             />
             <View style={styles.pricingContent}>
               <View style={styles.pricingHeader}>
-                <BlurView intensity={40} tint="light" style={styles.popularBadge}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.popularBadge}>
                   <Zap size={16} color="#F59E0B" />
                   <Text style={styles.popularText}>Most Popular</Text>
                 </BlurView>
@@ -233,7 +239,7 @@ export default function PaywallScreen() {
 
         {/* Action Buttons */}
         <View style={styles.actionSection}>
-          <BlurView intensity={80} tint="light" style={styles.upgradeButton}>
+          <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.upgradeButton}>
             <TouchableOpacity
               style={[styles.upgradeButtonContent, (purchasing || isLoading) && styles.upgradeButtonDisabled]}
               onPress={handleUpgrade}
@@ -249,7 +255,7 @@ export default function PaywallScreen() {
                 <>
                   <Crown size={20} color="#FFFFFF" />
                   <Text style={styles.upgradeButtonText}>Start Premium</Text>
-                  <BlurView intensity={30} tint="light" style={styles.priceTag}>
+                  <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.priceTag}>
                     <Text style={styles.priceTagText}>$4.99</Text>
                   </BlurView>
                 </>

@@ -14,7 +14,7 @@ export default function InsightsScreen() {
   const { balance, refreshBalance } = useBalance();
   const { transactions, refreshTransactions } = useTransactions();
   const { isPremium } = usePremium();
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const monthlyIncome = transactions
     .filter(t => {
@@ -71,7 +71,7 @@ export default function InsightsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0F172A', '#1E293B', '#334155'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -81,50 +81,54 @@ export default function InsightsScreen() {
           <View style={styles.headerContent}>
             <View>
               <Text style={[styles.title, { color: theme.colors.text }]}>Insights</Text>
-              <BlurView intensity={40} tint="light" style={styles.subtitleContainer}>
+              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.subtitleContainer}>
                 <BarChart3 size={16} color={theme.colors.primary} />
                 <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>January 2024</Text>
               </BlurView>
             </View>
-            <BlurView intensity={60} tint="light" style={styles.sparkleContainer}>
+            <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.sparkleContainer}>
               <Sparkles size={20} color={theme.colors.primary} />
             </BlurView>
           </View>
 
           <View style={styles.overviewCards}>
-            <BlurView intensity={80} tint="light" style={styles.overviewCard}>
+            <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.overviewCard}>
             <LinearGradient
-              colors={['rgba(239, 68, 68, 0.08)', 'rgba(239, 68, 68, 0.04)']}
+              colors={isDark 
+                ? ['rgba(248, 113, 113, 0.15)', 'rgba(248, 113, 113, 0.08)'] 
+                : ['rgba(239, 68, 68, 0.08)', 'rgba(239, 68, 68, 0.04)']}
               style={styles.overviewGradient}
             />
             <View style={styles.overviewCardContent}>
               <View style={styles.overviewHeader}>
-                <BlurView intensity={40} tint="light" style={styles.overviewIconContainer}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.overviewIconContainer}>
                   <TrendingDown size={18} color="#EF4444" />
                 </BlurView>
                 <Text style={[styles.overviewLabel, { color: theme.colors.textSecondary }]}>Total Spent</Text>
               </View>
               <Text style={[styles.overviewAmount, { color: theme.colors.text }]}>${monthlySpending.toFixed(2)}</Text>
-              <BlurView intensity={30} tint="light" style={styles.overviewSubtextContainer}>
+              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.overviewSubtextContainer}>
                 <Text style={[styles.overviewSubtext, { color: theme.colors.textSecondary }]}>This month</Text>
               </BlurView>
             </View>
             </BlurView>
 
-            <BlurView intensity={80} tint="light" style={styles.overviewCard}>
+            <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.overviewCard}>
             <LinearGradient
-              colors={['rgba(16, 185, 129, 0.08)', 'rgba(16, 185, 129, 0.04)']}
+              colors={isDark 
+                ? ['rgba(52, 211, 153, 0.15)', 'rgba(52, 211, 153, 0.08)'] 
+                : ['rgba(16, 185, 129, 0.08)', 'rgba(16, 185, 129, 0.04)']}
               style={styles.overviewGradient}
             />
             <View style={styles.overviewCardContent}>
               <View style={styles.overviewHeader}>
-                <BlurView intensity={40} tint="light" style={styles.overviewIconContainer}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.overviewIconContainer}>
                   <TrendingUp size={18} color="#10B981" />
                 </BlurView>
                 <Text style={[styles.overviewLabel, { color: theme.colors.textSecondary }]}>Savings Rate</Text>
               </View>
               <Text style={[styles.overviewAmount, { color: '#10B981' }]}>{savingsRate.toFixed(0)}%</Text>
-              <BlurView intensity={30} tint="light" style={styles.overviewSubtextContainer}>
+              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.overviewSubtextContainer}>
                 <Text style={[styles.overviewSubtext, { color: theme.colors.textSecondary }]}>Of income</Text>
               </BlurView>
             </View>

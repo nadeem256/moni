@@ -13,7 +13,7 @@ export default function SubscriptionsScreen() {
   const { subscriptions, refreshSubscriptions, removeSubscription } = useSubscriptions();
   const { isPremium } = usePremium();
   const [showAddModal, setShowAddModal] = useState(false);
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const totalMonthly = subscriptions.reduce((sum, sub) => sum + sub.amount, 0);
   const canAddMore = isPremium || subscriptions.length < 3;
@@ -75,7 +75,7 @@ export default function SubscriptionsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={theme.isDark ? ['#0F172A', '#1E293B', '#334155'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0F172A', '#1E293B', '#334155'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -110,18 +110,19 @@ export default function SubscriptionsScreen() {
           </View>
           
           <BlurView intensity={100} tint={theme.isDark ? 'dark' : 'light'} style={styles.totalCard}>
+          <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.totalCard}>
             <LinearGradient
-              colors={theme.isDark 
+              colors={isDark 
                 ? ['rgba(59, 130, 246, 0.15)', 'rgba(16, 185, 129, 0.08)'] 
                 : ['rgba(59, 130, 246, 0.08)', 'rgba(16, 185, 129, 0.04)']}
               style={styles.totalGradient}
             />
             <View style={styles.totalCardContent}>
-              <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.totalLabelContainer}>
+              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.totalLabelContainer}>
                 <Text style={[styles.totalLabel, { color: theme.colors.textSecondary }]}>Monthly Total</Text>
               </BlurView>
               <Text style={[styles.totalAmount, { color: theme.colors.text }]}>${totalMonthly.toFixed(2)}</Text>
-              <BlurView intensity={30} tint={theme.isDark ? 'dark' : 'light'} style={styles.totalSubtextContainer}>
+              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.totalSubtextContainer}>
                 <Sparkles size={14} color={theme.colors.primary} />
                 <Text style={[styles.totalSubtext, { color: theme.colors.textSecondary }]}>
                   Across {subscriptions.length} subscriptions
@@ -141,10 +142,10 @@ export default function SubscriptionsScreen() {
           
           {subscriptions.length > 0 ? (
             subscriptions.slice(0, isPremium ? subscriptions.length : 3).map((subscription) => (
-            <BlurView key={subscription.id} intensity={70} tint={theme.isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
+            <BlurView key={subscription.id} intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
               <View style={styles.subscriptionCardContent}>
                 <View style={styles.subscriptionLeft}>
-                  <BlurView intensity={50} tint={theme.isDark ? 'dark' : 'light'} style={styles.subscriptionIconContainer}>
+                  <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionIconContainer}>
                     <View style={[styles.subscriptionIcon, { backgroundColor: subscription.color }]}>
                       <Text style={styles.subscriptionIconText}>
                         {subscription.name.charAt(0)}
@@ -153,20 +154,20 @@ export default function SubscriptionsScreen() {
                   </BlurView>
                   <View style={styles.subscriptionInfo}>
                     <Text style={[styles.subscriptionName, { color: theme.colors.text }]}>{subscription.name}</Text>
-                    <BlurView intensity={30} tint={theme.isDark ? 'dark' : 'light'} style={styles.categoryContainer}>
+                    <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.categoryContainer}>
                       <Text style={[styles.subscriptionCategory, { color: theme.colors.textSecondary }]}>{subscription.category}</Text>
                     </BlurView>
                   </View>
                 </View>
                 <View style={styles.subscriptionRight}>
-                  <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.amountContainer}>
+                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.amountContainer}>
                     <Text style={[styles.subscriptionAmount, { color: theme.colors.text }]}>${subscription.amount}</Text>
                   </BlurView>
                   <View style={styles.renewalInfo}>
                     <Calendar size={14} color={theme.colors.textSecondary} />
                     <Text style={[styles.renewalDate, { color: theme.colors.textSecondary }]}>{formatDate(subscription.renewDate)}</Text>
                   </View>
-                  <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.deleteButton}>
+                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.deleteButton}>
                     <TouchableOpacity 
                       style={styles.deleteButtonContent}
                       onPress={() => handleDeleteSubscription(subscription.id, subscription.name)}
@@ -179,15 +180,15 @@ export default function SubscriptionsScreen() {
             </BlurView>
             ))
           ) : (
-            <BlurView intensity={60} tint={theme.isDark ? 'dark' : 'light'} style={styles.noSubscriptions}>
+            <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.noSubscriptions}>
               <LinearGradient
-                colors={theme.isDark 
+                colors={isDark 
                   ? ['rgba(59, 130, 246, 0.1)', 'rgba(59, 130, 246, 0.05)'] 
                   : ['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
                 style={styles.noSubscriptionsGradient}
               />
               <View style={styles.noSubscriptionsContent}>
-                <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.emptyIconContainer}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.emptyIconContainer}>
                   <Plus size={32} color={theme.colors.primary} />
                 </BlurView>
                 <Text style={[styles.noSubscriptionsTitle, { color: theme.colors.text }]}>No subscriptions yet</Text>
@@ -204,7 +205,7 @@ export default function SubscriptionsScreen() {
           <View style={styles.insightsSection}>
             <Text style={[styles.insightsTitle, { color: theme.colors.text }]}>This Month</Text>
             
-            <BlurView intensity={50} tint={theme.isDark ? 'dark' : 'light'} style={styles.insightCard}>
+            <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
               <View style={styles.insightCardContent}>
                 <Text style={[styles.insightText, { color: theme.colors.text }]}>
                   You're spending <Text style={styles.insightHighlight}>${totalMonthly.toFixed(2)}</Text> monthly on subscriptions
@@ -215,7 +216,7 @@ export default function SubscriptionsScreen() {
               </View>
             </BlurView>
             
-            <BlurView intensity={50} tint={theme.isDark ? 'dark' : 'light'} style={styles.insightCard}>
+            <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
               <View style={styles.insightCardContent}>
                 <Text style={[styles.insightText, { color: theme.colors.text }]}>
                   <Text style={styles.insightHighlight}>{subscriptions.length} subscription{subscriptions.length !== 1 ? 's' : ''}</Text> tracked

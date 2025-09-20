@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ProfileScreen() {
   const { isPremium, cancelSubscription } = usePremium();
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
@@ -86,7 +86,7 @@ export default function ProfileScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0F172A', '#1E293B', '#334155'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -96,20 +96,22 @@ export default function ProfileScreen() {
           <View style={styles.headerContent}>
             <Text style={[styles.title, { color: theme.colors.text }]}>Profile</Text>
             {isPremium && (
-              <BlurView intensity={40} tint="light" style={styles.premiumBadge}>
+              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.premiumBadge}>
                 <Crown size={16} color="#F59E0B" />
                 <Text style={styles.premiumText}>Premium</Text>
               </BlurView>
             )}
           </View>
           
-          <BlurView intensity={100} tint="light" style={styles.profileCard}>
+          <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.profileCard}>
             <LinearGradient
-              colors={['rgba(59, 130, 246, 0.05)', 'rgba(245, 158, 11, 0.02)']}
+              colors={isDark 
+                ? ['rgba(96, 165, 250, 0.15)', 'rgba(251, 191, 36, 0.08)'] 
+                : ['rgba(59, 130, 246, 0.05)', 'rgba(245, 158, 11, 0.02)']}
               style={styles.profileGradient}
             />
             <View style={styles.profileContent}>
-              <BlurView intensity={60} tint="light" style={styles.avatarContainer}>
+              <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.avatarContainer}>
                 <View style={[styles.avatar, { backgroundColor: `${theme.colors.primary}20` }]}>
                   <User size={32} color={theme.colors.primary} />
                 </View>
@@ -125,7 +127,7 @@ export default function ProfileScreen() {
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Your Journey</Text>
           
           <View style={styles.statsGrid}>
-            <BlurView intensity={70} tint="light" style={styles.statCard}>
+            <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
               <View style={styles.statContent}>
                 <View style={[styles.statIconContainer, { backgroundColor: `${theme.colors.primary}20` }]}>
                   <Calendar size={20} color={theme.colors.primary} />
@@ -135,7 +137,7 @@ export default function ProfileScreen() {
               </View>
             </BlurView>
 
-            <BlurView intensity={70} tint="light" style={styles.statCard}>
+            <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
               <View style={styles.statContent}>
                 <View style={[styles.statIconContainer, { backgroundColor: `${theme.colors.success}20` }]}>
                   <TrendingUp size={20} color={theme.colors.success} />
@@ -145,7 +147,7 @@ export default function ProfileScreen() {
               </View>
             </BlurView>
 
-            <BlurView intensity={70} tint="light" style={styles.statCard}>
+            <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
               <View style={styles.statContent}>
                 <View style={[styles.statIconContainer, { backgroundColor: `${theme.colors.warning}20` }]}>
                   <Crown size={20} color={theme.colors.warning} />
@@ -155,7 +157,7 @@ export default function ProfileScreen() {
               </View>
             </BlurView>
 
-            <BlurView intensity={70} tint="light" style={styles.statCard}>
+            <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
               <View style={styles.statContent}>
                 <View style={[styles.statIconContainer, { backgroundColor: `${theme.colors.primary}20` }]}>
                   <DollarSign size={20} color={theme.colors.primary} />
@@ -170,14 +172,16 @@ export default function ProfileScreen() {
         {/* Premium Section */}
         {!isPremium && (
           <View style={styles.premiumSection}>
-            <BlurView intensity={80} tint="light" style={styles.premiumCard}>
+            <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.premiumCard}>
               <LinearGradient
-                colors={['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
+                colors={isDark 
+                  ? ['rgba(251, 191, 36, 0.2)', 'rgba(251, 191, 36, 0.1)'] 
+                  : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
                 style={styles.premiumGradient}
               />
               <View style={styles.premiumContent}>
                 <View style={styles.premiumHeader}>
-                  <BlurView intensity={40} tint="light" style={styles.crownContainer}>
+                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.crownContainer}>
                     <Crown size={24} color="#F59E0B" />
                   </BlurView>
                   <Text style={[styles.premiumTitle, { color: theme.colors.text }]}>Upgrade to Premium</Text>
@@ -195,7 +199,7 @@ export default function ProfileScreen() {
                   ))}
                 </View>
 
-                <BlurView intensity={60} tint="light" style={styles.upgradeButton}>
+                <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.upgradeButton}>
                   <TouchableOpacity 
                     style={styles.upgradeButtonContent}
                     onPress={() => router.push('/paywall')}
@@ -219,14 +223,16 @@ export default function ProfileScreen() {
           <View style={styles.premiumManagementSection}>
             <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Premium Subscription</Text>
             
-            <BlurView intensity={70} tint="light" style={styles.premiumStatusCard}>
+            <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.premiumStatusCard}>
               <LinearGradient
-                colors={['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
+                colors={isDark 
+                  ? ['rgba(251, 191, 36, 0.2)', 'rgba(251, 191, 36, 0.1)'] 
+                  : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
                 style={styles.premiumStatusGradient}
               />
               <View style={styles.premiumStatusContent}>
                 <View style={styles.premiumStatusHeader}>
-                  <BlurView intensity={40} tint="light" style={styles.crownContainer}>
+                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.crownContainer}>
                     <Crown size={20} color="#F59E0B" />
                   </BlurView>
                   <View style={styles.premiumStatusInfo}>
@@ -239,17 +245,19 @@ export default function ProfileScreen() {
               </View>
             </BlurView>
 
-            <BlurView intensity={60} tint="light" style={styles.cancelSubscriptionCard}>
+            <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.cancelSubscriptionCard}>
               <TouchableOpacity 
                 style={styles.cancelSubscriptionContent}
                 onPress={() => handleCancelSubscription()}
               >
                 <LinearGradient
-                  colors={['rgba(239, 68, 68, 0.1)', 'rgba(239, 68, 68, 0.05)']}
+                  colors={isDark 
+                    ? ['rgba(248, 113, 113, 0.2)', 'rgba(248, 113, 113, 0.1)'] 
+                    : ['rgba(239, 68, 68, 0.1)', 'rgba(239, 68, 68, 0.05)']}
                   style={styles.cancelSubscriptionGradient}
                 />
                 <View style={styles.cancelSubscriptionLeft}>
-                  <BlurView intensity={40} tint="light" style={styles.cancelIconContainer}>
+                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.cancelIconContainer}>
                     <Crown size={20} color={theme.colors.error} />
                   </BlurView>
                   <View style={styles.cancelSubscriptionInfo}>
@@ -268,13 +276,13 @@ export default function ProfileScreen() {
 
         {/* Settings */}
         <View style={styles.settingsSection}>
-          <BlurView intensity={60} tint="light" style={styles.settingCard}>
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard}>
             <TouchableOpacity 
               style={styles.settingContent}
               onPress={() => router.push('/settings')}
             >
               <View style={styles.settingLeft}>
-                <BlurView intensity={40} tint="light" style={styles.settingIconContainer}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer}>
                   <Settings size={20} color={theme.colors.textSecondary} />
                 </BlurView>
                 <Text style={[styles.settingText, { color: theme.colors.text }]}>Settings & Preferences</Text>

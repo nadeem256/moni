@@ -33,7 +33,7 @@ export default function HomeScreen() {
   const { balance, refreshBalance } = useBalance();
   const { todaySpending, monthlySpending, refreshAnalytics } = useAnalytics();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
 
   const formatRenewalDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -76,7 +76,7 @@ export default function HomeScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0F172A', '#1E293B', '#334155'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -91,14 +91,16 @@ export default function HomeScreen() {
             <BlurView intensity={60} tint="light" style={styles.notificationButton}>
               <TouchableOpacity style={styles.notificationButtonInner}>
                 <Bell size={20} color={theme.colors.text} />
-                <View style={styles.notificationDot} />
+                <View style={[styles.notificationDot, { borderColor: theme.colors.surface }]} />
               </TouchableOpacity>
             </BlurView>
           </View>
           
           <BlurView intensity={100} tint="light" style={styles.heroCard}>
             <LinearGradient
-              colors={['rgba(59, 130, 246, 0.05)', 'rgba(16, 185, 129, 0.02)']}
+              colors={isDark 
+                ? ['rgba(96, 165, 250, 0.15)', 'rgba(52, 211, 153, 0.08)'] 
+                : ['rgba(59, 130, 246, 0.05)', 'rgba(16, 185, 129, 0.02)']}
               style={styles.heroGradient}
             />
             <View style={styles.heroContent}>
@@ -238,7 +240,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#EF4444',
     borderWidth: 2,
-    borderColor: '#FFFFFF',
   },
   heroSection: {
     paddingHorizontal: 24,
