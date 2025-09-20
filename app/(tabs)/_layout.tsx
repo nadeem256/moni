@@ -35,24 +35,27 @@ export default function TabLayout() {
           position: 'absolute',
           backgroundColor: 'transparent',
           borderTopWidth: 0,
-          paddingBottom: 12,
-          paddingTop: 12,
-          height: 90,
+          paddingBottom: 16,
+          paddingTop: 16,
+          height: 95,
           elevation: 0,
           shadowOpacity: 0,
         },
         tabBarBackground: () => (
-          <BlurView intensity={100} tint="light" style={styles.tabBarBlur} />
+          <BlurView intensity={120} tint="light" style={styles.tabBarBlur} />
         ),
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.textSecondary,
         tabBarShowLabel: false,
+        tabBarIconStyle: {
+          marginTop: 4,
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           tabBarIcon: ({ size, color }) => (
-            <House size={size} color={color} />
+            <House size={size + 2} color={color} strokeWidth={2.2} />
           ),
         }}
       />
@@ -60,7 +63,7 @@ export default function TabLayout() {
         name="subscriptions"
         options={{
           tabBarIcon: ({ size, color }) => (
-            <CreditCard size={size} color={color} />
+            <CreditCard size={size + 2} color={color} strokeWidth={2.2} />
           ),
         }}
       />
@@ -71,7 +74,7 @@ export default function TabLayout() {
             <CustomTabBarButton {...props} onPress={() => router.push('/add')} />
           ),
           tabBarIcon: ({ size, color }) => (
-            <Plus size={28} color="#FFFFFF" strokeWidth={3} />
+            <Plus size={30} color="#FFFFFF" strokeWidth={3.5} />
           ),
         }}
       />
@@ -79,7 +82,7 @@ export default function TabLayout() {
         name="insights"
         options={{
           tabBarIcon: ({ size, color }) => (
-            <BarChart3 size={size} color={color} />
+            <BarChart3 size={size + 2} color={color} strokeWidth={2.2} />
           ),
         }}
       />
@@ -87,7 +90,7 @@ export default function TabLayout() {
         name="profile"
         options={{
           tabBarIcon: ({ size, color }) => (
-            <User size={size} color={color} />
+            <User size={size + 2} color={color} strokeWidth={2.2} />
           ),
         }}
       />
@@ -102,26 +105,31 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    borderTopWidth: 0.5,
-    borderTopColor: 'rgba(255, 255, 255, 0.1)',
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255, 255, 255, 0.15)',
   },
   customButton: {
-    top: -20,
+    top: -24,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 70,
-    height: 70,
+    width: 76,
+    height: 76,
   },
   customButtonInner: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 0.5,
-    borderColor: 'rgba(59, 130, 246, 0.3)',
+    borderWidth: 1.5,
+    borderColor: 'rgba(59, 130, 246, 0.4)',
     overflow: 'hidden',
     position: 'relative',
+    shadowColor: '#3B82F6',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 12,
   },
   customButtonGradient: {
     position: 'absolute',
@@ -130,11 +138,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: '#3B82F6',
-    borderRadius: 28,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    borderRadius: 30,
     zIndex: 1,
   },
   iconContainer: {
