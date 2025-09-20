@@ -76,7 +76,7 @@ export default function HomeScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={isDark ? ['#0F172A', '#1E293B', '#334155'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0A0E1A', '#1A1F2E', '#2A3441'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -99,7 +99,7 @@ export default function HomeScreen() {
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.heroCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(30, 41, 59, 0.8)', 'rgba(51, 65, 85, 0.6)'] 
+                ? ['rgba(26, 31, 46, 0.9)', 'rgba(42, 52, 65, 0.7)'] 
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(16, 185, 129, 0.02)']}
               style={styles.heroGradient}
             />
@@ -123,7 +123,7 @@ export default function HomeScreen() {
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.statCardGradient}
             />
@@ -139,7 +139,7 @@ export default function HomeScreen() {
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.statCardGradient}
             />
@@ -168,7 +168,7 @@ export default function HomeScreen() {
             <BlurView key={index} intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.subscriptionCardGradient}
               />
@@ -195,7 +195,7 @@ export default function HomeScreen() {
             <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.emptyState}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.emptyStateGradient}
               />
