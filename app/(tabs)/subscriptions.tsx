@@ -122,10 +122,12 @@ export default function SubscriptionsScreen() {
               </BlurView>
               <Text style={[styles.totalAmount, { color: theme.colors.text }]}>${totalMonthly.toFixed(2)}</Text>
               <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.totalSubtextContainer}>
-                <Sparkles size={14} color={theme.colors.primary} />
-                <Text style={[styles.totalSubtext, { color: theme.colors.textSecondary }]}>
-                  Across {subscriptions.length} subscriptions
-                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                  <Sparkles size={14} color={theme.colors.primary} />
+                  <Text style={[styles.totalSubtext, { color: theme.colors.textSecondary }]}>
+                    Across {subscriptions.length} subscriptions
+                  </Text>
+                </View>
               </BlurView>
             </View>
           </BlurView>
