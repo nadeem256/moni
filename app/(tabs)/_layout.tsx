@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router';
 import { House, Plus, CreditCard, ChartBar as BarChart3, User } from 'lucide-react-native';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useTheme } from '../../contexts/ThemeContext';
 
@@ -15,10 +16,14 @@ function CustomTabBarButton({ children, onPress }: any) {
       activeOpacity={0.8}
     >
       <BlurView intensity={80} tint="light" style={styles.customButtonInner}>
-        <LinearGradient
-          colors={['#34D399', '#10B981']}
-          style={styles.customButtonGradient}
-        />
+        {Platform.OS !== 'web' ? (
+          <LinearGradient
+            colors={['#34D399', '#10B981']}
+            style={styles.customButtonGradient}
+          />
+        ) : (
+          <View style={[styles.customButtonGradient, { backgroundColor: '#34D399' }]} />
+        )}
         <View style={styles.iconContainer}>
           <Plus size={28} color="#FFFFFF" strokeWidth={3} />
         </View>
