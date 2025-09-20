@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(255, 255, 255, 0.15)',
   },
   customButton: {
-    top: -10,
+    top: 12,
     justifyContent: 'center',
     alignItems: 'center',
     width: 76,

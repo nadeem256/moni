@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { TrendingUp, TrendingDown, Plus } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useBalance, useAnalytics, useSubscriptions } from '../../hooks/useData';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
@@ -36,22 +35,6 @@ export default function HomeScreen() {
   const { todaySpending, monthlySpending, refreshAnalytics } = useAnalytics();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { theme, isDark } = useTheme();
-  const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-    loadUserName();
-  }, []);
-
-  const loadUserName = async () => {
-    try {
-      const savedName = await AsyncStorage.getItem('userName');
-      if (savedName) {
-        setUserName(savedName);
-      }
-    } catch (error) {
-      console.error('Error loading user name:', error);
-    }
-  };
 
   const formatRenewalDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -88,8 +71,7 @@ export default function HomeScreen() {
       refreshBalance();
       refreshAnalytics();
       refreshSubscriptions();
-      loadUserName();
-    }, [refreshBalance, refreshAnalytics, refreshSubscriptions, loadUserName])
+    }, [refreshBalance, refreshAnalytics, refreshSubscriptions])
   );
 
   return (
@@ -104,9 +86,7 @@ export default function HomeScreen() {
         <View style={styles.heroSection}>
           <View style={styles.headerContent}>
             <View>
-              <Text style={[styles.greeting, { color: theme.colors.text }]}>
-                {userName ? `${getGreeting()}, ${userName}` : getGreeting()}
-              </Text>
+              <Text style={[styles.greeting, { color: theme.colors.text }]}>{getGreeting()}</Text>
               <Text style={[styles.subGreeting, { color: theme.colors.textSecondary }]}>{getWelcomeMessage()}</Text>
             </View>
           </View>

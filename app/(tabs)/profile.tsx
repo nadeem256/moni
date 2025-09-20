@@ -448,7 +448,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
-    position: 'relative',
   },
   avatar: {
     width: 88,
@@ -456,18 +455,6 @@ const styles = StyleSheet.create({
     borderRadius: 36,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  editNameButton: {
-    position: 'absolute',
-    bottom: -4,
-    right: -4,
-    borderRadius: 16,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.3)',
-  },
-  editNameButtonContent: {
-    padding: 8,
   },
   profileName: {
     fontSize: 26,
@@ -762,84 +749,5 @@ const styles = StyleSheet.create({
   settingText: {
     fontSize: 16,
     fontWeight: '500',
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-  },
-  nameModalContent: {
-    borderRadius: 24,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.2,
-    shadowRadius: 32,
-    elevation: 16,
-  },
-  nameModalGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  nameModalHeader: {
-    padding: 24,
-    borderBottomWidth: 0.5,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  nameModalTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    textAlign: 'center',
-  },
-  nameModalForm: {
-    padding: 24,
-  },
-  nameInputContainer: {
-    borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  nameInput: {
-    padding: 16,
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  nameModalButtons: {
-    flexDirection: 'row',
-    padding: 24,
-    gap: 16,
-  },
-  nameModalButton: {
-    flex: 1,
-    borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  nameModalButtonContent: {
-    padding: 16,
-    alignItems: 'center',
-  },
-  nameModalButtonGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  nameModalButtonText: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  nameModalButtonTextPrimary: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FFFFFF',
   },
 });
