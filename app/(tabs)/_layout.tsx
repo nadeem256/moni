@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Hop as Home, Plus, CreditCard, ChartBar as BarChart3, User } from 'lucide-react-native';
+import { House, Plus, CreditCard, ChartBar as BarChart3, User } from 'lucide-react-native';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { router } from 'expo-router';
@@ -52,7 +52,7 @@ export default function TabLayout() {
         name="index"
         options={{
           tabBarIcon: ({ size, color }) => (
-            <Home size={size} color={color} />
+            <House size={size} color={color} />
           ),
         }}
       />
