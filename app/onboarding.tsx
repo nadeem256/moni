@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Eye, Calendar, Heart } from 'lucide-react-native';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -35,11 +36,15 @@ export default function OnboardingScreen() {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
+      // Mark onboarding as completed
+      AsyncStorage.setItem('hasCompletedOnboarding', 'true');
       router.replace('/(tabs)');
     }
   };
 
   const handleSkip = () => {
+    // Mark onboarding as completed
+    AsyncStorage.setItem('hasCompletedOnboarding', 'true');
     router.replace('/(tabs)');
   };
 
