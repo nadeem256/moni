@@ -56,7 +56,7 @@ export default function TabLayout() {
         tabBarInactiveTintColor: theme.colors.textSecondary,
         tabBarShowLabel: false,
         tabBarIconStyle: {
-          marginTop: 4,
+          marginTop: 12,
         },
       }}>
       <Tabs.Screen
