@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useCallback } from 'react';
-import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun } from 'lucide-react-native';
+import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, Edit3 } from 'lucide-react-native';
 import { Switch } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { usePremium } from '../../contexts/PremiumContext';
@@ -15,6 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function ProfileScreen() {
   const { isPremium, cancelSubscription } = usePremium();
   const { theme, isDark, toggleTheme } = useTheme();
+  const [showNameModal, setShowNameModal] = useState(false);
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
@@ -119,9 +120,20 @@ export default function ProfileScreen() {
               style={styles.profileGradient}
             />
             <View style={styles.profileContent}>
-                      <Edit3 size={18} color={theme.colors.primary} />
+              <View style={styles.avatarContainer}>
                 <View style={[styles.avatar, { backgroundColor: `${theme.colors.primary}20` }]}>
                   <User size={32} color="#34D399" />
+                </View>
+                <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.editNameButton}>
+                  <TouchableOpacity 
+                    style={styles.editNameButtonContent}
+                    onPress={() => setShowNameModal(true)}
+                  >
+                    <Edit3 size={18} color={theme.colors.primary} />
+                  </TouchableOpacity>
+                </BlurView>
+              </View>
+              
               <TouchableOpacity onPress={() => setShowNameModal(true)}>
                 <Text style={[styles.profileName, { color: theme.colors.text }]}>
                   {userName ? `Hello, ${userName}!` : 'Welcome to Moni'}
@@ -132,6 +144,7 @@ export default function ProfileScreen() {
                   </Text>
                 )}
               </TouchableOpacity>
+              
               <Text style={[styles.profileSubtitle, { color: theme.colors.textSecondary }]}>Your financial companion</Text>
             </View>
           </BlurView>
