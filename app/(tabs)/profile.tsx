@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ProfileScreen() {
   const { isPremium, cancelSubscription } = usePremium();
-  const { theme, isDark, toggleTheme } = useTheme();
+  const { theme, isDark, toggleTheme, canUseDarkMode } = useTheme();
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
@@ -76,6 +76,7 @@ export default function ProfileScreen() {
 
   const premiumFeatures = [
     'AI Financial Assistant & Predictions',
+    'Dark Mode & Premium Themes',
     'Investment & Portfolio Tracking',
     'Advanced Analytics & Forecasting',
     'Smart Notifications & Price Alerts',
@@ -317,7 +318,10 @@ export default function ProfileScreen() {
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.settingCardGradient}
             />
-            <View style={styles.settingContent}>
+            <TouchableOpacity 
+              style={styles.settingContent}
+              onPress={canUseDarkMode ? toggleTheme : () => router.push('/paywall')}
+            >
               <View style={styles.settingLeft}>
                 <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer}>
                   {isDark ? (
@@ -326,15 +330,30 @@ export default function ProfileScreen() {
                     <Sun size={20} color={theme.colors.textSecondary} />
                   )}
                 </BlurView>
-                <Text style={[styles.settingText, { color: theme.colors.text }]}>Dark Mode</Text>
+                <View style={styles.settingTextContainer}>
+                  <Text style={[styles.settingText, { color: canUseDarkMode ? theme.colors.text : theme.colors.textSecondary }]}>
+                    Dark Mode
+                  </Text>
+                  {!canUseDarkMode && (
+                    <Text style={[styles.settingSubtext, { color: theme.colors.textSecondary }]}>
+                      Premium feature
+                    </Text>
+                  )}
+                </View>
               </View>
-              <Switch
-                value={isDark}
-                onValueChange={toggleTheme}
-                trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
-                thumbColor="#FFFFFF"
-              />
-            </View>
+              {canUseDarkMode ? (
+                <Switch
+                  value={isDark}
+                  onValueChange={toggleTheme}
+                  trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
+                  thumbColor="#FFFFFF"
+                />
+              ) : (
+                <View style={styles.premiumBadgeSmall}>
+                  <Crown size={14} color="#F59E0B" />
+                </View>
+              )}
+            </TouchableOpacity>
           </BlurView>
           
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard}>
@@ -738,6 +757,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
+    flex: 1,
+  },
+  settingTextContainer: {
+    flex: 1,
   },
   settingIconContainer: {
     padding: 8,
@@ -749,5 +772,9 @@ const styles = StyleSheet.create({
   settingText: {
     fontSize: 16,
     fontWeight: '500',
+  },
+  settingSubtext: {
+    fontSize: 12,
+    marginTop: 2,
   },
 });

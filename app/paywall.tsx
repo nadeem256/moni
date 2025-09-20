@@ -41,6 +41,12 @@ export default function PaywallScreen() {
       color: '#EF4444',
     },
     {
+      icon: Shield,
+      title: 'Dark Mode & Themes',
+      description: 'Beautiful dark mode interface & premium themes',
+      color: '#8B5CF6',
+    },
+    {
       icon: TrendingUp,
       title: 'Investment Tracking',
       description: 'Track stocks, crypto & portfolio performance',
@@ -200,6 +206,12 @@ export default function PaywallScreen() {
                   <Check size={16} color="#10B981" />
                   <Text style={[styles.pricingFeatureText, { color: theme.colors.text }]}>
                     Everything in Free Plan
+                  </Text>
+                </View>
+                <View style={styles.pricingFeature}>
+                  <Check size={16} color="#10B981" />
+                  <Text style={[styles.pricingFeatureText, { color: theme.colors.text }]}>
+                    Dark Mode & Premium Themes
                   </Text>
                 </View>
                 <View style={styles.pricingFeature}>

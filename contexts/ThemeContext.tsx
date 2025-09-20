@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { usePremium } from './PremiumContext';
 
 export interface Theme {
   colors: {
@@ -50,6 +51,7 @@ interface ThemeContextType {
   theme: Theme;
   isDark: boolean;
   toggleTheme: () => void;
+  canUseDarkMode: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -68,9 +70,12 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isDark, setIsDark] = useState(false);
+  const [isPremiumLoaded, setIsPremiumLoaded] = useState(false);
 
   useEffect(() => {
     loadTheme();
+    // Small delay to ensure PremiumContext is loaded
+    setTimeout(() => setIsPremiumLoaded(true), 100);
   }, []);
 
   const loadTheme = async () => {
@@ -94,6 +99,40 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   };
 
+  // Create a wrapper component to access usePremium
+  const ThemeProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { isPremium } = usePremium();
+    const canUseDarkMode = isPremium;
+    
+    const theme = isDark ? darkTheme : lightTheme;
+
+    return (
+      <ThemeContext.Provider value={{ theme, isDark, toggleTheme, canUseDarkMode }}>
+        {children}
+      </ThemeContext.Provider>
+    );
+  };
+
+  // If premium context isn't loaded yet, use light theme as default
+  if (!isPremiumLoaded) {
+    return (
+      <ThemeContext.Provider value={{ 
+        theme: lightTheme, 
+        isDark: false, 
+        toggleTheme, 
+        canUseDarkMode: false 
+      }}>
+        {children}
+      </ThemeContext.Provider>
+    );
+  }
+
+  return <ThemeProviderInner>{children}</ThemeProviderInner>;
+};
+
+// Remove the old provider code
+/*
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const theme = isDark ? darkTheme : lightTheme;
 
   return (
@@ -101,4 +140,3 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       {children}
     </ThemeContext.Provider>
   );
-};
