@@ -211,6 +211,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: 'rgba(255, 255, 255, 0.1)',
   },
+  greeting: {
+    fontSize: 28,
+    fontWeight: '800',
+    marginBottom: 8,
+    letterSpacing: -0.5,
+  },
+  subGreeting: {
+    fontSize: 18,
+    fontWeight: '600',
+    opacity: 0.8,
+    letterSpacing: 0.2,
+  },
   notificationButton: {
     borderRadius: 20,
     overflow: 'hidden',
