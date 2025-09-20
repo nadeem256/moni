@@ -80,14 +80,21 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     try {
       const savedTheme = await AsyncStorage.getItem('isDarkMode');
       if (savedTheme !== null) {
-        setIsDark(savedTheme === 'true');
+        setIsDark(savedTheme === 'true' && isPremium);
+      } else {
+        // Default to light mode
+        setIsDark(false);
       }
     } catch (error) {
       console.error('Error loading theme:', error);
+      // Fallback to light mode on error
+      setIsDark(false);
     }
   };
 
   const toggleTheme = async () => {
+    if (!isPremium) return; // Prevent toggling if not premium
+    
     try {
       const newTheme = !isDark;
       setIsDark(newTheme);
@@ -96,6 +103,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       console.error('Error saving theme:', error);
     }
   };
+
+  // Force light mode if not premium
+  useEffect(() => {
+    if (!isPremium && isDark) {
+      setIsDark(false);
+    }
+  }, [isPremium, isDark]);
 
   const canUseDarkMode = isPremium;
   const theme = isDark ? darkTheme : lightTheme;
