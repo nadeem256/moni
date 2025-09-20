@@ -25,7 +25,7 @@ function CustomTabBarButton({ children, onPress }: any) {
 }
 
 export default function TabLayout() {
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
 
   return (
     <Tabs
