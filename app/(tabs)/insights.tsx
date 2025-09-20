@@ -174,12 +174,12 @@ export default function InsightsScreen() {
                 )}
                 <Text style={[styles.changeText, { color: weeklyChange <= 0 ? '#10B981' : '#EF4444' }]}>
                   {weeklyChange <= 0 
-              <BarChart3 size={16} color="#34D399" />
+                    ? `You saved $${Math.abs(weeklyChange).toFixed(2)} compared to last week`
                     : `You spent $${weeklyChange.toFixed(2)} more than last week`
                   }
                 </Text>
               </BlurView>
-            <Sparkles size={20} color="#34D399" />
+            </View>
           </BlurView>
         )}
 
