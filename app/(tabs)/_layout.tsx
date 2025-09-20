@@ -33,7 +33,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: {
           position: 'absolute',
-          backgroundColor: 'transparent',
+          backgroundColor: isDark ? 'rgba(10, 14, 26, 0.95)' : 'transparent',
           borderTopWidth: 0,
           paddingBottom: 16,
           paddingTop: 16,
@@ -42,7 +42,7 @@ export default function TabLayout() {
           shadowOpacity: 0,
         },
         tabBarBackground: () => (
-          <BlurView intensity={120} tint="light" style={styles.tabBarBlur} />
+          <BlurView intensity={isDark ? 100 : 120} tint={isDark ? 'dark' : 'light'} style={styles.tabBarBlur} />
         ),
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.textSecondary,
