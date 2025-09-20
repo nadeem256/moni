@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -143,7 +144,7 @@ export default function HomeScreen() {
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Upcoming</Text>
             <BlurView intensity={40} tint="light" style={styles.viewAllButton}>
-              <TouchableOpacity style={styles.viewAllContent}>
+              <TouchableOpacity style={styles.viewAllContent} onPress={() => router.push('/(tabs)/subscriptions')}>
                 <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>View All</Text>
               </TouchableOpacity>
             </BlurView>
