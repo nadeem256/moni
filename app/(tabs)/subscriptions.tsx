@@ -75,7 +75,7 @@ export default function SubscriptionsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={isDark ? ['#0A0E1A', '#1A1F2E', '#2A3441'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0B0F1A', '#1C2332', '#2D3748'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -112,7 +112,7 @@ export default function SubscriptionsScreen() {
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.totalCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(26, 31, 46, 0.9)', 'rgba(42, 52, 65, 0.7)'] 
+                ? ['rgba(28, 35, 50, 0.9)', 'rgba(45, 55, 72, 0.7)'] 
                 : ['rgba(59, 130, 246, 0.08)', 'rgba(16, 185, 129, 0.04)']}
               style={styles.totalGradient}
             />
@@ -146,7 +146,7 @@ export default function SubscriptionsScreen() {
             <BlurView key={subscription.id} intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.subscriptionCardGradient}
               />
@@ -190,7 +190,7 @@ export default function SubscriptionsScreen() {
             <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.noSubscriptions}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
                 style={styles.noSubscriptionsGradient}
               />
@@ -215,7 +215,7 @@ export default function SubscriptionsScreen() {
             <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.insightCardGradient}
               />
@@ -232,7 +232,7 @@ export default function SubscriptionsScreen() {
             <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.insightCardGradient}
               />
@@ -318,7 +318,9 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
       <View style={styles.modalOverlay}>
         <BlurView intensity={80} tint={theme.isDark ? 'dark' : 'light'} style={styles.addModalContent}>
           <LinearGradient
-            colors={['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
+            colors={theme.isDark 
+              ? ['rgba(28, 35, 50, 0.95)', 'rgba(45, 55, 72, 0.9)'] 
+              : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
             style={styles.modalGradient}
           />
           <View style={styles.addModalHeader}>
@@ -425,7 +427,9 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
           <View style={styles.datePickerOverlay}>
             <BlurView intensity={80} tint="light" style={styles.datePickerModal}>
               <LinearGradient
-                colors={['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
+                colors={theme.isDark 
+                  ? ['rgba(28, 35, 50, 0.95)', 'rgba(45, 55, 72, 0.9)'] 
+                  : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
                 style={styles.datePickerGradient}
               />
               <View style={styles.datePickerHeader}>
