@@ -9,8 +9,8 @@ export default function RootLayout() {
   useFrameworkReady();
 
   return (
-    <ThemeProvider>
-      <PremiumProvider>
+    <PremiumProvider>
+      <ThemeProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="onboarding" />
@@ -20,7 +20,7 @@ export default function RootLayout() {
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
-      </PremiumProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </PremiumProvider>
   );
 }

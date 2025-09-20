@@ -70,12 +70,10 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isDark, setIsDark] = useState(false);
-  const [isPremiumLoaded, setIsPremiumLoaded] = useState(false);
+  const { isPremium } = usePremium();
 
   useEffect(() => {
     loadTheme();
-    // Small delay to ensure PremiumContext is loaded
-    setTimeout(() => setIsPremiumLoaded(true), 100);
   }, []);
 
   const loadTheme = async () => {
@@ -99,35 +97,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   };
 
-  // Create a wrapper component to access usePremium
-  const ThemeProviderInner: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const { isPremium } = usePremium();
-    const canUseDarkMode = isPremium;
-    
-    const theme = isDark ? darkTheme : lightTheme;
+  const canUseDarkMode = isPremium;
+  const theme = isDark ? darkTheme : lightTheme;
 
-    return (
-      <ThemeContext.Provider value={{ theme, isDark, toggleTheme, canUseDarkMode }}>
-        {children}
-      </ThemeContext.Provider>
-    );
-  };
-
-  // If premium context isn't loaded yet, use light theme as default
-  if (!isPremiumLoaded) {
-    return (
-      <ThemeContext.Provider value={{ 
-        theme: lightTheme, 
-        isDark: false, 
-        toggleTheme, 
-        canUseDarkMode: false 
-      }}>
-        {children}
-      </ThemeContext.Provider>
-    );
-  }
-
-  return <ThemeProviderInner>{children}</ThemeProviderInner>;
+  return (
+    <ThemeContext.Provider value={{ theme, isDark, toggleTheme, canUseDarkMode }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };
 
 // Remove the old provider code
