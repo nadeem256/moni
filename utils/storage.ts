@@ -117,7 +117,8 @@ export const deleteSubscription = async (id: string): Promise<void> => {
 export const getBalance = async (): Promise<number> => {
   try {
     const data = await AsyncStorage.getItem(BALANCE_KEY);
-    return data ? parseFloat(data) : 0;
+    const balance = data ? parseFloat(data) : 0;
+    return isNaN(balance) ? 0 : balance;
   } catch (error) {
     console.error('Error getting balance:', error);
     return 0;
@@ -126,13 +127,24 @@ export const getBalance = async (): Promise<number> => {
 
 export const updateBalance = async (change: number): Promise<number> => {
   try {
+    if (isNaN(change)) {
+      console.error('Invalid change amount:', change);
+      return await getBalance();
+    }
+    
     const currentBalance = await getBalance();
-    const newBalance = currentBalance + change;
+    const newBalance = (isNaN(currentBalance) ? 0 : currentBalance) + change;
+    
+    if (isNaN(newBalance)) {
+      console.error('Calculated balance is NaN:', { currentBalance, change });
+      return currentBalance;
+    }
+    
     await AsyncStorage.setItem(BALANCE_KEY, newBalance.toString());
     return newBalance;
   } catch (error) {
     console.error('Error updating balance:', error);
-    throw error;
+    return await getBalance();
   }
 };
 

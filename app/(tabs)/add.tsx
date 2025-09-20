@@ -24,11 +24,12 @@ export default function AddScreen() {
   };
 
   const handleSave = async () => {
-    if (amount && selectedCategory && !saving) {
+    const numericAmount = parseFloat(amount);
+    if (amount && selectedCategory && !saving && !isNaN(numericAmount) && numericAmount > 0) {
       setSaving(true);
       try {
         await addTransaction({
-          amount: parseFloat(amount),
+          amount: numericAmount,
           type: selectedType,
           category: selectedCategory,
           date: new Date().toISOString(),
