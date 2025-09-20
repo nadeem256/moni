@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useCallback } from 'react';
-import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign } from 'lucide-react-native';
+import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun } from 'lucide-react-native';
+import { Switch } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { usePremium } from '../../contexts/PremiumContext';
 import { router } from 'expo-router';
@@ -13,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ProfileScreen() {
   const { isPremium, cancelSubscription } = usePremium();
-  const { theme, isDark } = useTheme();
+  const { theme, isDark, toggleTheme } = useTheme();
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
@@ -307,6 +308,35 @@ export default function ProfileScreen() {
 
         {/* Settings */}
         <View style={styles.settingsSection}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Preferences</Text>
+          
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard}>
+            <LinearGradient
+              colors={isDark 
+                ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+              style={styles.settingCardGradient}
+            />
+            <View style={styles.settingContent}>
+              <View style={styles.settingLeft}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer}>
+                  {isDark ? (
+                    <Moon size={20} color={theme.colors.textSecondary} />
+                  ) : (
+                    <Sun size={20} color={theme.colors.textSecondary} />
+                  )}
+                </BlurView>
+                <Text style={[styles.settingText, { color: theme.colors.text }]}>Dark Mode</Text>
+              </View>
+              <Switch
+                value={isDark}
+                onValueChange={toggleTheme}
+                trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
+                thumbColor="#FFFFFF"
+              />
+            </View>
+          </BlurView>
+          
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard}>
             <LinearGradient
               colors={isDark 
@@ -322,7 +352,7 @@ export default function ProfileScreen() {
                 <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer}>
                   <Settings size={20} color={theme.colors.textSecondary} />
                 </BlurView>
-                <Text style={[styles.settingText, { color: theme.colors.text }]}>Settings & Preferences</Text>
+                <Text style={[styles.settingText, { color: theme.colors.text }]}>More Settings</Text>
               </View>
               <ChevronRight size={20} color={theme.colors.textSecondary} />
             </TouchableOpacity>
