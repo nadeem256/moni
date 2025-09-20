@@ -112,7 +112,7 @@ export default function SubscriptionsScreen() {
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.totalCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(59, 130, 246, 0.15)', 'rgba(16, 185, 129, 0.08)'] 
+                ? ['rgba(30, 41, 59, 0.8)', 'rgba(51, 65, 85, 0.6)'] 
                 : ['rgba(59, 130, 246, 0.08)', 'rgba(16, 185, 129, 0.04)']}
               style={styles.totalGradient}
             />
@@ -144,6 +144,12 @@ export default function SubscriptionsScreen() {
           {subscriptions.length > 0 ? (
             subscriptions.slice(0, isPremium ? subscriptions.length : 3).map((subscription) => (
             <BlurView key={subscription.id} intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.subscriptionCardGradient}
+              />
               <View style={styles.subscriptionCardContent}>
                 <View style={styles.subscriptionLeft}>
                   <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionIconContainer}>
@@ -184,7 +190,7 @@ export default function SubscriptionsScreen() {
             <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.noSubscriptions}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(59, 130, 246, 0.1)', 'rgba(59, 130, 246, 0.05)'] 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
                   : ['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
                 style={styles.noSubscriptionsGradient}
               />
@@ -207,6 +213,12 @@ export default function SubscriptionsScreen() {
             <Text style={[styles.insightsTitle, { color: theme.colors.text }]}>This Month</Text>
             
             <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.insightCardGradient}
+              />
               <View style={styles.insightCardContent}>
                 <Text style={[styles.insightText, { color: theme.colors.text }]}>
                   You're spending <Text style={styles.insightHighlight}>${totalMonthly.toFixed(2)}</Text> monthly on subscriptions
@@ -218,6 +230,12 @@ export default function SubscriptionsScreen() {
             </BlurView>
             
             <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
+              <LinearGradient
+                colors={isDark 
+                  ? ['rgba(30, 41, 59, 0.7)', 'rgba(51, 65, 85, 0.5)'] 
+                  : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                style={styles.insightCardGradient}
+              />
               <View style={styles.insightCardContent}>
                 <Text style={[styles.insightText, { color: theme.colors.text }]}>
                   <Text style={styles.insightHighlight}>{subscriptions.length} subscription{subscriptions.length !== 1 ? 's' : ''}</Text> tracked
@@ -645,6 +663,13 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 3,
   },
+  subscriptionCardGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
   subscriptionCardContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -825,6 +850,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
+  },
+  insightCardGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   insightCardContent: {
     padding: 20,
