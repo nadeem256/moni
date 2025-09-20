@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
-import { ArrowLeft, Moon, Sun, RotateCcw, Bell, Shield, CircleHelp as HelpCircle, Download, Crown, ChevronRight } from 'lucide-react-native';
+import { ArrowLeft, Moon, Sun, RotateCcw, Bell, Shield, Circle as HelpCircle, Download, Crown, ChevronRight } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { usePremium } from '../contexts/PremiumContext';
