@@ -86,7 +86,7 @@ export default function ProfileScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={isDark ? ['#0A0E1A', '#1A1F2E', '#2A3441'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0B0F1A', '#1C2332', '#2D3748'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -106,7 +106,7 @@ export default function ProfileScreen() {
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.profileCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(26, 31, 46, 0.9)', 'rgba(42, 52, 65, 0.7)'] 
+                ? ['rgba(28, 35, 50, 0.9)', 'rgba(45, 55, 72, 0.7)'] 
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(245, 158, 11, 0.02)']}
               style={styles.profileGradient}
             />
@@ -130,7 +130,7 @@ export default function ProfileScreen() {
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.statCardGradient}
               />
@@ -146,7 +146,7 @@ export default function ProfileScreen() {
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.statCardGradient}
               />
@@ -162,7 +162,7 @@ export default function ProfileScreen() {
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.statCardGradient}
               />
@@ -178,7 +178,7 @@ export default function ProfileScreen() {
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.statCardGradient}
               />
@@ -199,7 +199,7 @@ export default function ProfileScreen() {
             <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.premiumCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.9)', 'rgba(42, 52, 65, 0.7)'] 
+                  ? ['rgba(28, 35, 50, 0.9)', 'rgba(45, 55, 72, 0.7)'] 
                   : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
                 style={styles.premiumGradient}
               />
@@ -250,7 +250,7 @@ export default function ProfileScreen() {
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.premiumStatusCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
                 style={styles.premiumStatusGradient}
               />
@@ -272,7 +272,7 @@ export default function ProfileScreen() {
             <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.cancelSubscriptionCard}>
               <LinearGradient
                 colors={isDark 
-                  ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                  ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                   : ['rgba(239, 68, 68, 0.1)', 'rgba(239, 68, 68, 0.05)']}
                 style={styles.cancelSubscriptionGradient}
               />
@@ -303,7 +303,7 @@ export default function ProfileScreen() {
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard}>
             <LinearGradient
               colors={isDark 
-                ? ['rgba(26, 31, 46, 0.8)', 'rgba(42, 52, 65, 0.6)'] 
+                ? ['rgba(28, 35, 50, 0.8)', 'rgba(45, 55, 72, 0.6)'] 
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.settingCardGradient}
             />
