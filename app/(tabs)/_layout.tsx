@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { Chrome as Home, Plus, CreditCard, ChartBar as BarChart3, User } from 'lucide-react-native';
+import { Home, Plus, CreditCard, ChartBar as BarChart3, User } from 'lucide-react-native';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { router } from 'expo-router';
