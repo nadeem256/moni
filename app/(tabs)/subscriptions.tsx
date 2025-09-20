@@ -109,7 +109,6 @@ export default function SubscriptionsScreen() {
             </BlurView>
           </View>
           
-          <BlurView intensity={100} tint={theme.isDark ? 'dark' : 'light'} style={styles.totalCard}>
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.totalCard}>
             <LinearGradient
               colors={isDark 
