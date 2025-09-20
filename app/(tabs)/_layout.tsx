@@ -15,7 +15,10 @@ function CustomTabBarButton({ children, onPress }: any) {
       activeOpacity={0.8}
     >
       <BlurView intensity={80} tint="light" style={styles.customButtonInner}>
-        <View style={styles.customButtonGradient} />
+        <LinearGradient
+          colors={['#34D399', '#10B981']}
+          style={styles.customButtonGradient}
+        />
         <View style={styles.iconContainer}>
           <Plus size={28} color="#FFFFFF" strokeWidth={3} />
         </View>

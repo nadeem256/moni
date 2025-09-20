@@ -533,7 +533,7 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
   },
   addButton: {
-    borderRadius: 24,
+    borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 0.5,
     borderColor: 'rgba(59, 130, 246, 0.3)',

@@ -363,10 +363,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 16,
+    borderRadius: 12,
     gap: 6,
     borderWidth: 0.5,
     borderColor: 'rgba(245, 158, 11, 0.3)',
+    overflow: 'hidden',
   },
   premiumText: {
     fontSize: 12,

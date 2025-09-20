@@ -315,8 +315,11 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   sparkleContainer: {
-    padding: 12,
-    borderRadius: 12,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
     overflow: 'hidden',
     borderWidth: 0.5,
     borderColor: 'rgba(59, 130, 246, 0.3)',

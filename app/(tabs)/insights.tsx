@@ -436,8 +436,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   sparkleContainer: {
-    padding: 8,
-    borderRadius: 12,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
     overflow: 'hidden',
     borderWidth: 0.5,
     borderColor: 'rgba(59, 130, 246, 0.3)',
