@@ -5,6 +5,7 @@ import { BlurView } from 'expo-blur';
 import { useBalance, useAnalytics, useSubscriptions } from '../../hooks/useData';
 import { useFocusEffect } from '@react-navigation/native';
 import { useCallback } from 'react';
+import { formatCurrency } from '../../utils/storage';
 import { useTheme } from '../../contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -99,7 +100,7 @@ export default function HomeScreen() {
             />
             <View style={styles.heroContent}>
               <Text style={[styles.balanceLabel, { color: theme.colors.textSecondary }]}>Total Balance</Text>
-              <Text style={[styles.balanceAmount, { color: theme.colors.text }]}>${balance.toFixed(2)}</Text>
+              <Text style={[styles.balanceAmount, { color: theme.colors.text }]}>{formatCurrency(balance)}</Text>
               <View style={styles.balanceInsight}>
                 <BlurView intensity={40} tint="light" style={styles.insightPill}>
                   <TrendingUp size={14} color="#34D399" />

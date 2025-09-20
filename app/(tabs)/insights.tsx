@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { usePremium } from '../../contexts/PremiumContext';
 import PremiumLock from '../../components/PremiumLock';
 import { useTheme } from '../../contexts/ThemeContext';
+import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function InsightsScreen() {
@@ -259,7 +260,7 @@ export default function InsightsScreen() {
                   <View style={styles.ringChartContent}>
                     <BlurView intensity={40} tint="light" style={styles.ringChartInner}>
                       <DollarSign size={24} color={theme.colors.primary} />
-                      <Text style={[styles.ringChartAmount, { color: theme.colors.text }]}>${monthlySpending.toFixed(0)}</Text>
+                      <Text style={[styles.ringChartAmount, { color: theme.colors.text }]}>{formatCurrency(monthlySpending)}</Text>
                       <Text style={[styles.ringChartLabel, { color: theme.colors.textSecondary }]}>Total Spent</Text>
                     </BlurView>
                   </View>

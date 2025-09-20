@@ -8,6 +8,7 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { useTransactions, useSubscriptions, useBalance } from '../../hooks/useData';
 import { useFocusEffect } from '@react-navigation/native';
 import { Alert } from 'react-native';
+import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ProfileScreen() {
@@ -43,6 +44,12 @@ export default function ProfileScreen() {
   };
 
   const formatCurrency = (amount: number) => {
+    if (amount >= 1000000000) {
+      return `$${(amount / 1000000000).toFixed(1)}B`;
+    }
+    if (amount >= 1000000) {
+      return `$${(amount / 1000000).toFixed(1)}M`;
+    }
     if (amount >= 1000) {
       return `$${(amount / 1000).toFixed(1)}K`;
     }

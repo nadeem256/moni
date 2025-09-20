@@ -192,6 +192,20 @@ export const getTodaySpending = async (): Promise<number> => {
   }
 };
 
+// Format large numbers with K, M, B suffixes
+export const formatCurrency = (amount: number): string => {
+  if (amount >= 1000000000) {
+    return `$${(amount / 1000000000).toFixed(1)}B`;
+  }
+  if (amount >= 1000000) {
+    return `$${(amount / 1000000).toFixed(1)}M`;
+  }
+  if (amount >= 1000) {
+    return `$${(amount / 1000).toFixed(1)}K`;
+  }
+  return `$${amount.toFixed(2)}`;
+};
+
 export const getCategorySpending = async (): Promise<{ [category: string]: number }> => {
   try {
     const transactions = await getTransactions();
