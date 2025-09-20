@@ -33,13 +33,13 @@ const lightTheme: Theme = {
 
 const darkTheme: Theme = {
   colors: {
-    background: '#0B0F1A',
-    surface: '#1C2332',
+    background: '#0F0F23',
+    surface: '#1A1A2E',
     primary: '#60A5FA',
-    text: '#F0F4F8',
-    textSecondary: '#A8B2C8',
-    border: '#2D3748',
-    card: '#1C2332',
+    text: '#E8E6FF',
+    textSecondary: '#B8B5D1',
+    border: '#16213E',
+    card: '#1A1A2E',
     success: '#34D399',
     error: '#F87171',
     warning: '#FBBF24',
