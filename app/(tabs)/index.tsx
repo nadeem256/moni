@@ -53,8 +53,9 @@ export default function HomeScreen() {
       const today = new Date();
       const diffTime = renewDate.getTime() - today.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays >= 0 && diffDays <= 7;
+      return diffDays >= 0 && diffDays <= 30; // Show subscriptions renewing in next 30 days
     })
+    .sort((a, b) => new Date(a.renewDate).getTime() - new Date(b.renewDate).getTime()) // Sort by renewal date
     .slice(0, 3)
     .map(sub => ({
       name: sub.name,
