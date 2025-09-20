@@ -57,7 +57,7 @@ export default function OnboardingScreen() {
           <IconComponent size={64} color={currentSlideData.color} />
         </View>
 
-        <Text style={styles.title}>{currentSlideData.title}</Text>
+        <Text style={[styles.title, { color: theme.colors.text }]}>{currentSlideData.title}</Text>
         <Text style={[styles.description, { color: theme.colors.textSecondary }]}>{currentSlideData.description}</Text>
       </View>
 
