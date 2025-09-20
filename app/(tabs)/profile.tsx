@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useCallback } from 'react';
-import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, CreditCard as Edit3 } from 'lucide-react-native';
+import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun } from 'lucide-react-native';
 import { Switch } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { usePremium } from '../../contexts/PremiumContext';
@@ -15,7 +15,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function ProfileScreen() {
   const { isPremium, cancelSubscription } = usePremium();
   const { theme, isDark, toggleTheme } = useTheme();
-  const [showNameModal, setShowNameModal] = useState(false);
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
@@ -120,31 +119,12 @@ export default function ProfileScreen() {
               style={styles.profileGradient}
             />
             <View style={styles.profileContent}>
-              <View style={styles.avatarContainer}>
+              <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.avatarContainer}>
                 <View style={[styles.avatar, { backgroundColor: `${theme.colors.primary}20` }]}>
                   <User size={32} color="#34D399" />
                 </View>
-                <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.editNameButton}>
-                  <TouchableOpacity 
-                    style={styles.editNameButtonContent}
-                    onPress={() => setShowNameModal(true)}
-                  >
-                    <Edit3 size={18} color={theme.colors.primary} />
-                  </TouchableOpacity>
-                </BlurView>
-              </View>
-              
-              <TouchableOpacity onPress={() => setShowNameModal(true)}>
-                <Text style={[styles.profileName, { color: theme.colors.text }]}>
-                  {userName ? `Hello, ${userName}!` : 'Welcome to Moni'}
-                </Text>
-                {!userName && (
-                  <Text style={[styles.tapToAddName, { color: theme.colors.textSecondary }]}>
-                    Tap to add your name
-                  </Text>
-                )}
-              </TouchableOpacity>
-              
+              </BlurView>
+              <Text style={[styles.profileName, { color: theme.colors.text }]}>Welcome to Moni</Text>
               <Text style={[styles.profileSubtitle, { color: theme.colors.textSecondary }]}>Your financial companion</Text>
             </View>
           </BlurView>
@@ -478,33 +458,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   editNameButton: {
-    position: 'absolute', 
-    bottom: -6,
-    right: -6,
-    borderRadius: 18,
+    position: 'absolute',
+    bottom: -4,
+    right: -4,
+    borderRadius: 16,
     overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(59, 130, 246, 0.4)',
-    shadowColor: '#3B82F6',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 4,
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.3)',
   },
   editNameButtonContent: {
-    padding: 10,
+    padding: 8,
   },
   profileName: {
     fontSize: 26,
     fontWeight: '800',
     marginBottom: 6,
     letterSpacing: -0.3,
-  },
-  tapToAddName: {
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 4,
-    fontStyle: 'italic',
   },
   profileSubtitle: {
     fontSize: 15,

@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Redirect } from 'expo-router';
 import { View, ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,13 +9,9 @@ export default function Index() {
   useEffect(() => {
     // Simulate checking onboarding status (would come from AsyncStorage)
     const checkOnboardingStatus = async () => {
-      try {
-        const completed = await AsyncStorage.getItem('hasCompletedOnboarding');
-        setHasCompletedOnboarding(completed === 'true');
-      } catch (error) {
-        console.error('Error checking onboarding status:', error);
-        setHasCompletedOnboarding(false);
-      }
+      // This would be: const completed = await AsyncStorage.getItem('hasCompletedOnboarding');
+      const completed = false;
+      setHasCompletedOnboarding(completed);
       setIsLoading(false);
     };
 

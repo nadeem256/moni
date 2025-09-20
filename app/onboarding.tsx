@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useState } from 'react';
-import { useRouter } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 import { Eye, Calendar, Heart } from 'lucide-react-native';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -10,7 +9,6 @@ const { width } = Dimensions.get('window');
 export default function OnboardingScreen() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const { theme } = useTheme();
-  const router = useRouter();
 
   const slides = [
     {
@@ -37,23 +35,12 @@ export default function OnboardingScreen() {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
     } else {
-      completeOnboarding();
+      router.replace('/(tabs)');
     }
   };
 
   const handleSkip = () => {
-    completeOnboarding();
-  };
-
-  const completeOnboarding = async () => {
-    try {
-      await AsyncStorage.setItem('hasCompletedOnboarding', 'true');
-      router.replace('/(tabs)');
-    } catch (error) {
-      console.error('Error completing onboarding:', error);
-      // Still navigate even if storage fails
-      router.replace('/(tabs)');
-    }
+    router.replace('/(tabs)');
   };
 
   const currentSlideData = slides[currentSlide];
