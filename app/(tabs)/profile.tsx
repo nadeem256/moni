@@ -76,7 +76,10 @@ export default function ProfileScreen() {
           onPress: async () => {
             try {
               await signOut();
-              router.replace('/auth/sign-in');
+              // Force navigation after sign out
+              setTimeout(() => {
+                router.replace('/auth/sign-in');
+              }, 100);
             } catch (error) {
               console.error('Error signing out:', error);
               Alert.alert('Error', 'Failed to sign out. Please try again.');

@@ -82,6 +82,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (error) {
       throw error;
     }
+    // Clear user state immediately
+    setUser(null);
+    setSession(null);
   };
 
   return (
