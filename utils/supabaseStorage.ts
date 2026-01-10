@@ -92,8 +92,7 @@ export const deleteTransaction = async (id: string): Promise<void> => {
     const { error } = await supabase
       .from('transactions')
       .delete()
-      .eq('id', id)
-      .eq('user_id', user.id);
+      .eq('id', id);
 
     if (error) throw error;
   } catch (error) {
@@ -172,8 +171,7 @@ export const deleteSubscription = async (id: string): Promise<void> => {
     const { error } = await supabase
       .from('subscriptions')
       .delete()
-      .eq('id', id)
-      .eq('user_id', user.id);
+      .eq('id', id);
 
     if (error) throw error;
   } catch (error) {

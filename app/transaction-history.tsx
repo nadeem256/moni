@@ -63,16 +63,25 @@ export default function TransactionHistoryScreen() {
           onPress: async () => {
             setDeleting(transactionId);
 
-            const { error } = await supabase
-              .from('transactions')
-              .delete()
-              .eq('id', transactionId);
+            try {
+              const { error, data, count } = await supabase
+                .from('transactions')
+                .delete()
+                .eq('id', transactionId)
+                .select();
 
-            if (error) {
-              console.error('Error deleting transaction:', error);
-              Alert.alert('Error', 'Failed to delete transaction');
-            } else {
-              setTransactions(prev => prev.filter(t => t.id !== transactionId));
+              console.log('Delete result:', { error, data, count });
+
+              if (error) {
+                console.error('Error deleting transaction:', error);
+                Alert.alert('Error', `Failed to delete: ${error.message}`);
+              } else {
+                console.log('Transaction deleted successfully');
+                setTransactions(prev => prev.filter(t => t.id !== transactionId));
+              }
+            } catch (err) {
+              console.error('Exception during delete:', err);
+              Alert.alert('Error', 'An unexpected error occurred');
             }
 
             setDeleting(null);
