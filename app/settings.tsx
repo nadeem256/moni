@@ -156,6 +156,7 @@ export default function SettingsScreen() {
   };
 
   const handleSignOut = () => {
+    console.log('Sign out button pressed');
     Alert.alert(
       'Sign Out',
       'Are you sure you want to sign out?',
@@ -163,14 +164,19 @@ export default function SettingsScreen() {
         {
           text: 'Cancel',
           style: 'cancel',
+          onPress: () => console.log('Sign out cancelled'),
         },
         {
           text: 'Sign Out',
           style: 'destructive',
           onPress: async () => {
+            console.log('Sign out confirmed, starting sign out process');
             try {
+              console.log('Calling signOut function');
               await signOut();
-              router.replace('/auth/sign-in');
+              console.log('Sign out successful, navigating to index');
+              router.replace('/');
+              console.log('Navigation completed');
             } catch (error) {
               console.error('Error signing out:', error);
               Alert.alert('Error', 'Failed to sign out. Please try again.');
@@ -290,6 +296,7 @@ export default function SettingsScreen() {
           <TouchableOpacity
             style={[styles.dangerItem, { backgroundColor: theme.colors.surface }]}
             onPress={handleSignOut}
+            activeOpacity={0.7}
           >
             <View style={styles.settingLeft}>
               <LogOut size={20} color={theme.colors.error} />
