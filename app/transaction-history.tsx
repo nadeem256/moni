@@ -66,8 +66,7 @@ export default function TransactionHistoryScreen() {
             const { error } = await supabase
               .from('transactions')
               .delete()
-              .eq('id', transactionId)
-              .eq('user_id', user?.id);
+              .eq('id', transactionId);
 
             if (error) {
               console.error('Error deleting transaction:', error);
