@@ -38,11 +38,8 @@ export default function SignUpScreen() {
     setLoading(true);
     try {
       await signUp(email, password, fullName);
-      Alert.alert(
-        'Success!', 
-        'Account created successfully. Please check your email to verify your account.',
-        [{ text: 'OK', onPress: () => router.replace('/auth/sign-in') }]
-      );
+      // Account created successfully, go directly to the app
+      router.replace('/(tabs)');
     } catch (error: any) {
       Alert.alert('Sign Up Failed', error.message);
     } finally {

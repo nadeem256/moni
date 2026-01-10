@@ -11,12 +11,14 @@ import { useFocusEffect } from '@react-navigation/native';
 import { Alert } from 'react-native';
 import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function ProfileScreen() {
   const { theme, isDark, toggleTheme, canUseDarkMode } = useTheme();
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
+  const { user } = useAuth();
 
   // Calculate real stats
   const calculateDaysActive = () => {
@@ -115,11 +117,15 @@ export default function ProfileScreen() {
             <View style={styles.profileContent}>
               <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.avatarContainer}>
                 <View style={[styles.avatar, { backgroundColor: `${theme.colors.primary}20` }]}>
-                  <User size={32} color="#34D399" />
+                  <User size={32} color={theme.colors.primary} />
                 </View>
               </BlurView>
-              <Text style={[styles.profileName, { color: theme.colors.text }]}>Welcome to Moni</Text>
-              <Text style={[styles.profileSubtitle, { color: theme.colors.textSecondary }]}>Your financial companion</Text>
+              <Text style={[styles.profileName, { color: theme.colors.text }]}>
+                {user?.user_metadata?.full_name || 'Welcome to Moni'}
+              </Text>
+              <Text style={[styles.profileSubtitle, { color: theme.colors.textSecondary }]}>
+                {user?.email || 'Your financial companion'}
+              </Text>
             </View>
           </BlurView>
         </View>
