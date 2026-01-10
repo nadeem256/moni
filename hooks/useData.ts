@@ -12,7 +12,7 @@ import {
   getMonthlySpending,
   getTodaySpending,
   getCategorySpending
-} from '../utils/storage';
+} from '../utils/supabaseStorage';
 
 export const useTransactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
