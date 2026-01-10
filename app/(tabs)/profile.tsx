@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useState, useCallback } from 'react';
-import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun } from 'lucide-react-native';
+import { User, Settings, Crown, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, LogOut } from 'lucide-react-native';
 import { Switch } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { usePremium } from '../../contexts/PremiumContext';
@@ -18,7 +18,7 @@ export default function ProfileScreen() {
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   // Calculate real stats
   const calculateDaysActive = () => {
@@ -61,18 +61,30 @@ export default function ProfileScreen() {
   const daysActive = calculateDaysActive();
   const totalTracked = calculateTotalTracked();
 
-  const handleCancelSubscription = () => {
-    // For testing - immediately cancel subscription
-    cancelSubscription().then(() => {
-      Alert.alert(
-        'Subscription Cancelled',
-        'Your Premium subscription has been cancelled. You now have access to free features only.',
-        [{ text: 'OK' }]
-      );
-    }).catch((error) => {
-      console.error('Error cancelling subscription:', error);
-      Alert.alert('Error', 'Failed to cancel subscription. Please try again.');
-    });
+  const handleSignOut = () => {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await signOut();
+              router.replace('/auth/sign-in');
+            } catch (error) {
+              console.error('Error signing out:', error);
+              Alert.alert('Error', 'Failed to sign out. Please try again.');
+            }
+          },
+        },
+      ]
+    );
   };
 
   const premiumFeatures = [
@@ -257,6 +269,27 @@ export default function ProfileScreen() {
                 <Text style={[styles.settingText, { color: theme.colors.text }]}>More Settings</Text>
               </View>
               <ChevronRight size={20} color={theme.colors.textSecondary} />
+            </TouchableOpacity>
+          </BlurView>
+          
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard}>
+            <LinearGradient
+              colors={isDark 
+                ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+              style={styles.settingCardGradient}
+            />
+            <TouchableOpacity 
+              style={styles.settingContent}
+              onPress={handleSignOut}
+            >
+              <View style={styles.settingLeft}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer}>
+                  <LogOut size={20} color="#EF4444" />
+                </BlurView>
+                <Text style={[styles.settingText, { color: '#EF4444' }]}>Sign Out</Text>
+              </View>
+              <ChevronRight size={20} color="#EF4444" />
             </TouchableOpacity>
           </BlurView>
         </View>
