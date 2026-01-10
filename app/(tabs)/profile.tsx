@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch } from 'react-native';
-import { useCallback } from 'react';
-import { User, Settings, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, Crown } from 'lucide-react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image } from 'react-native';
+import { useCallback, useState, useEffect } from 'react';
+import { User, Settings, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, Crown, Edit } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { router } from 'expo-router';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -9,9 +9,11 @@ import { useFocusEffect } from '@react-navigation/native';
 import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../../contexts/AuthContext';
+import { getProfile, Profile } from '../../services/profileService';
 
 export default function ProfileScreen() {
   const { theme, isDark, toggleTheme, canUseDarkMode } = useTheme();
+  const [profile, setProfile] = useState<Profile | null>(null);
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
@@ -68,11 +70,22 @@ export default function ProfileScreen() {
     'Premium Support & Early Access'
   ];
 
+  const loadProfile = async () => {
+    if (!user?.id) return;
+    const profileData = await getProfile(user.id);
+    setProfile(profileData);
+  };
+
+  useEffect(() => {
+    loadProfile();
+  }, [user?.id]);
+
   useFocusEffect(
     useCallback(() => {
       refreshTransactions();
       refreshSubscriptions();
       refreshBalance();
+      loadProfile();
     }, [refreshTransactions, refreshSubscriptions, refreshBalance])
   );
 
@@ -88,6 +101,12 @@ export default function ProfileScreen() {
         <View style={styles.heroSection}>
           <View style={styles.headerContent}>
             <Text style={[styles.title, { color: theme.colors.text }]}>Profile</Text>
+            <TouchableOpacity
+              onPress={() => router.push('/edit-profile')}
+              style={[styles.editButton, { backgroundColor: theme.colors.surface }]}
+            >
+              <Edit size={20} color={theme.colors.primary} />
+            </TouchableOpacity>
           </View>
           
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.profileCard}>
@@ -99,12 +118,16 @@ export default function ProfileScreen() {
             />
             <View style={styles.profileContent}>
               <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.avatarContainer}>
-                <View style={[styles.avatar, { backgroundColor: `${theme.colors.primary}20` }]}>
-                  <User size={32} color={theme.colors.primary} />
-                </View>
+                {profile?.avatar_url ? (
+                  <Image source={{ uri: profile.avatar_url }} style={styles.avatarImage} />
+                ) : (
+                  <View style={[styles.avatar, { backgroundColor: `${theme.colors.primary}20` }]}>
+                    <User size={32} color={theme.colors.primary} />
+                  </View>
+                )}
               </BlurView>
               <Text style={[styles.profileName, { color: theme.colors.text }]}>
-                {user?.user_metadata?.full_name || 'Welcome to Moni'}
+                {profile?.full_name || user?.user_metadata?.full_name || 'Welcome to Moni'}
               </Text>
               <Text style={[styles.profileSubtitle, { color: theme.colors.textSecondary }]}>
                 {user?.email || 'Your financial companion'}
@@ -300,6 +323,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
+  editButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   profileCard: {
     borderRadius: 28,
     overflow: 'hidden',
@@ -340,6 +375,11 @@ const styles = StyleSheet.create({
     borderRadius: 36,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  avatarImage: {
+    width: 88,
+    height: 88,
+    borderRadius: 36,
   },
   profileName: {
     fontSize: 26,

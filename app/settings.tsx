@@ -184,18 +184,6 @@ export default function SettingsScreen() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Debug Section - Remove after testing */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Debug Info</Text>
-          <View style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
-            <View style={styles.settingInfo}>
-              <Text style={[styles.settingTitle, { color: theme.colors.text }]}>User Email: {user?.email || 'Not logged in'}</Text>
-              <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Session: {session ? 'Active' : 'None'}</Text>
-              <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>User ID: {user?.id || 'None'}</Text>
-            </View>
-          </View>
-        </View>
-
         {/* Notifications Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Notifications</Text>
