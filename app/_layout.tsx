@@ -20,6 +20,7 @@ export default function RootLayout() {
             <Stack.Screen name="auth/sign-up" />
             <Stack.Screen name="settings" />
             <Stack.Screen name="edit-profile" />
+            <Stack.Screen name="transaction-history" />
             <Stack.Screen name="+not-found" />
           </Stack>
           <StatusBar style="auto" />

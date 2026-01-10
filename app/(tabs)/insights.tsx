@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useCallback } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Sparkles, ChartBar as BarChart3 } from 'lucide-react-native';
+import { TrendingUp, TrendingDown, DollarSign, Sparkles, ChartBar as BarChart3, History } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { useAnalytics, useBalance, useTransactions } from '../../hooks/useData';
 import { useFocusEffect } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import PremiumLock from '../../components/PremiumLock';
 import { useTheme } from '../../contexts/ThemeContext';
 import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 
 export default function InsightsScreen() {
   const { monthlySpending, todaySpending, categorySpending, refreshAnalytics } = useAnalytics();
@@ -86,9 +87,11 @@ export default function InsightsScreen() {
                 <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>January 2024</Text>
               </BlurView>
             </View>
-            <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.sparkleContainer}>
-              <Sparkles size={20} color={theme.colors.primary} />
-            </BlurView>
+            <TouchableOpacity onPress={() => router.push('/transaction-history')}>
+              <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.historyButton}>
+                <History size={20} color={theme.colors.primary} />
+              </BlurView>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.overviewCards}>
@@ -411,6 +414,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   sparkleContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    borderWidth: 0.5,
+    borderColor: 'rgba(59, 130, 246, 0.3)',
+  },
+  historyButton: {
     width: 40,
     height: 40,
     borderRadius: 20,
