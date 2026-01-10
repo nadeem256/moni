@@ -180,51 +180,6 @@ export default function InsightsScreen() {
             </View>
           </BlurView>
 
-        {/* Analytics Section */}
-        <View style={styles.premiumAnalyticsSection}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>AI Insights</Text>
-            
-            <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.aiInsightCard}>
-              <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
-                  : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
-                style={styles.aiInsightGradient}
-              />
-              <View style={styles.aiInsightContent}>
-                <View style={styles.aiInsightHeader}>
-                  <BlurView intensity={40} tint="light" style={styles.aiIconContainer}>
-                    <TrendingUp size={20} color="#F59E0B" />
-                  </BlurView>
-                  <Text style={[styles.aiInsightTitle, { color: theme.colors.text }]}>Spending Forecast</Text>
-                </View>
-                <Text style={[styles.aiInsightText, { color: theme.colors.textSecondary }]}>
-                  Based on your spending patterns, you're projected to spend ${(monthlySpending * 1.15).toFixed(0)} next month. Consider setting a budget to stay on track.
-                </Text>
-              </View>
-            </BlurView>
-            
-            <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.aiInsightCard}>
-              <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
-                  : ['rgba(16, 185, 129, 0.1)', 'rgba(16, 185, 129, 0.05)']}
-                style={styles.aiInsightGradient}
-              />
-              <View style={styles.aiInsightContent}>
-                <View style={styles.aiInsightHeader}>
-                  <BlurView intensity={40} tint="light" style={styles.aiIconContainer}>
-                    <DollarSign size={20} color="#10B981" />
-                  </BlurView>
-                  <Text style={[styles.aiInsightTitle, { color: theme.colors.text }]}>Savings Opportunity</Text>
-                </View>
-                <Text style={[styles.aiInsightText, { color: theme.colors.textSecondary }]}>
-                  You could save an estimated $127/month by optimizing your subscription spending. Tap to see recommendations.
-                </Text>
-              </View>
-            </BlurView>
-          </View>
-
         {/* Spending Chart */}
         <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.chartCard}>
           <LinearGradient
@@ -747,53 +702,6 @@ const styles = StyleSheet.create({
   },
   premiumLockContainer: {
     marginBottom: 16,
-  },
-  premiumAnalyticsSection: {
-    paddingHorizontal: 24,
-    marginBottom: 32,
-  },
-  aiInsightCard: {
-    borderRadius: 20,
-    marginBottom: 16,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 4,
-  },
-  aiInsightGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  aiInsightContent: {
-    padding: 20,
-  },
-  aiInsightHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    marginBottom: 12,
-  },
-  aiIconContainer: {
-    padding: 8,
-    borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
-  aiInsightTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  aiInsightText: {
-    fontSize: 16,
-    lineHeight: 24,
   },
   insightCard: {
     borderRadius: 16,
