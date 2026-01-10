@@ -12,7 +12,7 @@ export default function SettingsScreen() {
   const [biometrics, setBiometrics] = useState(false);
   const { theme, isDark } = useTheme();
   const { isPremium, cancelSubscription } = usePremium();
-  const { signOut } = useAuth();
+  const { signOut, user, session } = useAuth();
 
   useEffect(() => {
     loadSettings();
@@ -155,36 +155,22 @@ export default function SettingsScreen() {
     }
   };
 
-  const handleSignOut = () => {
-    console.log('Sign out button pressed');
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-          onPress: () => console.log('Sign out cancelled'),
-        },
-        {
-          text: 'Sign Out',
-          style: 'destructive',
-          onPress: async () => {
-            console.log('Sign out confirmed, starting sign out process');
-            try {
-              console.log('Calling signOut function');
-              await signOut();
-              console.log('Sign out successful, navigating to index');
-              router.replace('/');
-              console.log('Navigation completed');
-            } catch (error) {
-              console.error('Error signing out:', error);
-              Alert.alert('Error', 'Failed to sign out. Please try again.');
-            }
-          },
-        },
-      ]
-    );
+  const handleSignOut = async () => {
+    console.log('=== SIGN OUT BUTTON PRESSED ===');
+    console.log('User email:', user?.email);
+    console.log('Session exists:', !!session);
+
+    try {
+      console.log('Starting sign out process...');
+      await signOut();
+      console.log('Sign out completed successfully');
+      console.log('Navigating to root...');
+      router.replace('/');
+      console.log('Navigation completed');
+    } catch (error) {
+      console.error('Sign out error:', error);
+      Alert.alert('Error', 'Failed to sign out: ' + (error as Error).message);
+    }
   };
 
   return (
@@ -198,6 +184,18 @@ export default function SettingsScreen() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        {/* Debug Section - Remove after testing */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Debug Info</Text>
+          <View style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
+            <View style={styles.settingInfo}>
+              <Text style={[styles.settingTitle, { color: theme.colors.text }]}>User Email: {user?.email || 'Not logged in'}</Text>
+              <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Session: {session ? 'Active' : 'None'}</Text>
+              <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>User ID: {user?.id || 'None'}</Text>
+            </View>
+          </View>
+        </View>
+
         {/* Notifications Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Notifications</Text>
