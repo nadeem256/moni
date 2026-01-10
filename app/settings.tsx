@@ -1,16 +1,18 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
-import { ArrowLeft, RotateCcw, Bell, Shield, Circle as HelpCircle, Download, Crown, ChevronRight } from 'lucide-react-native';
+import { ArrowLeft, RotateCcw, Bell, Shield, Circle as HelpCircle, Download, Crown, ChevronRight, LogOut } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { usePremium } from '../contexts/PremiumContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function SettingsScreen() {
   const [notifications, setNotifications] = useState(true);
   const [biometrics, setBiometrics] = useState(false);
   const { theme, isDark } = useTheme();
   const { isPremium, cancelSubscription } = usePremium();
+  const { signOut } = useAuth();
 
   useEffect(() => {
     loadSettings();
@@ -134,7 +136,7 @@ export default function SettingsScreen() {
         'isPremium',
         'hasCompletedOnboarding'
       ]);
-      
+
       Alert.alert(
         'App Reset Complete',
         'All data has been cleared. The app will restart.',
@@ -151,6 +153,32 @@ export default function SettingsScreen() {
       console.error('Error resetting app:', error);
       Alert.alert('Error', 'Failed to reset app. Please try again.');
     }
+  };
+
+  const handleSignOut = () => {
+    Alert.alert(
+      'Sign Out',
+      'Are you sure you want to sign out?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await signOut();
+              router.replace('/auth/sign-in');
+            } catch (error) {
+              console.error('Error signing out:', error);
+              Alert.alert('Error', 'Failed to sign out. Please try again.');
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -258,9 +286,22 @@ export default function SettingsScreen() {
         {/* Danger Zone */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Danger Zone</Text>
-          
-          <TouchableOpacity 
-            style={[styles.dangerItem, { backgroundColor: theme.colors.surface }]} 
+
+          <TouchableOpacity
+            style={[styles.dangerItem, { backgroundColor: theme.colors.surface }]}
+            onPress={handleSignOut}
+          >
+            <View style={styles.settingLeft}>
+              <LogOut size={20} color={theme.colors.error} />
+              <View style={styles.settingInfo}>
+                <Text style={[styles.settingTitle, { color: theme.colors.error }]}>Sign Out</Text>
+                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Log out of your account</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.dangerItem, { backgroundColor: theme.colors.surface }]}
             onPress={() => handleResetApp()}
           >
             <View style={styles.settingLeft}>
