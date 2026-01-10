@@ -62,6 +62,7 @@ export default function ProfileScreen() {
   const totalTracked = calculateTotalTracked();
 
   const handleSignOut = () => {
+    console.log('Sign out button pressed'); // Debug log
     Alert.alert(
       'Sign Out',
       'Are you sure you want to sign out?',
@@ -74,10 +75,13 @@ export default function ProfileScreen() {
           text: 'Sign Out',
           style: 'destructive',
           onPress: async () => {
+            console.log('Sign out confirmed'); // Debug log
             try {
               await signOut();
+              console.log('Sign out successful'); // Debug log
               // Force navigation after sign out
               setTimeout(() => {
+                console.log('Navigating to sign-in'); // Debug log
                 router.replace('/auth/sign-in');
               }, 100);
             } catch (error) {
@@ -284,7 +288,10 @@ export default function ProfileScreen() {
             />
             <TouchableOpacity 
               style={styles.settingContent}
-              onPress={handleSignOut}
+              onPress={() => {
+                console.log('TouchableOpacity pressed');
+                handleSignOut();
+              }}
             >
               <View style={styles.settingLeft}>
                 <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer}>
