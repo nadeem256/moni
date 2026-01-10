@@ -11,12 +11,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function SubscriptionsScreen() {
   const { subscriptions, refreshSubscriptions, removeSubscription } = useSubscriptions();
-  const { isPremium } = usePremium();
   const [showAddModal, setShowAddModal] = useState(false);
   const { theme, isDark } = useTheme();
 
   const totalMonthly = subscriptions.reduce((sum, sub) => sum + sub.amount, 0);
-  const canAddMore = isPremium || subscriptions.length < 3;
+  const canAddMore = true; // No limits - app is free
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -64,12 +63,7 @@ export default function SubscriptionsScreen() {
   );
 
   const handleAddSubscription = () => {
-    if (!canAddMore) {
-      // Show premium upsell
-      router.push('/paywall');
-    } else {
-      setShowAddModal(true);
-    }
+    setShowAddModal(true);
   };
 
   return (
@@ -135,14 +129,8 @@ export default function SubscriptionsScreen() {
 
         {/* Subscriptions List */}
         <View style={styles.subscriptionsList}>
-          {subscriptions.length >= 3 && !isPremium && (
-            <View style={styles.premiumLockContainer}>
-              <PremiumLock message="Track unlimited subscriptions + get AI price alerts with Premium" />
-            </View>
-          )}
-          
           {subscriptions.length > 0 ? (
-            subscriptions.slice(0, isPremium ? subscriptions.length : 3).map((subscription) => (
+            subscriptions.map((subscription) => (
             <BlurView key={subscription.id} intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
               <LinearGradient
                 colors={isDark 

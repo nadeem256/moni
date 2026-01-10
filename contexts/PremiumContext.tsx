@@ -32,60 +32,13 @@ const PREMIUM_ENTITLEMENT = "premium";
 const PREMIUM_PRODUCT_ID = "premium_monthly";
 
 export const PremiumProvider: React.FC<PremiumProviderProps> = ({ children }) => {
-  const [isPremium, setIsPremium] = useState(false);
+  const [isPremium, setIsPremium] = useState(true); // Always premium/free
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    initializeRevenueCat();
+    // No need to initialize RevenueCat - app is completely free
+    setIsPremium(true);
   }, []);
-
-  const initializeRevenueCat = async () => {
-    try {
-      // DEMO MODE - Remove this section when RevenueCat SDK is installed
-      console.log('🔧 DEMO MODE: Using simulated RevenueCat');
-      console.log('📋 To enable real purchases:');
-      console.log('1. Install: npm install react-native-purchases');
-      console.log('2. Replace API_KEY with your RevenueCat key');
-      console.log('3. Uncomment RevenueCat code below');
-      
-      await loadPremiumStatus();
-      
-      /* REAL REVENUECAT CODE - Uncomment when SDK is installed
-      
-      // Initialize RevenueCat
-      await Purchases.setLogLevel(Purchases.LOG_LEVEL.INFO);
-      
-      if (Platform.OS === 'ios') {
-        await Purchases.configure({ apiKey: API_KEY });
-      } else if (Platform.OS === 'android') {
-        await Purchases.configure({ apiKey: API_KEY });
-      }
-      
-      // Set up listener for purchase updates
-      Purchases.addCustomerInfoUpdateListener((customerInfo) => {
-        updatePremiumStatus(customerInfo);
-      });
-      
-      // Check current subscription status
-      const customerInfo = await Purchases.getCustomerInfo();
-      updatePremiumStatus(customerInfo);
-      
-      */
-      
-    } catch (error) {
-      console.error('Error initializing RevenueCat:', error);
-      await loadPremiumStatus(); // Fallback to local storage
-    }
-  };
-
-  const loadPremiumStatus = async () => {
-    try {
-      const premiumStatus = await AsyncStorage.getItem('isPremium');
-      setIsPremium(premiumStatus === 'true');
-    } catch (error) {
-      console.error('Error loading premium status:', error);
-    }
-  };
 
   /* REAL REVENUECAT FUNCTIONS - Uncomment when SDK is installed
   
@@ -102,15 +55,8 @@ export const PremiumProvider: React.FC<PremiumProviderProps> = ({ children }) =>
   const purchasePremium = async () => {
     try {
       setIsLoading(true);
-      
-      // DEMO MODE - Remove when RevenueCat SDK is installed
-      console.log('🔧 DEMO MODE: Simulating purchase...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      await AsyncStorage.setItem('isPremium', 'true');
-      setIsPremium(true);
-      console.log('✅ Demo purchase successful!');
+      // App is free - no purchase needed
       return;
-      
       /* REAL REVENUECAT PURCHASE - Uncomment when SDK is installed
       
       // Get available offerings
@@ -148,14 +94,7 @@ export const PremiumProvider: React.FC<PremiumProviderProps> = ({ children }) =>
   const restorePurchases = async () => {
     try {
       setIsLoading(true);
-      
-      // DEMO MODE - Remove when RevenueCat SDK is installed
-      console.log('🔧 DEMO MODE: Simulating restore...');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      const premiumStatus = await AsyncStorage.getItem('isPremium');
-      const hasPremium = premiumStatus === 'true';
-      setIsPremium(hasPremium);
-      console.log(hasPremium ? '✅ Demo restore successful!' : 'No premium subscription found');
+      // App is free - nothing to restore
       return;
       
       /* REAL REVENUECAT RESTORE - Uncomment when SDK is installed
@@ -176,12 +115,7 @@ export const PremiumProvider: React.FC<PremiumProviderProps> = ({ children }) =>
   const cancelSubscription = async () => {
     try {
       setIsLoading(true);
-      
-      // DEMO MODE - Remove when RevenueCat SDK is installed
-      console.log('🔧 DEMO MODE: Simulating cancellation...');
-      await AsyncStorage.setItem('isPremium', 'false');
-      setIsPremium(false);
-      console.log('✅ Demo cancellation successful!');
+      // App is free - no subscription to cancel
       return;
       
       /* REAL REVENUECAT CANCELLATION - Uncomment when SDK is installed

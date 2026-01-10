@@ -13,7 +13,6 @@ import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default function ProfileScreen() {
-  const { isPremium, cancelSubscription } = usePremium();
   const { theme, isDark, toggleTheme, canUseDarkMode } = useTheme();
   const { transactions, refreshTransactions } = useTransactions();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
@@ -104,12 +103,6 @@ export default function ProfileScreen() {
         <View style={styles.heroSection}>
           <View style={styles.headerContent}>
             <Text style={[styles.title, { color: theme.colors.text }]}>Profile</Text>
-            {isPremium && (
-              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.premiumBadge}>
-                <Crown size={16} color="#F59E0B" />
-                <Text style={styles.premiumText}>Premium</Text>
-              </BlurView>
-            )}
           </View>
           
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.profileCard}>
@@ -202,111 +195,6 @@ export default function ProfileScreen() {
           </View>
         </View>
 
-        {/* Premium Section */}
-        {!isPremium && (
-          <View style={styles.premiumSection}>
-            <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.premiumCard}>
-              <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
-                  : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
-                style={styles.premiumGradient}
-              />
-              <View style={styles.premiumContent}>
-                <View style={styles.premiumHeader}>
-                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.crownContainer}>
-                    <Crown size={24} color="#F59E0B" />
-                  </BlurView>
-                  <Text style={[styles.premiumTitle, { color: theme.colors.text }]}>Upgrade to Premium</Text>
-                </View>
-                <Text style={[styles.premiumDescription, { color: theme.colors.textSecondary }]}>
-                  Transform your financial life with AI-powered insights and advanced tools
-                </Text>
-                
-                <View style={styles.featuresList}>
-                  {premiumFeatures.slice(0, 3).map((feature, index) => (
-                    <View key={index} style={styles.featureItem}>
-                      <View style={styles.featureDot} />
-                      <Text style={[styles.featureText, { color: theme.colors.text }]}>{feature}</Text>
-                    </View>
-                  ))}
-                </View>
-
-                <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.upgradeButton}>
-                  <TouchableOpacity 
-                    style={styles.upgradeButtonContent}
-                    onPress={() => router.push('/paywall')}
-                  >
-                    <LinearGradient
-                      colors={['#F59E0B', '#D97706']}
-                      style={styles.upgradeGradient}
-                    />
-                    <Crown size={18} color="#FFFFFF" />
-                    <Text style={styles.upgradeButtonText}>Upgrade Now</Text>
-                    <Text style={styles.upgradePrice}>$4.99/mo</Text>
-                  </TouchableOpacity>
-                </BlurView>
-              </View>
-            </BlurView>
-          </View>
-        )}
-
-        {/* Premium Management Section - Only show if user has premium */}
-        {isPremium && (
-          <View style={styles.premiumManagementSection}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Premium Subscription</Text>
-            
-            <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.premiumStatusCard}>
-              <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
-                  : ['rgba(245, 158, 11, 0.1)', 'rgba(245, 158, 11, 0.05)']}
-                style={styles.premiumStatusGradient}
-              />
-              <View style={styles.premiumStatusContent}>
-                <View style={styles.premiumStatusHeader}>
-                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.crownContainer}>
-                    <Crown size={20} color="#F59E0B" />
-                  </BlurView>
-                  <View style={styles.premiumStatusInfo}>
-                    <Text style={[styles.premiumStatusTitle, { color: theme.colors.text }]}>Premium Active</Text>
-                    <Text style={[styles.premiumStatusDescription, { color: theme.colors.textSecondary }]}>
-                      Enjoying all premium features
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </BlurView>
-
-            <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.cancelSubscriptionCard}>
-              <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
-                  : ['rgba(239, 68, 68, 0.1)', 'rgba(239, 68, 68, 0.05)']}
-                style={styles.cancelSubscriptionGradient}
-              />
-              <TouchableOpacity 
-                style={styles.cancelSubscriptionContent}
-                onPress={() => handleCancelSubscription()}
-              >
-                <View style={styles.cancelSubscriptionLeft}>
-                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.cancelIconContainer}>
-                    <Crown size={20} color={theme.colors.error} />
-                  </BlurView>
-                  <View style={styles.cancelSubscriptionInfo}>
-                    <Text style={[styles.cancelSubscriptionTitle, { color: theme.colors.error }]}>
-                      Cancel Subscription
-                    </Text>
-                    <Text style={[styles.cancelSubscriptionDescription, { color: theme.colors.textSecondary }]}>
-                      Return to free plan
-                    </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </BlurView>
-          </View>
-        )}
-
         {/* Settings */}
         <View style={styles.settingsSection}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Preferences</Text>
@@ -320,7 +208,7 @@ export default function ProfileScreen() {
             />
             <TouchableOpacity 
               style={styles.settingContent}
-              onPress={canUseDarkMode ? toggleTheme : () => router.push('/paywall')}
+              onPress={toggleTheme}
             >
               <View style={styles.settingLeft}>
                 <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer}>
@@ -331,28 +219,17 @@ export default function ProfileScreen() {
                   )}
                 </BlurView>
                 <View style={styles.settingTextContainer}>
-                  <Text style={[styles.settingText, { color: canUseDarkMode ? theme.colors.text : theme.colors.textSecondary }]}>
+                  <Text style={[styles.settingText, { color: theme.colors.text }]}>
                     Dark Mode
                   </Text>
-                  {!canUseDarkMode && (
-                    <Text style={[styles.settingSubtext, { color: theme.colors.textSecondary }]}>
-                      Premium feature
-                    </Text>
-                  )}
                 </View>
               </View>
-              {canUseDarkMode ? (
-                <Switch
-                  value={isDark}
-                  onValueChange={toggleTheme}
-                  trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
-                  thumbColor="#FFFFFF"
-                />
-              ) : (
-                <View style={styles.premiumBadgeSmall}>
-                  <Crown size={14} color="#F59E0B" />
-                </View>
-              )}
+              <Switch
+                value={isDark}
+                onValueChange={toggleTheme}
+                trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
+                thumbColor="#FFFFFF"
+              />
             </TouchableOpacity>
           </BlurView>
           

@@ -14,7 +14,6 @@ export default function InsightsScreen() {
   const { monthlySpending, todaySpending, categorySpending, refreshAnalytics } = useAnalytics();
   const { balance, refreshBalance } = useBalance();
   const { transactions, refreshTransactions } = useTransactions();
-  const { isPremium } = usePremium();
   const { theme, isDark } = useTheme();
 
   const monthlyIncome = transactions
@@ -138,12 +137,7 @@ export default function InsightsScreen() {
         </View>
 
         {/* Weekly Comparison */}
-        {!isPremium ? (
-          <View style={styles.premiumLockContainer}>
-            <PremiumLock message="Unlock advanced weekly comparisons & trend analysis with Premium" />
-          </View>
-        ) : (
-          <BlurView intensity={90} tint={isDark ? 'dark' : 'light'} style={styles.comparisonCard}>
+        <BlurView intensity={90} tint={isDark ? 'dark' : 'light'} style={styles.comparisonCard}>
             <LinearGradient
               colors={isDark 
                 ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
@@ -182,11 +176,9 @@ export default function InsightsScreen() {
               </BlurView>
             </View>
           </BlurView>
-        )}
 
-        {/* Premium Analytics Section */}
-        {isPremium && (
-          <View style={styles.premiumAnalyticsSection}>
+        {/* Analytics Section */}
+        <View style={styles.premiumAnalyticsSection}>
             <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>AI Insights</Text>
             
             <BlurView intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.aiInsightCard}>
@@ -229,7 +221,6 @@ export default function InsightsScreen() {
               </View>
             </BlurView>
           </View>
-        )}
 
         {/* Spending Chart */}
         <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.chartCard}>
@@ -244,13 +235,7 @@ export default function InsightsScreen() {
               <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Top Categories</Text>
             </View>
             
-            {!isPremium ? (
-              <View style={styles.premiumLockContainer}>
-                <PremiumLock message="Unlock detailed spending analytics & category breakdowns with Premium" />
-              </View>
-            ) : (
-              <>
-                <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.ringChart}>
+            <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.ringChart}>
                   <LinearGradient
                     colors={isDark 
                       ? ['rgba(26, 26, 46, 0.7)', 'rgba(22, 33, 62, 0.5)'] 
@@ -303,8 +288,6 @@ export default function InsightsScreen() {
                     </BlurView>
                   )}
                 </View>
-              </>
-            )}
           </View>
         </BlurView>
 
@@ -312,13 +295,7 @@ export default function InsightsScreen() {
         <View style={styles.friendlyInsights}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Money Insights</Text>
           
-          {!isPremium ? (
-            <View style={styles.premiumLockContainer}>
-              <PremiumLock message="Unlock AI-powered financial insights & predictions with Premium" />
-            </View>
-          ) : (
-            <>
-              {monthlyIncome > 0 && (
+          {monthlyIncome > 0 && (
                 <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
                   <LinearGradient
                     colors={isDark 
@@ -383,8 +360,6 @@ export default function InsightsScreen() {
                   </View>
                 </BlurView>
               )}
-            </>
-          )}
         </View>
       </ScrollView>
     </View>

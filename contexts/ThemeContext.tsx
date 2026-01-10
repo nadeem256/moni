@@ -70,7 +70,6 @@ interface ThemeProviderProps {
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [isDark, setIsDark] = useState(false);
-  const { isPremium } = usePremium();
 
   useEffect(() => {
     loadTheme();
@@ -80,7 +79,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     try {
       const savedTheme = await AsyncStorage.getItem('isDarkMode');
       if (savedTheme !== null) {
-        setIsDark(savedTheme === 'true' && isPremium);
+        setIsDark(savedTheme === 'true');
       } else {
         // Default to light mode
         setIsDark(false);
@@ -93,8 +92,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   };
 
   const toggleTheme = async () => {
-    if (!isPremium) return; // Prevent toggling if not premium
-    
     try {
       const newTheme = !isDark;
       setIsDark(newTheme);
@@ -104,14 +101,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   };
 
-  // Force light mode if not premium
-  useEffect(() => {
-    if (!isPremium && isDark) {
-      setIsDark(false);
-    }
-  }, [isPremium, isDark]);
-
-  const canUseDarkMode = isPremium;
+  const canUseDarkMode = true; // Dark mode is now free
   const theme = isDark ? darkTheme : lightTheme;
 
   return (
