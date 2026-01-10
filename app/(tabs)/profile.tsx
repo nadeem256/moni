@@ -279,22 +279,20 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </BlurView>
           
-          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard}>
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.settingCard} pointerEvents="box-none">
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+              colors={isDark
+                ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)']
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.settingCardGradient}
+              pointerEvents="none"
             />
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.settingContent}
-              onPress={() => {
-                console.log('TouchableOpacity pressed');
-                handleSignOut();
-              }}
+              onPress={handleSignOut}
             >
               <View style={styles.settingLeft}>
-                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.settingIconContainer} pointerEvents="none">
                   <LogOut size={20} color="#EF4444" />
                 </BlurView>
                 <Text style={[styles.settingText, { color: '#EF4444' }]}>Sign Out</Text>
