@@ -106,6 +106,18 @@ export default function TransactionHistoryScreen() {
     }
   };
 
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
+
   const groupTransactionsByDate = () => {
     const groups: { [key: string]: Transaction[] } = {};
 
@@ -232,6 +244,9 @@ export default function TransactionHistoryScreen() {
                             {transaction.description}
                           </Text>
                         ) : null}
+                        <Text style={[styles.transactionTime, { color: theme.colors.textSecondary }]}>
+                          {formatDateTime(transaction.date)}
+                        </Text>
                       </View>
                     </View>
 
@@ -432,6 +447,11 @@ const styles = StyleSheet.create({
   },
   transactionDescription: {
     fontSize: 14,
+    marginBottom: 2,
+  },
+  transactionTime: {
+    fontSize: 12,
+    opacity: 0.7,
   },
   transactionRight: {
     alignItems: 'flex-end',

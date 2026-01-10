@@ -84,7 +84,9 @@ export default function InsightsScreen() {
               <Text style={[styles.title, { color: theme.colors.text }]}>Insights</Text>
               <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.subtitleContainer}>
                 <BarChart3 size={16} color={theme.colors.primary} />
-                <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>January 2024</Text>
+                <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
+                  {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+                </Text>
               </BlurView>
             </View>
             <TouchableOpacity onPress={() => router.push('/transaction-history')}>
