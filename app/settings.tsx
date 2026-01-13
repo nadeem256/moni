@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Platform } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { ArrowLeft, RotateCcw, Bell, Shield, Circle as HelpCircle, Download, Crown, ChevronRight, LogOut } from 'lucide-react-native';
@@ -92,37 +92,45 @@ export default function SettingsScreen() {
   };
 
   const handleResetApp = () => {
-    Alert.alert(
-      'Reset App',
-      'This will delete all your data including transactions, subscriptions, and settings. This action cannot be undone.',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Reset',
-          style: 'destructive',
-          onPress: () => {
-            Alert.alert(
-              'Are you sure?',
-              'All your financial data will be permanently deleted.',
-              [
-                {
-                  text: 'Cancel',
-                  style: 'cancel',
-                },
-                {
-                  text: 'Delete Everything',
-                  style: 'destructive',
-                  onPress: performReset,
-                },
-              ]
-            );
+    if (Platform.OS === 'web') {
+      if (confirm('This will delete all your data including transactions, subscriptions, and settings. This action cannot be undone.\n\nAre you sure you want to reset the app?')) {
+        if (confirm('Are you sure? All your financial data will be permanently deleted.')) {
+          performReset();
+        }
+      }
+    } else {
+      Alert.alert(
+        'Reset App',
+        'This will delete all your data including transactions, subscriptions, and settings. This action cannot be undone.',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
           },
-        },
-      ]
-    );
+          {
+            text: 'Reset',
+            style: 'destructive',
+            onPress: () => {
+              Alert.alert(
+                'Are you sure?',
+                'All your financial data will be permanently deleted.',
+                [
+                  {
+                    text: 'Cancel',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Delete Everything',
+                    style: 'destructive',
+                    onPress: performReset,
+                  },
+                ]
+              );
+            },
+          },
+        ]
+      );
+    }
   };
 
   const performReset = async () => {
@@ -137,21 +145,30 @@ export default function SettingsScreen() {
         'hasCompletedOnboarding'
       ]);
 
-      Alert.alert(
-        'App Reset Complete',
-        'All data has been cleared. The app will restart.',
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              router.replace('/onboarding');
+      if (Platform.OS === 'web') {
+        alert('App Reset Complete. All data has been cleared. The app will restart.');
+        router.replace('/onboarding');
+      } else {
+        Alert.alert(
+          'App Reset Complete',
+          'All data has been cleared. The app will restart.',
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                router.replace('/onboarding');
+              },
             },
-          },
-        ]
-      );
+          ]
+        );
+      }
     } catch (error) {
       console.error('Error resetting app:', error);
-      Alert.alert('Error', 'Failed to reset app. Please try again.');
+      if (Platform.OS === 'web') {
+        alert('Failed to reset app. Please try again.');
+      } else {
+        Alert.alert('Error', 'Failed to reset app. Please try again.');
+      }
     }
   };
 
