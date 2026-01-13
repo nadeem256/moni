@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Alert, Platform } from 'react-native';
 import { useState, useCallback } from 'react';
 import { Plus, Calendar, X, Sparkles, Trash2 } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
@@ -30,30 +30,42 @@ export default function SubscriptionsScreen() {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
+  const performDeleteSubscription = async (subscriptionId: string) => {
+    try {
+      await removeSubscription(subscriptionId);
+      refreshSubscriptions();
+    } catch (error) {
+      console.error('Error deleting subscription:', error);
+      if (Platform.OS === 'web') {
+        alert('Failed to delete subscription. Please try again.');
+      } else {
+        Alert.alert('Error', 'Failed to delete subscription. Please try again.');
+      }
+    }
+  };
+
   const handleDeleteSubscription = (subscriptionId: string, subscriptionName: string) => {
-    Alert.alert(
-      'Delete Subscription',
-      `Are you sure you want to delete "${subscriptionName}"?`,
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await removeSubscription(subscriptionId);
-              refreshSubscriptions();
-            } catch (error) {
-              console.error('Error deleting subscription:', error);
-              Alert.alert('Error', 'Failed to delete subscription. Please try again.');
-            }
+    if (Platform.OS === 'web') {
+      if (confirm(`Are you sure you want to delete "${subscriptionName}"?`)) {
+        performDeleteSubscription(subscriptionId);
+      }
+    } else {
+      Alert.alert(
+        'Delete Subscription',
+        `Are you sure you want to delete "${subscriptionName}"?`,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
           },
-        },
-      ]
-    );
+          {
+            text: 'Delete',
+            style: 'destructive',
+            onPress: () => performDeleteSubscription(subscriptionId),
+          },
+        ]
+      );
+    }
   };
 
   useFocusEffect(
