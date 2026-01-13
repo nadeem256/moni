@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Platform } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { ArrowLeft, TrendingUp, TrendingDown, Trash2, Calendar } from 'lucide-react-native';
@@ -48,47 +48,59 @@ export default function TransactionHistoryScreen() {
     setLoading(false);
   };
 
-  const handleDelete = async (transactionId: string) => {
-    Alert.alert(
-      'Delete Transaction',
-      'Are you sure you want to delete this transaction?',
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            setDeleting(transactionId);
+  const performDelete = async (transactionId: string) => {
+    setDeleting(transactionId);
 
-            try {
-              const { error, data, count } = await supabase
-                .from('transactions')
-                .delete()
-                .eq('id', transactionId)
-                .select();
+    try {
+      const { error } = await supabase
+        .from('transactions')
+        .delete()
+        .eq('id', transactionId);
 
-              console.log('Delete result:', { error, data, count });
+      if (error) {
+        console.error('Error deleting transaction:', error);
+        if (Platform.OS === 'web') {
+          alert(`Failed to delete: ${error.message}`);
+        } else {
+          Alert.alert('Error', `Failed to delete: ${error.message}`);
+        }
+      } else {
+        setTransactions(prev => prev.filter(t => t.id !== transactionId));
+      }
+    } catch (err) {
+      console.error('Exception during delete:', err);
+      if (Platform.OS === 'web') {
+        alert('An unexpected error occurred');
+      } else {
+        Alert.alert('Error', 'An unexpected error occurred');
+      }
+    }
 
-              if (error) {
-                console.error('Error deleting transaction:', error);
-                Alert.alert('Error', `Failed to delete: ${error.message}`);
-              } else {
-                console.log('Transaction deleted successfully');
-                setTransactions(prev => prev.filter(t => t.id !== transactionId));
-              }
-            } catch (err) {
-              console.error('Exception during delete:', err);
-              Alert.alert('Error', 'An unexpected error occurred');
-            }
+    setDeleting(null);
+  };
 
-            setDeleting(null);
+  const handleDelete = (transactionId: string) => {
+    if (Platform.OS === 'web') {
+      if (confirm('Are you sure you want to delete this transaction?')) {
+        performDelete(transactionId);
+      }
+    } else {
+      Alert.alert(
+        'Delete Transaction',
+        'Are you sure you want to delete this transaction?',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
           },
-        },
-      ]
-    );
+          {
+            text: 'Delete',
+            style: 'destructive',
+            onPress: () => performDelete(transactionId),
+          },
+        ]
+      );
+    }
   };
 
   const formatDate = (dateString: string) => {
