@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Alert, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Alert, ActivityIndicator, ScrollView, Platform } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { ArrowLeft, Camera, User } from 'lucide-react-native';
@@ -36,63 +36,100 @@ export default function EditProfileScreen() {
   };
 
   const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    try {
+      if (Platform.OS === 'web') {
+        // On web, directly launch image library without permission request
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 0.8,
+        });
 
-    if (status !== 'granted') {
-      Alert.alert('Permission Required', 'Please grant permission to access your photos.');
-      return;
-    }
+        if (!result.canceled && result.assets[0]) {
+          setAvatarUrl(result.assets[0].uri);
+        }
+      } else {
+        // On native platforms, request permission first
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
+        if (status !== 'granted') {
+          Alert.alert('Permission Required', 'Please grant permission to access your photos.');
+          return;
+        }
 
-    if (!result.canceled && result.assets[0]) {
-      setAvatarUrl(result.assets[0].uri);
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1, 1],
+          quality: 0.8,
+        });
+
+        if (!result.canceled && result.assets[0]) {
+          setAvatarUrl(result.assets[0].uri);
+        }
+      }
+    } catch (error) {
+      console.error('Error picking image:', error);
+      Alert.alert('Error', 'Failed to pick image. Please try again.');
     }
   };
 
   const takePhoto = async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    try {
+      if (Platform.OS === 'web') {
+        // Camera is not supported on web
+        Alert.alert('Not Available', 'Camera is not available on web. Please choose from library instead.');
+        return;
+      }
 
-    if (status !== 'granted') {
-      Alert.alert('Permission Required', 'Please grant permission to access your camera.');
-      return;
-    }
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-    });
+      if (status !== 'granted') {
+        Alert.alert('Permission Required', 'Please grant permission to access your camera.');
+        return;
+      }
 
-    if (!result.canceled && result.assets[0]) {
-      setAvatarUrl(result.assets[0].uri);
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets[0]) {
+        setAvatarUrl(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.error('Error taking photo:', error);
+      Alert.alert('Error', 'Failed to take photo. Please try again.');
     }
   };
 
   const showImageOptions = () => {
-    Alert.alert(
-      'Profile Picture',
-      'Choose an option',
-      [
-        {
-          text: 'Take Photo',
-          onPress: takePhoto,
-        },
-        {
-          text: 'Choose from Library',
-          onPress: pickImage,
-        },
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-      ]
-    );
+    if (Platform.OS === 'web') {
+      // On web, directly open image picker
+      pickImage();
+    } else {
+      // On native, show options
+      Alert.alert(
+        'Profile Picture',
+        'Choose an option',
+        [
+          {
+            text: 'Take Photo',
+            onPress: takePhoto,
+          },
+          {
+            text: 'Choose from Library',
+            onPress: pickImage,
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ]
+      );
+    }
   };
 
   const handleSave = async () => {

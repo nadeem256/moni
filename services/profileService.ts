@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabase';
 import * as FileSystem from 'expo-file-system';
 import { decode } from 'base64-arraybuffer';
+import { Platform } from 'react-native';
 
 export interface Profile {
   id: string;
@@ -44,13 +45,24 @@ export async function uploadAvatar(userId: string, uri: string): Promise<string 
     const fileExt = uri.split('.').pop()?.toLowerCase() || 'jpg';
     const fileName = `${userId}/avatar.${fileExt}`;
 
-    const base64 = await FileSystem.readAsStringAsync(uri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
+    let arrayBuffer: ArrayBuffer;
+
+    if (Platform.OS === 'web') {
+      // On web, use fetch to get the blob
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      arrayBuffer = await blob.arrayBuffer();
+    } else {
+      // On native, use FileSystem
+      const base64 = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      arrayBuffer = decode(base64);
+    }
 
     const { data, error } = await supabase.storage
       .from('avatars')
-      .upload(fileName, decode(base64), {
+      .upload(fileName, arrayBuffer, {
         contentType: `image/${fileExt}`,
         upsert: true,
       });
