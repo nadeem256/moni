@@ -34,16 +34,16 @@ const lightTheme: Theme = {
 
 const darkTheme: Theme = {
   colors: {
-    background: '#0F0F23',
-    surface: '#1A1A2E',
-    primary: '#34D399',
-    text: '#E8E6FF',
-    textSecondary: '#B8B5D1',
-    border: '#16213E',
-    card: '#1A1A2E',
-    success: '#34D399',
-    error: '#F87171',
-    warning: '#FBBF24',
+    background: '#0A0A0A',
+    surface: '#1C1C1E',
+    primary: '#3B82F6',
+    text: '#FFFFFF',
+    textSecondary: '#A1A1AA',
+    border: '#2C2C2E',
+    card: '#1C1C1E',
+    success: '#10B981',
+    error: '#EF4444',
+    warning: '#F59E0B',
   },
 };
 
