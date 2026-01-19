@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Platform, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Platform, RefreshControl, Animated } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { ArrowLeft, TrendingUp, TrendingDown, Trash2, Calendar } from 'lucide-react-native';
@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { Swipeable, GestureHandlerRootView } from 'react-native-gesture-handler';
 
 interface Transaction {
   id: string;
@@ -86,7 +87,7 @@ export default function TransactionHistoryScreen() {
     setDeleting(null);
   };
 
-  const handleDelete = (transactionId: string) => {
+  const handleDelete = (transactionId: string, swipeableRef?: Swipeable) => {
     if (Platform.OS === 'web') {
       if (confirm('Are you sure you want to delete this transaction?')) {
         performDelete(transactionId);
@@ -99,6 +100,7 @@ export default function TransactionHistoryScreen() {
           {
             text: 'Cancel',
             style: 'cancel',
+            onPress: () => swipeableRef?.close(),
           },
           {
             text: 'Delete',
@@ -108,6 +110,36 @@ export default function TransactionHistoryScreen() {
         ]
       );
     }
+  };
+
+  const renderRightActions = (
+    progress: Animated.AnimatedInterpolation<number>,
+    dragX: Animated.AnimatedInterpolation<number>,
+    transactionId: string,
+    swipeableRef: Swipeable | null
+  ) => {
+    const translateX = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [0, 100],
+      extrapolate: 'clamp',
+    });
+
+    const opacity = progress.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0, 1],
+    });
+
+    return (
+      <Animated.View style={[styles.deleteAction, { transform: [{ translateX }], opacity }]}>
+        <TouchableOpacity
+          style={styles.deleteActionButton}
+          onPress={() => handleDelete(transactionId, swipeableRef || undefined)}
+        >
+          <Trash2 size={24} color="#FFFFFF" />
+          <Text style={styles.deleteActionText}>Delete</Text>
+        </TouchableOpacity>
+      </Animated.View>
+    );
   };
 
   const formatDate = (dateString: string) => {
@@ -173,11 +205,12 @@ export default function TransactionHistoryScreen() {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <LinearGradient
-        colors={isDark ? ['#0F0F23', '#1A1A2E', '#16213E'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
-        style={styles.backgroundGradient}
-      />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <LinearGradient
+          colors={isDark ? ['#0F0F23', '#1A1A2E', '#16213E'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+          style={styles.backgroundGradient}
+        />
 
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
@@ -245,64 +278,65 @@ export default function TransactionHistoryScreen() {
                 </Text>
               </View>
 
-              {group.transactions.map((transaction) => (
-                <BlurView key={transaction.id} intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.transactionCard}>
-                  <LinearGradient
-                    colors={isDark
-                      ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)']
-                      : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
-                    style={styles.transactionGradient}
-                  />
-                  <View style={styles.transactionContent}>
-                    <View style={styles.transactionLeft}>
-                      <View style={[
-                        styles.transactionIcon,
-                        { backgroundColor: transaction.type === 'income' ? `${theme.colors.success}20` : `${theme.colors.error}20` }
-                      ]}>
-                        {transaction.type === 'income' ? (
-                          <TrendingUp size={20} color={theme.colors.success} />
-                        ) : (
-                          <TrendingDown size={20} color={theme.colors.error} />
-                        )}
-                      </View>
-                      <View style={styles.transactionInfo}>
-                        <Text style={[styles.transactionCategory, { color: theme.colors.text }]}>
-                          {transaction.category}
-                        </Text>
-                        {transaction.description ? (
-                          <Text style={[styles.transactionDescription, { color: theme.colors.textSecondary }]}>
-                            {transaction.description}
+              {group.transactions.map((transaction) => {
+                let swipeableRef: Swipeable | null = null;
+
+                return (
+                  <Swipeable
+                    key={transaction.id}
+                    ref={ref => swipeableRef = ref}
+                    renderRightActions={(progress, dragX) => renderRightActions(progress, dragX, transaction.id, swipeableRef)}
+                    overshootRight={false}
+                    friction={2}
+                    rightThreshold={40}
+                  >
+                    <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.transactionCard}>
+                      <LinearGradient
+                        colors={isDark
+                          ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)']
+                          : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+                        style={styles.transactionGradient}
+                      />
+                      <View style={styles.transactionContent}>
+                        <View style={styles.transactionLeft}>
+                          <View style={[
+                            styles.transactionIcon,
+                            { backgroundColor: transaction.type === 'income' ? `${theme.colors.success}20` : `${theme.colors.error}20` }
+                          ]}>
+                            {transaction.type === 'income' ? (
+                              <TrendingUp size={20} color={theme.colors.success} />
+                            ) : (
+                              <TrendingDown size={20} color={theme.colors.error} />
+                            )}
+                          </View>
+                          <View style={styles.transactionInfo}>
+                            <Text style={[styles.transactionCategory, { color: theme.colors.text }]}>
+                              {transaction.category}
+                            </Text>
+                            {transaction.description ? (
+                              <Text style={[styles.transactionDescription, { color: theme.colors.textSecondary }]}>
+                                {transaction.description}
+                              </Text>
+                            ) : null}
+                            <Text style={[styles.transactionTime, { color: theme.colors.textSecondary }]}>
+                              {formatDateTime(transaction.date)}
+                            </Text>
+                          </View>
+                        </View>
+
+                        <View style={styles.transactionRight}>
+                          <Text style={[
+                            styles.transactionAmount,
+                            { color: transaction.type === 'income' ? theme.colors.success : theme.colors.error }
+                          ]}>
+                            {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
                           </Text>
-                        ) : null}
-                        <Text style={[styles.transactionTime, { color: theme.colors.textSecondary }]}>
-                          {formatDateTime(transaction.date)}
-                        </Text>
+                        </View>
                       </View>
-                    </View>
-
-                    <View style={styles.transactionRight}>
-                      <Text style={[
-                        styles.transactionAmount,
-                        { color: transaction.type === 'income' ? theme.colors.success : theme.colors.error }
-                      ]}>
-                        {transaction.type === 'income' ? '+' : '-'}${transaction.amount.toFixed(2)}
-                      </Text>
-
-                      <TouchableOpacity
-                        style={[styles.deleteButton, { backgroundColor: `${theme.colors.error}20` }]}
-                        onPress={() => handleDelete(transaction.id)}
-                        disabled={deleting === transaction.id}
-                      >
-                        {deleting === transaction.id ? (
-                          <ActivityIndicator size="small" color={theme.colors.error} />
-                        ) : (
-                          <Trash2 size={16} color={theme.colors.error} />
-                        )}
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </BlurView>
-              ))}
+                    </BlurView>
+                  </Swipeable>
+                );
+              })}
             </View>
           ))
         ) : (
@@ -323,7 +357,8 @@ export default function TransactionHistoryScreen() {
           </BlurView>
         )}
       </ScrollView>
-    </View>
+      </View>
+    </GestureHandlerRootView>
   );
 }
 
@@ -485,7 +520,7 @@ const styles = StyleSheet.create({
   },
   transactionRight: {
     alignItems: 'flex-end',
-    gap: 8,
+    justifyContent: 'center',
   },
   transactionAmount: {
     fontSize: 16,
@@ -497,6 +532,26 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  deleteAction: {
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    marginBottom: 12,
+  },
+  deleteActionButton: {
+    backgroundColor: '#EF4444',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 100,
+    height: '100%',
+    borderTopRightRadius: 16,
+    borderBottomRightRadius: 16,
+  },
+  deleteActionText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
+    marginTop: 4,
   },
   emptyState: {
     borderRadius: 20,
