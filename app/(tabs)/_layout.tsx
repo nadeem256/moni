@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     top: -10,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 76,
+    flex: 1,
     height: 76,
   },
   customButtonInner: {
