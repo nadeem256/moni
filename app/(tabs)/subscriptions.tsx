@@ -9,6 +9,124 @@ import PremiumLock from '../../components/PremiumLock';
 import { useTheme } from '../../contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 
+function CustomDatePicker({ selectedDate, onConfirm, theme }: {
+  selectedDate: Date;
+  onConfirm: (date: Date) => void;
+  theme: any;
+}) {
+  const [tempDate, setTempDate] = useState(() => {
+    const date = new Date(selectedDate);
+    date.setHours(12, 0, 0, 0);
+    return date;
+  });
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const daysInMonth = new Date(tempDate.getFullYear(), tempDate.getMonth() + 1, 0).getDate();
+  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+  return (
+    <View style={styles.customDatePickerContent}>
+      <View style={styles.customDatePickerRow}>
+        <View style={styles.customDatePickerColumn}>
+          <Text style={[styles.customDatePickerLabel, { color: theme.colors.textSecondary }]}>Month</Text>
+          <ScrollView style={styles.customDatePickerScroll} showsVerticalScrollIndicator={false}>
+            {months.map((month, index) => (
+              <TouchableOpacity
+                key={month}
+                onPress={() => {
+                  const newDate = new Date(tempDate);
+                  newDate.setMonth(index);
+                  newDate.setHours(12, 0, 0, 0);
+                  setTempDate(newDate);
+                }}
+                style={[
+                  styles.customDatePickerOption,
+                  tempDate.getMonth() === index && styles.customDatePickerOptionSelected
+                ]}
+              >
+                <Text style={[
+                  styles.customDatePickerOptionText,
+                  { color: tempDate.getMonth() === index ? theme.colors.primary : theme.colors.text }
+                ]}>
+                  {month}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        <View style={styles.customDatePickerColumn}>
+          <Text style={[styles.customDatePickerLabel, { color: theme.colors.textSecondary }]}>Day</Text>
+          <ScrollView style={styles.customDatePickerScroll} showsVerticalScrollIndicator={false}>
+            {days.map((day) => (
+              <TouchableOpacity
+                key={day}
+                onPress={() => {
+                  const newDate = new Date(tempDate);
+                  newDate.setDate(day);
+                  newDate.setHours(12, 0, 0, 0);
+                  setTempDate(newDate);
+                }}
+                style={[
+                  styles.customDatePickerOption,
+                  tempDate.getDate() === day && styles.customDatePickerOptionSelected
+                ]}
+              >
+                <Text style={[
+                  styles.customDatePickerOptionText,
+                  { color: tempDate.getDate() === day ? theme.colors.primary : theme.colors.text }
+                ]}>
+                  {day}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        <View style={styles.customDatePickerColumn}>
+          <Text style={[styles.customDatePickerLabel, { color: theme.colors.textSecondary }]}>Year</Text>
+          <ScrollView style={styles.customDatePickerScroll} showsVerticalScrollIndicator={false}>
+            {years.map((year) => (
+              <TouchableOpacity
+                key={year}
+                onPress={() => {
+                  const newDate = new Date(tempDate);
+                  newDate.setFullYear(year);
+                  newDate.setHours(12, 0, 0, 0);
+                  setTempDate(newDate);
+                }}
+                style={[
+                  styles.customDatePickerOption,
+                  tempDate.getFullYear() === year && styles.customDatePickerOptionSelected
+                ]}
+              >
+                <Text style={[
+                  styles.customDatePickerOptionText,
+                  { color: tempDate.getFullYear() === year ? theme.colors.primary : theme.colors.text }
+                ]}>
+                  {year}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        style={[styles.customDateConfirmButton, { backgroundColor: theme.colors.primary }]}
+        onPress={() => onConfirm(tempDate)}
+      >
+        <Text style={styles.customDateConfirmButtonText}>Confirm</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 export default function SubscriptionsScreen() {
   const { subscriptions, refreshSubscriptions, removeSubscription } = useSubscriptions();
   const [showAddModal, setShowAddModal] = useState(false);
@@ -287,6 +405,7 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
   const [category, setCategory] = useState('');
   const [renewalDate, setRenewalDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showCustomDatePicker, setShowCustomDatePicker] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const { addSubscription } = useSubscriptions();
@@ -442,8 +561,8 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
           <View style={styles.datePickerOverlay}>
             <BlurView intensity={80} tint="light" style={styles.datePickerModal}>
               <LinearGradient
-                colors={theme.isDark 
-                  ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)'] 
+                colors={theme.isDark
+                  ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
                   : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
                 style={styles.datePickerGradient}
               />
@@ -455,51 +574,111 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
                   </TouchableOpacity>
                 </BlurView>
               </View>
-              
+
               <View style={styles.datePickerContent}>
                 <Text style={[styles.datePickerLabel, { color: theme.colors.textSecondary }]}>
                   Choose when this subscription renews
                 </Text>
-                
-                <View style={styles.dateOptions}>
-                  {[7, 14, 30, 60, 90].map((days) => {
-                    const futureDate = new Date();
-                    futureDate.setDate(futureDate.getDate() + days);
-                    const isSelected = Math.abs(renewalDate.getTime() - futureDate.getTime()) < 24 * 60 * 60 * 1000;
-                    
-                    return (
-                      <BlurView key={days} intensity={isSelected ? 60 : 30} tint="light" style={styles.dateOption}>
-                        <TouchableOpacity
-                          style={styles.dateOptionContent}
-                          onPress={() => {
-                            setRenewalDate(futureDate);
-                            setShowDatePicker(false);
-                          }}
-                        >
-                          {isSelected && (
-                            <LinearGradient
-                              colors={['#3B82F6', '#1D4ED8']}
-                              style={styles.dateOptionGradient}
-                            />
-                          )}
-                          <Text style={[
-                            styles.dateOptionDays,
-                            { color: isSelected ? '#FFFFFF' : theme.colors.text }
-                          ]}>
-                            {days === 7 ? 'Next week' : days === 14 ? '2 weeks' : days === 30 ? 'Next month' : days === 60 ? '2 months' : '3 months'}
-                          </Text>
-                          <Text style={[
-                            styles.dateOptionDate,
-                            { color: isSelected ? 'rgba(255, 255, 255, 0.8)' : theme.colors.textSecondary }
-                          ]}>
-                            {formatDate(futureDate)}
-                          </Text>
-                        </TouchableOpacity>
-                      </BlurView>
-                    );
-                  })}
-                </View>
+
+                <ScrollView style={styles.dateOptionsScroll} showsVerticalScrollIndicator={false}>
+                  <View style={styles.dateOptions}>
+                    {[7, 14, 30, 60, 90].map((days) => {
+                      const futureDate = new Date();
+                      futureDate.setDate(futureDate.getDate() + days);
+                      const isSelected = Math.abs(renewalDate.getTime() - futureDate.getTime()) < 24 * 60 * 60 * 1000;
+
+                      return (
+                        <BlurView key={days} intensity={isSelected ? 60 : 30} tint="light" style={styles.dateOption}>
+                          <TouchableOpacity
+                            style={styles.dateOptionContent}
+                            onPress={() => {
+                              setRenewalDate(futureDate);
+                              setShowDatePicker(false);
+                            }}
+                          >
+                            {isSelected && (
+                              <LinearGradient
+                                colors={['#3B82F6', '#1D4ED8']}
+                                style={styles.dateOptionGradient}
+                              />
+                            )}
+                            <Text style={[
+                              styles.dateOptionDays,
+                              { color: isSelected ? '#FFFFFF' : theme.colors.text }
+                            ]}>
+                              {days === 7 ? 'Next week' : days === 14 ? '2 weeks' : days === 30 ? 'Next month' : days === 60 ? '2 months' : '3 months'}
+                            </Text>
+                            <Text style={[
+                              styles.dateOptionDate,
+                              { color: isSelected ? 'rgba(255, 255, 255, 0.8)' : theme.colors.textSecondary }
+                            ]}>
+                              {formatDate(futureDate)}
+                            </Text>
+                          </TouchableOpacity>
+                        </BlurView>
+                      );
+                    })}
+
+                    <BlurView intensity={40} tint="light" style={styles.dateOption}>
+                      <TouchableOpacity
+                        style={styles.dateOptionContent}
+                        onPress={() => {
+                          setShowDatePicker(false);
+                          setShowCustomDatePicker(true);
+                        }}
+                      >
+                        <LinearGradient
+                          colors={['#8B5CF6', '#7C3AED']}
+                          style={styles.dateOptionGradient}
+                        />
+                        <Text style={[styles.dateOptionDays, { color: '#FFFFFF' }]}>
+                          Custom Date
+                        </Text>
+                        <Text style={[styles.dateOptionDate, { color: 'rgba(255, 255, 255, 0.8)' }]}>
+                          Pick any date
+                        </Text>
+                      </TouchableOpacity>
+                    </BlurView>
+                  </View>
+                </ScrollView>
               </View>
+            </BlurView>
+          </View>
+        </Modal>
+
+        {/* Custom Date Picker Modal */}
+        <Modal visible={showCustomDatePicker} transparent animationType="fade">
+          <View style={styles.datePickerOverlay}>
+            <BlurView intensity={80} tint={theme.isDark ? 'dark' : 'light'} style={styles.customDatePickerModal}>
+              <LinearGradient
+                colors={theme.isDark
+                  ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
+                  : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
+                style={styles.datePickerGradient}
+              />
+              <View style={styles.datePickerHeader}>
+                <Text style={[styles.datePickerTitle, { color: theme.colors.text }]}>Select Custom Date</Text>
+                <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setShowCustomDatePicker(false);
+                      setShowDatePicker(true);
+                    }}
+                    style={styles.closeButton}
+                  >
+                    <X size={24} color={theme.colors.textSecondary} />
+                  </TouchableOpacity>
+                </BlurView>
+              </View>
+
+              <CustomDatePicker
+                selectedDate={renewalDate}
+                onConfirm={(date) => {
+                  setRenewalDate(date);
+                  setShowCustomDatePicker(false);
+                }}
+                theme={theme}
+              />
             </BlurView>
           </View>
         </Modal>
@@ -1091,5 +1270,62 @@ const styles = StyleSheet.create({
   },
   dateOptionDate: {
     fontSize: 14,
+  },
+  dateOptionsScroll: {
+    maxHeight: 400,
+  },
+  customDatePickerModal: {
+    borderRadius: 24,
+    maxHeight: '80%',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.2,
+    shadowRadius: 32,
+    elevation: 16,
+  },
+  customDatePickerContent: {
+    padding: 24,
+  },
+  customDatePickerRow: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 24,
+  },
+  customDatePickerColumn: {
+    flex: 1,
+  },
+  customDatePickerLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  customDatePickerScroll: {
+    maxHeight: 200,
+  },
+  customDatePickerOption: {
+    padding: 12,
+    alignItems: 'center',
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  customDatePickerOptionSelected: {
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+  },
+  customDatePickerOptionText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  customDateConfirmButton: {
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  customDateConfirmButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
 });
