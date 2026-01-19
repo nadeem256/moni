@@ -150,19 +150,6 @@ export default function AddScreen() {
     const daysInMonth = new Date(tempDate.getFullYear(), tempDate.getMonth() + 1, 0).getDate();
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
-    const setQuickDate = (daysAgo: number) => {
-      const date = new Date();
-      date.setDate(date.getDate() - daysAgo);
-      date.setHours(12, 0, 0, 0);
-      setTempDate(date);
-    };
-
-    const isQuickDateSelected = (daysAgo: number) => {
-      const quickDate = new Date();
-      quickDate.setDate(quickDate.getDate() - daysAgo);
-      return tempDate.toDateString() === quickDate.toDateString();
-    };
-
     return (
       <Modal visible={showDatePicker} transparent animationType="fade">
         <View style={styles.modalOverlay}>
@@ -183,113 +170,6 @@ export default function AddScreen() {
             </View>
 
             <View style={styles.datePickerContent}>
-              <View style={styles.quickDateSection}>
-                <Text style={[styles.quickDateLabel, { color: theme.colors.textSecondary }]}>Quick Select</Text>
-                <View style={styles.quickDateButtons}>
-                  <BlurView
-                    intensity={isQuickDateSelected(0) ? 60 : 30}
-                    tint={isDark ? 'dark' : 'light'}
-                    style={styles.quickDateButton}
-                  >
-                    <TouchableOpacity
-                      style={styles.quickDateButtonContent}
-                      onPress={() => setQuickDate(0)}
-                    >
-                      {isQuickDateSelected(0) && (
-                        <LinearGradient
-                          colors={['#3B82F6', '#1D4ED8']}
-                          style={styles.quickDateButtonGradient}
-                        />
-                      )}
-                      <Text style={[
-                        styles.quickDateButtonText,
-                        { color: isQuickDateSelected(0) ? '#FFFFFF' : theme.colors.text }
-                      ]}>
-                        Today
-                      </Text>
-                    </TouchableOpacity>
-                  </BlurView>
-
-                  <BlurView
-                    intensity={isQuickDateSelected(1) ? 60 : 30}
-                    tint={isDark ? 'dark' : 'light'}
-                    style={styles.quickDateButton}
-                  >
-                    <TouchableOpacity
-                      style={styles.quickDateButtonContent}
-                      onPress={() => setQuickDate(1)}
-                    >
-                      {isQuickDateSelected(1) && (
-                        <LinearGradient
-                          colors={['#3B82F6', '#1D4ED8']}
-                          style={styles.quickDateButtonGradient}
-                        />
-                      )}
-                      <Text style={[
-                        styles.quickDateButtonText,
-                        { color: isQuickDateSelected(1) ? '#FFFFFF' : theme.colors.text }
-                      ]}>
-                        Yesterday
-                      </Text>
-                    </TouchableOpacity>
-                  </BlurView>
-
-                  <BlurView
-                    intensity={isQuickDateSelected(7) ? 60 : 30}
-                    tint={isDark ? 'dark' : 'light'}
-                    style={styles.quickDateButton}
-                  >
-                    <TouchableOpacity
-                      style={styles.quickDateButtonContent}
-                      onPress={() => setQuickDate(7)}
-                    >
-                      {isQuickDateSelected(7) && (
-                        <LinearGradient
-                          colors={['#3B82F6', '#1D4ED8']}
-                          style={styles.quickDateButtonGradient}
-                        />
-                      )}
-                      <Text style={[
-                        styles.quickDateButtonText,
-                        { color: isQuickDateSelected(7) ? '#FFFFFF' : theme.colors.text }
-                      ]}>
-                        7 Days Ago
-                      </Text>
-                    </TouchableOpacity>
-                  </BlurView>
-
-                  <BlurView
-                    intensity={isQuickDateSelected(30) ? 60 : 30}
-                    tint={isDark ? 'dark' : 'light'}
-                    style={styles.quickDateButton}
-                  >
-                    <TouchableOpacity
-                      style={styles.quickDateButtonContent}
-                      onPress={() => setQuickDate(30)}
-                    >
-                      {isQuickDateSelected(30) && (
-                        <LinearGradient
-                          colors={['#3B82F6', '#1D4ED8']}
-                          style={styles.quickDateButtonGradient}
-                        />
-                      )}
-                      <Text style={[
-                        styles.quickDateButtonText,
-                        { color: isQuickDateSelected(30) ? '#FFFFFF' : theme.colors.text }
-                      ]}>
-                        30 Days Ago
-                      </Text>
-                    </TouchableOpacity>
-                  </BlurView>
-                </View>
-              </View>
-
-              <View style={styles.divider} />
-
-              <Text style={[styles.customDateLabel, { color: theme.colors.textSecondary }]}>
-                Custom Date
-              </Text>
-
               <View style={styles.datePickerRow}>
                 <View style={styles.datePickerColumn}>
                   <Text style={[styles.datePickerLabel, { color: theme.colors.textSecondary }]}>Month</Text>
@@ -383,7 +263,7 @@ export default function AddScreen() {
                   setShowDatePicker(false);
                 }}
               >
-                <Text style={styles.dateConfirmButtonText}>Confirm Date</Text>
+                <Text style={styles.dateConfirmButtonText}>Confirm</Text>
               </TouchableOpacity>
             </View>
           </BlurView>
@@ -914,54 +794,6 @@ const styles = StyleSheet.create({
   },
   datePickerContent: {
     padding: 24,
-  },
-  quickDateSection: {
-    marginBottom: 24,
-  },
-  quickDateLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 12,
-  },
-  quickDateButtons: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-  },
-  quickDateButton: {
-    borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-    flex: 1,
-    minWidth: '45%',
-  },
-  quickDateButtonContent: {
-    padding: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  quickDateButtonGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  quickDateButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
-    zIndex: 1,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    marginVertical: 24,
-  },
-  customDateLabel: {
-    fontSize: 14,
-    fontWeight: '600',
-    marginBottom: 16,
   },
   datePickerRow: {
     flexDirection: 'row',
