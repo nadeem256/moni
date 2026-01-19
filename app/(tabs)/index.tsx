@@ -50,7 +50,13 @@ export default function HomeScreen() {
     if (diffDays === 0) return 'Today';
     if (diffDays === 1) return 'Tomorrow';
     if (diffDays <= 7) return `In ${diffDays} days`;
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    const showYear = date.getFullYear() !== today.getFullYear();
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: showYear ? 'numeric' : undefined
+    });
   };
 
   // Get upcoming subscriptions (next 30 days)

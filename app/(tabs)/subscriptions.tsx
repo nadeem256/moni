@@ -150,7 +150,13 @@ export default function SubscriptionsScreen() {
     if (diffDays === 1) return 'Tomorrow';
     if (diffDays < 0) return 'Past due';
     if (diffDays <= 7) return `In ${diffDays} days`;
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    const showYear = date.getFullYear() !== today.getFullYear();
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: showYear ? 'numeric' : undefined
+    });
   };
 
   const performDeleteSubscription = async (subscriptionId: string) => {
