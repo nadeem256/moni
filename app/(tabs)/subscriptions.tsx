@@ -404,7 +404,7 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
   onAdd: () => void;
   canAdd: boolean;
 }) {
-  const { theme } = useTheme();
+  const { theme, isDark } = useTheme();
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('');
@@ -455,16 +455,16 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
   return (
     <Modal visible={visible} transparent animationType="none">
       <View style={styles.modalOverlay}>
-        <BlurView intensity={80} tint={theme.isDark ? 'dark' : 'light'} style={styles.addModalContent}>
+        <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.addModalContent}>
           <LinearGradient
-            colors={theme.isDark 
-              ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)'] 
+            colors={isDark
+              ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
               : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
             style={styles.modalGradient}
           />
           <View style={styles.addModalHeader}>
             <Text style={[styles.addModalTitle, { color: theme.colors.text }]}>Add Subscription</Text>
-            <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
+            <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <X size={24} color={theme.colors.textSecondary} />
               </TouchableOpacity>
@@ -474,7 +474,7 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
           <View style={styles.addModalForm}>
             <View style={styles.inputGroup}>
               <Text style={[styles.inputLabel, { color: theme.colors.text }]}>Service Name</Text>
-              <BlurView intensity={30} tint={theme.isDark ? 'dark' : 'light'} style={styles.inputContainer}>
+              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.inputContainer}>
                 <TextInput
                   style={[styles.textInput, { color: theme.colors.text }]}
                   value={name}
@@ -487,7 +487,7 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
 
             <View style={styles.inputGroup}>
               <Text style={[styles.inputLabel, { color: theme.colors.text }]}>Monthly Amount</Text>
-              <BlurView intensity={30} tint={theme.isDark ? 'dark' : 'light'} style={styles.inputContainer}>
+              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.inputContainer}>
                 <TextInput
                   style={[styles.textInput, { color: theme.colors.text }]}
                   value={amount}
@@ -503,7 +503,7 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
               <Text style={[styles.inputLabel, { color: theme.colors.text }]}>Category</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categoryScroll}>
                 {categories.map((cat) => (
-                  <BlurView key={cat} intensity={category === cat ? 60 : 30} tint={theme.isDark ? 'dark' : 'light'} style={styles.categoryChip}>
+                  <BlurView key={cat} intensity={category === cat ? 60 : 30} tint={isDark ? 'dark' : 'light'} style={styles.categoryChip}>
                     <TouchableOpacity
                       style={styles.categoryChipContent}
                       onPress={() => setCategory(cat)}
@@ -528,7 +528,7 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
 
             <View style={styles.inputGroup}>
               <Text style={[styles.inputLabel, { color: theme.colors.text }]}>Next Payment Date</Text>
-              <BlurView intensity={30} tint={theme.isDark ? 'dark' : 'light'} style={styles.inputContainer}>
+              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.inputContainer}>
                 <TouchableOpacity
                   style={styles.datePickerButton}
                   onPress={() => setShowDatePicker(true)}
@@ -541,8 +541,8 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
               </BlurView>
             </View>
           </View>
-          
-          <BlurView intensity={60} tint={theme.isDark ? 'dark' : 'light'} style={styles.saveSubscriptionButton}>
+
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.saveSubscriptionButton}>
             <TouchableOpacity
               style={[styles.saveButtonContent, (!name || !amount || !category || saving) && styles.saveButtonDisabled]}
               onPress={handleSave}
@@ -564,16 +564,16 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
         {/* Date Picker Modal */}
         <Modal visible={showDatePicker} transparent animationType="fade">
           <View style={styles.datePickerOverlay}>
-            <BlurView intensity={80} tint={theme.isDark ? 'dark' : 'light'} style={styles.datePickerModal}>
+            <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.datePickerModal}>
               <LinearGradient
-                colors={theme.isDark
+                colors={isDark
                   ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
                   : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
                 style={styles.datePickerGradient}
               />
               <View style={styles.datePickerHeader}>
                 <Text style={[styles.datePickerTitle, { color: theme.colors.text }]}>Select Payment Date</Text>
-                <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
                   <TouchableOpacity onPress={() => setShowDatePicker(false)} style={styles.closeButton}>
                     <X size={24} color={theme.colors.textSecondary} />
                   </TouchableOpacity>
@@ -593,7 +593,7 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
                       const isSelected = Math.abs(renewalDate.getTime() - futureDate.getTime()) < 24 * 60 * 60 * 1000;
 
                       return (
-                        <BlurView key={days} intensity={isSelected ? 60 : 30} tint={theme.isDark ? 'dark' : 'light'} style={styles.dateOption}>
+                        <BlurView key={days} intensity={isSelected ? 60 : 30} tint={isDark ? 'dark' : 'light'} style={styles.dateOption}>
                           <TouchableOpacity
                             style={styles.dateOptionContent}
                             onPress={() => {
@@ -624,7 +624,7 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
                       );
                     })}
 
-                    <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.dateOption}>
+                    <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.dateOption}>
                       <TouchableOpacity
                         style={styles.dateOptionContent}
                         onPress={() => {
@@ -654,16 +654,16 @@ function AddSubscriptionModal({ visible, onClose, onAdd, canAdd }: {
         {/* Custom Date Picker Modal */}
         <Modal visible={showCustomDatePicker} transparent animationType="fade">
           <View style={styles.datePickerOverlay}>
-            <BlurView intensity={80} tint={theme.isDark ? 'dark' : 'light'} style={styles.customDatePickerModal}>
+            <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.customDatePickerModal}>
               <LinearGradient
-                colors={theme.isDark
+                colors={isDark
                   ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
                   : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
                 style={styles.datePickerGradient}
               />
               <View style={styles.datePickerHeader}>
                 <Text style={[styles.datePickerTitle, { color: theme.colors.text }]}>Select Custom Date</Text>
-                <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
                   <TouchableOpacity
                     onPress={() => {
                       setShowCustomDatePicker(false);
