@@ -199,17 +199,29 @@ export const getBalance = async (): Promise<number> => {
 };
 
 // Analytics functions
-export const getMonthlySpending = async (): Promise<number> => {
+export const getMonthlySpending = async (startDate?: Date, endDate?: Date): Promise<number> => {
   try {
     const transactions = await getTransactions();
+
+    if (startDate && endDate) {
+      return transactions
+        .filter(t => {
+          const transactionDate = new Date(t.date);
+          return t.type === 'expense' &&
+                 transactionDate >= startDate &&
+                 transactionDate <= endDate;
+        })
+        .reduce((sum, t) => sum + t.amount, 0);
+    }
+
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
-    
+
     return transactions
       .filter(t => {
         const transactionDate = new Date(t.date);
-        return t.type === 'expense' && 
-               transactionDate.getMonth() === currentMonth && 
+        return t.type === 'expense' &&
+               transactionDate.getMonth() === currentMonth &&
                transactionDate.getFullYear() === currentYear;
       })
       .reduce((sum, t) => sum + t.amount, 0);
@@ -233,25 +245,41 @@ export const getTodaySpending = async (): Promise<number> => {
   }
 };
 
-export const getCategorySpending = async (): Promise<{ [category: string]: number }> => {
+export const getCategorySpending = async (startDate?: Date, endDate?: Date): Promise<{ [category: string]: number }> => {
   try {
     const transactions = await getTransactions();
+
+    const categorySpending: { [category: string]: number } = {};
+
+    if (startDate && endDate) {
+      transactions
+        .filter(t => {
+          const transactionDate = new Date(t.date);
+          return t.type === 'expense' &&
+                 transactionDate >= startDate &&
+                 transactionDate <= endDate;
+        })
+        .forEach(t => {
+          categorySpending[t.category] = (categorySpending[t.category] || 0) + t.amount;
+        });
+
+      return categorySpending;
+    }
+
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
-    
-    const categorySpending: { [category: string]: number } = {};
-    
+
     transactions
       .filter(t => {
         const transactionDate = new Date(t.date);
-        return t.type === 'expense' && 
-               transactionDate.getMonth() === currentMonth && 
+        return t.type === 'expense' &&
+               transactionDate.getMonth() === currentMonth &&
                transactionDate.getFullYear() === currentYear;
       })
       .forEach(t => {
         categorySpending[t.category] = (categorySpending[t.category] || 0) + t.amount;
       });
-    
+
     return categorySpending;
   } catch (error) {
     console.error('Error getting category spending:', error);

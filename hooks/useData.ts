@@ -138,7 +138,7 @@ export const useBalance = () => {
   };
 };
 
-export const useAnalytics = () => {
+export const useAnalytics = (startDate?: Date, endDate?: Date) => {
   const [monthlySpending, setMonthlySpending] = useState(0);
   const [todaySpending, setTodaySpending] = useState(0);
   const [categorySpending, setCategorySpending] = useState<{ [category: string]: number }>({});
@@ -147,11 +147,11 @@ export const useAnalytics = () => {
   const loadAnalytics = useCallback(async () => {
     try {
       const [monthly, today, categories] = await Promise.all([
-        getMonthlySpending(),
+        getMonthlySpending(startDate, endDate),
         getTodaySpending(),
-        getCategorySpending()
+        getCategorySpending(startDate, endDate)
       ]);
-      
+
       setMonthlySpending(monthly);
       setTodaySpending(today);
       setCategorySpending(categories);
@@ -160,7 +160,7 @@ export const useAnalytics = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [startDate, endDate]);
 
   useEffect(() => {
     loadAnalytics();

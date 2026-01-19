@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
-import { useCallback, useState } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Sparkles, ChartBar as BarChart3, History } from 'lucide-react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, Modal } from 'react-native';
+import { useCallback, useState, useMemo } from 'react';
+import { TrendingUp, TrendingDown, DollarSign, Sparkles, ChartBar as BarChart3, History, Calendar, ChevronDown } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { useAnalytics, useBalance, useTransactions } from '../../hooks/useData';
 import { useFocusEffect } from '@react-navigation/native';
@@ -11,21 +11,75 @@ import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 
+type DateRange = 'thisMonth' | 'lastMonth' | 'last3Months' | 'last6Months' | 'thisYear' | 'allTime';
+
+const DATE_RANGE_OPTIONS: { value: DateRange; label: string }[] = [
+  { value: 'thisMonth', label: 'This Month' },
+  { value: 'lastMonth', label: 'Last Month' },
+  { value: 'last3Months', label: 'Last 3 Months' },
+  { value: 'last6Months', label: 'Last 6 Months' },
+  { value: 'thisYear', label: 'This Year' },
+  { value: 'allTime', label: 'All Time' },
+];
+
+const getDateRangeLabel = (range: DateRange): string => {
+  const option = DATE_RANGE_OPTIONS.find(opt => opt.value === range);
+  return option?.label || 'This Month';
+};
+
+const getDateRange = (range: DateRange): { startDate: Date; endDate: Date } => {
+  const now = new Date();
+  const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+  let startDate: Date;
+
+  switch (range) {
+    case 'thisMonth':
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
+      break;
+    case 'lastMonth':
+      startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1, 0, 0, 0);
+      endDate.setMonth(now.getMonth(), 0);
+      endDate.setHours(23, 59, 59);
+      break;
+    case 'last3Months':
+      startDate = new Date(now.getFullYear(), now.getMonth() - 2, 1, 0, 0, 0);
+      break;
+    case 'last6Months':
+      startDate = new Date(now.getFullYear(), now.getMonth() - 5, 1, 0, 0, 0);
+      break;
+    case 'thisYear':
+      startDate = new Date(now.getFullYear(), 0, 1, 0, 0, 0);
+      break;
+    case 'allTime':
+      startDate = new Date(2000, 0, 1, 0, 0, 0);
+      break;
+    default:
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
+  }
+
+  return { startDate, endDate };
+};
+
 export default function InsightsScreen() {
-  const { monthlySpending, todaySpending, categorySpending, refreshAnalytics } = useAnalytics();
-  const { balance, refreshBalance } = useBalance();
-  const { transactions, refreshTransactions } = useTransactions();
+  const [selectedRange, setSelectedRange] = useState<DateRange>('thisMonth');
+  const [showRangeModal, setShowRangeModal] = useState(false);
   const { theme, isDark } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
+
+  const dateRange = useMemo(() => getDateRange(selectedRange), [selectedRange]);
+  const { monthlySpending, todaySpending, categorySpending, refreshAnalytics } = useAnalytics(
+    dateRange.startDate,
+    dateRange.endDate
+  );
+  const { balance, refreshBalance } = useBalance();
+  const { transactions, refreshTransactions } = useTransactions();
 
   const monthlyIncome = transactions
     .filter(t => {
       const transactionDate = new Date(t.date);
-      const currentMonth = new Date().getMonth();
-      const currentYear = new Date().getFullYear();
-      return t.type === 'income' && 
-             transactionDate.getMonth() === currentMonth && 
-             transactionDate.getFullYear() === currentYear;
+      return t.type === 'income' &&
+             transactionDate >= dateRange.startDate &&
+             transactionDate <= dateRange.endDate;
     })
     .reduce((sum, t) => sum + t.amount, 0);
 
@@ -104,12 +158,15 @@ export default function InsightsScreen() {
           <View style={styles.headerContent}>
             <View>
               <Text style={[styles.title, { color: theme.colors.text }]}>Insights</Text>
-              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.subtitleContainer}>
-                <BarChart3 size={16} color={theme.colors.primary} />
-                <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
-                  {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                </Text>
-              </BlurView>
+              <TouchableOpacity onPress={() => setShowRangeModal(true)}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.subtitleContainer}>
+                  <Calendar size={16} color={theme.colors.primary} />
+                  <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
+                    {getDateRangeLabel(selectedRange)}
+                  </Text>
+                  <ChevronDown size={16} color={theme.colors.textSecondary} />
+                </BlurView>
+              </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={() => router.push('/transaction-history')}>
               <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.historyButton}>
@@ -344,6 +401,45 @@ export default function InsightsScreen() {
               )}
         </View>
       </ScrollView>
+
+      <Modal visible={showRangeModal} transparent animationType="fade">
+        <TouchableOpacity
+          style={styles.modalOverlay}
+          activeOpacity={1}
+          onPress={() => setShowRangeModal(false)}
+        >
+          <BlurView intensity={90} tint={isDark ? 'dark' : 'light'} style={styles.rangeModal}>
+            <View style={styles.rangeModalContent}>
+              <Text style={[styles.rangeModalTitle, { color: theme.colors.text }]}>Select Date Range</Text>
+
+              {DATE_RANGE_OPTIONS.map((option) => (
+                <TouchableOpacity
+                  key={option.value}
+                  onPress={() => {
+                    setSelectedRange(option.value);
+                    setShowRangeModal(false);
+                  }}
+                  style={[
+                    styles.rangeOption,
+                    selectedRange === option.value && { backgroundColor: isDark ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)' }
+                  ]}
+                >
+                  <Text style={[
+                    styles.rangeOptionText,
+                    { color: theme.colors.text },
+                    selectedRange === option.value && { color: theme.colors.primary, fontWeight: '600' }
+                  ]}>
+                    {option.label}
+                  </Text>
+                  {selectedRange === option.value && (
+                    <View style={[styles.selectedIndicator, { backgroundColor: theme.colors.primary }]} />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          </BlurView>
+        </TouchableOpacity>
+      </Modal>
     </View>
   );
 }
@@ -756,5 +852,50 @@ const styles = StyleSheet.create({
   insightHighlight: {
     fontWeight: '600',
     color: '#3B82F6',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  rangeModal: {
+    width: '100%',
+    maxWidth: 400,
+    borderRadius: 24,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 30,
+    elevation: 10,
+  },
+  rangeModalContent: {
+    padding: 24,
+  },
+  rangeModalTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 20,
+  },
+  rangeOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderRadius: 12,
+    marginBottom: 8,
+  },
+  rangeOptionText: {
+    fontSize: 16,
+  },
+  selectedIndicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
   },
 });
