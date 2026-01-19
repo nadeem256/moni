@@ -151,11 +151,10 @@ export default function SubscriptionsScreen() {
     if (diffDays < 0) return 'Past due';
     if (diffDays <= 7) return `In ${diffDays} days`;
 
-    const showYear = date.getFullYear() !== today.getFullYear();
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: showYear ? 'numeric' : undefined
+      year: 'numeric'
     });
   };
 
