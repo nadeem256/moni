@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Alert, Platform, RefreshControl } from 'react-native';
 import { useState, useCallback } from 'react';
 import { Plus, Calendar, X, Sparkles, Trash2 } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
@@ -13,6 +13,7 @@ export default function SubscriptionsScreen() {
   const { subscriptions, refreshSubscriptions, removeSubscription } = useSubscriptions();
   const [showAddModal, setShowAddModal] = useState(false);
   const { theme, isDark } = useTheme();
+  const [refreshing, setRefreshing] = useState(false);
 
   const totalMonthly = subscriptions.reduce((sum, sub) => sum + sub.amount, 0);
   const canAddMore = true; // No limits - app is free
@@ -68,6 +69,12 @@ export default function SubscriptionsScreen() {
     }
   };
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await refreshSubscriptions();
+    setRefreshing(false);
+  }, [refreshSubscriptions]);
+
   useFocusEffect(
     useCallback(() => {
       refreshSubscriptions();
@@ -85,10 +92,18 @@ export default function SubscriptionsScreen() {
         style={styles.backgroundGradient}
       />
       
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
+          />
+        }
       >
         {/* Hero Monthly Total Card */}
         <View style={styles.heroSection}>

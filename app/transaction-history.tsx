@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Platform, RefreshControl } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { ArrowLeft, TrendingUp, TrendingDown, Trash2, Calendar } from 'lucide-react-native';
@@ -24,6 +24,7 @@ export default function TransactionHistoryScreen() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     loadTransactions();
@@ -46,6 +47,12 @@ export default function TransactionHistoryScreen() {
     }
 
     setLoading(false);
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadTransactions();
+    setRefreshing(false);
   };
 
   const performDelete = async (transactionId: string) => {
@@ -216,7 +223,18 @@ export default function TransactionHistoryScreen() {
         </View>
       )}
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.content}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
+          />
+        }
+      >
         {groupedTransactions.length > 0 ? (
           groupedTransactions.map((group, groupIndex) => (
             <View key={groupIndex} style={styles.dateGroup}>

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image, RefreshControl } from 'react-native';
 import { useCallback, useState, useEffect } from 'react';
 import { User, Settings, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, Crown, Edit } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
@@ -18,6 +18,7 @@ export default function ProfileScreen() {
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { balance, refreshBalance } = useBalance();
   const { user } = useAuth();
+  const [refreshing, setRefreshing] = useState(false);
 
   // Calculate real stats
   const calculateDaysActive = () => {
@@ -80,6 +81,17 @@ export default function ProfileScreen() {
     loadProfile();
   }, [user?.id]);
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await Promise.all([
+      refreshTransactions(),
+      refreshSubscriptions(),
+      refreshBalance(),
+      loadProfile()
+    ]);
+    setRefreshing(false);
+  }, [refreshTransactions, refreshSubscriptions, refreshBalance]);
+
   useFocusEffect(
     useCallback(() => {
       refreshTransactions();
@@ -96,7 +108,18 @@ export default function ProfileScreen() {
         style={styles.backgroundGradient}
       />
       
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
+          />
+        }
+      >
         {/* Hero Profile Card */}
         <View style={styles.heroSection}>
           <View style={styles.headerContent}>

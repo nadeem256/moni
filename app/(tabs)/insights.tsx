@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { useCallback, useState } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Sparkles, ChartBar as BarChart3, History } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { useAnalytics, useBalance, useTransactions } from '../../hooks/useData';
@@ -16,6 +16,7 @@ export default function InsightsScreen() {
   const { balance, refreshBalance } = useBalance();
   const { transactions, refreshTransactions } = useTransactions();
   const { theme, isDark } = useTheme();
+  const [refreshing, setRefreshing] = useState(false);
 
   const monthlyIncome = transactions
     .filter(t => {
@@ -61,6 +62,16 @@ export default function InsightsScreen() {
   const lastWeekSpending = getWeeklySpending(1);
   const weeklyChange = thisWeekSpending - lastWeekSpending;
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await Promise.all([
+      refreshAnalytics(),
+      refreshBalance(),
+      refreshTransactions()
+    ]);
+    setRefreshing(false);
+  }, [refreshAnalytics, refreshBalance, refreshTransactions]);
+
   useFocusEffect(
     useCallback(() => {
       refreshAnalytics();
@@ -76,7 +87,18 @@ export default function InsightsScreen() {
         style={styles.backgroundGradient}
       />
       
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
+          />
+        }
+      >
         {/* Overview Cards */}
         <View style={styles.overviewSection}>
           <View style={styles.headerContent}>

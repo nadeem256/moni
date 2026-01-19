@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, Plus } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { useBalance, useAnalytics, useSubscriptions } from '../../hooks/useData';
@@ -35,6 +35,7 @@ export default function HomeScreen() {
   const { todaySpending, monthlySpending, refreshAnalytics } = useAnalytics();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { theme, isDark } = useTheme();
+  const [refreshing, setRefreshing] = useState(false);
 
   const formatRenewalDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -66,6 +67,16 @@ export default function HomeScreen() {
       color: sub.color
     }));
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await Promise.all([
+      refreshBalance(),
+      refreshAnalytics(),
+      refreshSubscriptions()
+    ]);
+    setRefreshing(false);
+  }, [refreshBalance, refreshAnalytics, refreshSubscriptions]);
+
   useFocusEffect(
     useCallback(() => {
       refreshBalance();
@@ -81,7 +92,18 @@ export default function HomeScreen() {
         style={styles.backgroundGradient}
       />
       
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
+          />
+        }
+      >
         {/* Hero Balance Card with Enhanced Glass */}
         <View style={styles.heroSection}>
           <View style={styles.headerContent}>
