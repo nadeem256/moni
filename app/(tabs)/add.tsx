@@ -1,11 +1,20 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
-import { useState } from 'react';
-import { X, DollarSign, ArrowUp, ArrowDown, Sparkles, Calendar } from 'lucide-react-native';
+import { useState, useEffect } from 'react';
+import { X, DollarSign, ArrowUp, ArrowDown, Sparkles, Calendar, CheckCircle } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { useTransactions } from '../../hooks/useData';
 import { router } from 'expo-router';
 import { useTheme } from '../../contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+  withSequence,
+  Easing,
+  runOnJS
+} from 'react-native-reanimated';
 
 export default function AddScreen() {
   const [amount, setAmount] = useState('');
@@ -20,9 +29,15 @@ export default function AddScreen() {
     return date;
   });
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const { addTransaction } = useTransactions();
   const { theme, isDark } = useTheme();
+
+  const successScale = useSharedValue(0);
+  const successOpacity = useSharedValue(0);
+  const checkmarkScale = useSharedValue(0);
+  const checkmarkRotate = useSharedValue(-180);
 
   const categories = {
     expense: ['Food & Dining', 'Transportation', 'Shopping', 'Entertainment', 'Bills', 'Health', 'Other'],
@@ -44,7 +59,7 @@ export default function AddScreen() {
           date: dateToSave.toISOString(),
           description: description || undefined,
         });
-        
+
         setAmount('');
         setSelectedCategory('');
         setDescription('');
@@ -52,13 +67,46 @@ export default function AddScreen() {
         resetDate.setHours(12, 0, 0, 0);
         setSelectedDate(resetDate);
 
-        router.push('/(tabs)');
+        showSuccessAnimation();
       } catch (error) {
         console.error('Error saving transaction:', error);
-      } finally {
         setSaving(false);
       }
     }
+  };
+
+  const showSuccessAnimation = () => {
+    setShowSuccess(true);
+
+    successOpacity.value = withTiming(1, { duration: 200 });
+    successScale.value = withSpring(1, {
+      damping: 12,
+      stiffness: 100,
+    });
+
+    checkmarkScale.value = withSequence(
+      withTiming(0, { duration: 0 }),
+      withSpring(1, {
+        damping: 8,
+        stiffness: 100,
+      })
+    );
+
+    checkmarkRotate.value = withTiming(0, {
+      duration: 500,
+      easing: Easing.out(Easing.back(1.5)),
+    });
+
+    setTimeout(() => {
+      successOpacity.value = withTiming(0, { duration: 300 });
+      successScale.value = withTiming(0.8, { duration: 300 });
+
+      setTimeout(() => {
+        setShowSuccess(false);
+        setSaving(false);
+        router.push('/(tabs)');
+      }, 300);
+    }, 1500);
   };
 
   const handleTypeChange = (type: 'income' | 'expense') => {
@@ -223,6 +271,22 @@ export default function AddScreen() {
       </Modal>
     );
   };
+
+  const successContainerStyle = useAnimatedStyle(() => {
+    return {
+      opacity: successOpacity.value,
+      transform: [{ scale: successScale.value }],
+    };
+  });
+
+  const checkmarkStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { scale: checkmarkScale.value },
+        { rotate: `${checkmarkRotate.value}deg` },
+      ],
+    };
+  });
 
   return (
     <KeyboardAvoidingView 
@@ -481,6 +545,37 @@ export default function AddScreen() {
           </BlurView>
         </View>
       </Modal>
+
+      {/* Success Animation */}
+      {showSuccess && (
+        <Modal visible={showSuccess} transparent animationType="none">
+          <View style={styles.successOverlay}>
+            <Animated.View style={[styles.successContainer, successContainerStyle]}>
+              <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.successCard}>
+                <LinearGradient
+                  colors={isDark
+                    ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
+                    : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
+                  style={styles.successGradient}
+                />
+                <Animated.View style={[styles.successIconContainer, checkmarkStyle]}>
+                  <LinearGradient
+                    colors={['#34D399', '#10B981']}
+                    style={styles.successIconGradient}
+                  />
+                  <CheckCircle size={64} color="#FFFFFF" />
+                </Animated.View>
+                <Text style={[styles.successTitle, { color: theme.colors.text }]}>
+                  Transaction Added!
+                </Text>
+                <Text style={[styles.successMessage, { color: theme.colors.textSecondary }]}>
+                  ${parseFloat(amount || '0').toFixed(2)} {selectedType === 'income' ? 'received' : 'spent'}
+                </Text>
+              </BlurView>
+            </Animated.View>
+          </View>
+        </Modal>
+      )}
     </KeyboardAvoidingView>
   );
 }
@@ -918,5 +1013,66 @@ const styles = StyleSheet.create({
   categoryOptionText: {
     fontSize: 16,
     fontWeight: '500',
+  },
+  successOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  successContainer: {
+    width: '80%',
+    maxWidth: 320,
+  },
+  successCard: {
+    borderRadius: 24,
+    padding: 40,
+    alignItems: 'center',
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 20 },
+    shadowOpacity: 0.3,
+    shadowRadius: 40,
+    elevation: 20,
+  },
+  successGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  successIconContainer: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+    overflow: 'hidden',
+    shadowColor: '#10B981',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  successIconGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  successTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  successMessage: {
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
