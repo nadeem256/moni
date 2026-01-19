@@ -34,16 +34,16 @@ const lightTheme: Theme = {
 
 const darkTheme: Theme = {
   colors: {
-    background: '#0A0A0A',
-    surface: '#1C1C1E',
+    background: '#0A0B0F',
+    surface: '#161821',
     primary: '#3B82F6',
     text: '#FFFFFF',
-    textSecondary: '#A1A1AA',
-    border: '#2C2C2E',
-    card: '#1C1C1E',
-    success: '#10B981',
-    error: '#EF4444',
-    warning: '#F59E0B',
+    textSecondary: '#9CA3AF',
+    border: '#1F2937',
+    card: '#161821',
+    success: '#34D399',
+    error: '#F87171',
+    warning: '#FBBF24',
   },
 };
 
@@ -69,7 +69,7 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
     loadTheme();
@@ -81,13 +81,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       if (savedTheme !== null) {
         setIsDark(savedTheme === 'true');
       } else {
-        // Default to light mode
-        setIsDark(false);
+        // Default to dark mode
+        setIsDark(true);
       }
     } catch (error) {
       console.error('Error loading theme:', error);
-      // Fallback to light mode on error
-      setIsDark(false);
+      // Fallback to dark mode on error
+      setIsDark(true);
     }
   };
 

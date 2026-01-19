@@ -156,7 +156,7 @@ export default function AddScreen() {
           <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.dateModalContent}>
             <LinearGradient
               colors={isDark
-               ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
+                ? ['rgba(22, 24, 33, 0.98)', 'rgba(16, 18, 25, 0.95)']
                 : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
               style={styles.modalGradient}
             />
@@ -294,7 +294,7 @@ export default function AddScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <LinearGradient
-        colors={isDark ? ['#0F0F23', '#1A1A2E', '#16213E'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0A0B0F', '#12131A', '#0F1014'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -376,8 +376,8 @@ export default function AddScreen() {
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Amount</Text>
           <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.amountCard}>
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.95)', 'rgba(59, 130, 246, 0.12)']
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
               style={styles.amountGradient}
             />
@@ -403,7 +403,7 @@ export default function AddScreen() {
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.dateButton}>
             <LinearGradient
               colors={isDark
-               ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)']
+                ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.dateButtonGradient}
             />
@@ -431,8 +431,8 @@ export default function AddScreen() {
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Category</Text>
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.categoryButton}>
             <LinearGradient
-              colors={isDark 
-               ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.categoryButtonGradient}
             />
@@ -458,8 +458,8 @@ export default function AddScreen() {
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Description (Optional)</Text>
           <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.descriptionInput}>
             <LinearGradient
-              colors={isDark 
-               ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.descriptionInputGradient}
             />
@@ -477,8 +477,8 @@ export default function AddScreen() {
         {/* Save Button */}
         <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.saveButton}>
           <LinearGradient
-            colors={isDark 
-             ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
+            colors={isDark
+              ? ['rgba(22, 24, 33, 0.95)', 'rgba(16, 18, 25, 0.9)']
               : ['rgba(255, 255, 255, 0.9)', 'rgba(248, 250, 252, 0.7)']}
             style={styles.saveButtonBackgroundGradient}
           />
@@ -508,8 +508,8 @@ export default function AddScreen() {
         <View style={styles.modalOverlay}>
           <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.modalContent}>
             <LinearGradient
-              colors={isDark 
-               ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.98)', 'rgba(16, 18, 25, 0.95)']
                 : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
               style={styles.modalGradient}
             />
@@ -525,8 +525,8 @@ export default function AddScreen() {
               {categories[selectedType].map((category, index) => (
                 <BlurView key={index} intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.categoryOption}>
                   <LinearGradient
-                    colors={isDark 
-                     ? ['rgba(26, 26, 46, 0.7)', 'rgba(22, 33, 62, 0.5)'] 
+                    colors={isDark
+                      ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                       : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                     style={styles.categoryOptionGradient}
                   />
@@ -554,7 +554,7 @@ export default function AddScreen() {
               <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.successCard}>
                 <LinearGradient
                   colors={isDark
-                    ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
+                    ? ['rgba(22, 24, 33, 0.98)', 'rgba(16, 18, 25, 0.95)']
                     : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
                   style={styles.successGradient}
                 />

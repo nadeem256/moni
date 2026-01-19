@@ -102,7 +102,7 @@ export default function HomeScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={isDark ? ['#0F0F23', '#1A1A2E', '#16213E'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0A0B0F', '#12131A', '#0F1014'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -129,8 +129,8 @@ export default function HomeScreen() {
           
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.heroCard}>
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.9)', 'rgba(52, 211, 153, 0.08)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.95)', 'rgba(59, 130, 246, 0.12)']
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(16, 185, 129, 0.02)']}
               style={styles.heroGradient}
             />
@@ -153,8 +153,8 @@ export default function HomeScreen() {
         <View style={styles.quickStats}>
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.statCardGradient}
             />
@@ -169,8 +169,8 @@ export default function HomeScreen() {
 
           <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.statCard}>
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                 : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
               style={styles.statCardGradient}
             />
@@ -198,8 +198,8 @@ export default function HomeScreen() {
           {upcomingSubscriptions.length > 0 ? upcomingSubscriptions.map((subscription, index) => (
             <BlurView key={index} intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
               <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                colors={isDark
+                  ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.subscriptionCardGradient}
               />
@@ -225,8 +225,8 @@ export default function HomeScreen() {
           )) : (
             <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.emptyState}>
               <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                colors={isDark
+                  ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.emptyStateGradient}
               />

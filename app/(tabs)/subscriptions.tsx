@@ -215,7 +215,7 @@ export default function SubscriptionsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={isDark ? ['#0F0F23', '#1A1A2E', '#16213E'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0A0B0F', '#12131A', '#0F1014'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -259,8 +259,8 @@ export default function SubscriptionsScreen() {
           
           <BlurView intensity={100} tint={isDark ? 'dark' : 'light'} style={styles.totalCard}>
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.9)', 'rgba(52, 211, 153, 0.08)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.95)', 'rgba(59, 130, 246, 0.12)']
                 : ['rgba(59, 130, 246, 0.08)', 'rgba(16, 185, 129, 0.04)']}
               style={styles.totalGradient}
             />
@@ -287,8 +287,8 @@ export default function SubscriptionsScreen() {
             subscriptions.map((subscription) => (
             <BlurView key={subscription.id} intensity={70} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionCard}>
               <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                colors={isDark
+                  ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.subscriptionCardGradient}
               />
@@ -331,8 +331,8 @@ export default function SubscriptionsScreen() {
           ) : (
             <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.noSubscriptions}>
               <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                colors={isDark
+                  ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                   : ['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
                 style={styles.noSubscriptionsGradient}
               />
@@ -356,8 +356,8 @@ export default function SubscriptionsScreen() {
             
             <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
               <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                colors={isDark
+                  ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.insightCardGradient}
               />
@@ -373,8 +373,8 @@ export default function SubscriptionsScreen() {
             
             <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
               <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                colors={isDark
+                  ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.insightCardGradient}
               />

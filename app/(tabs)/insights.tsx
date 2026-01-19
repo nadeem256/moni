@@ -137,7 +137,7 @@ export default function InsightsScreen() {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <LinearGradient
-        colors={isDark ? ['#0F0F23', '#1A1A2E', '#16213E'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
+        colors={isDark ? ['#0A0B0F', '#12131A', '#0F1014'] : ['#F8FAFC', '#E2E8F0', '#CBD5E1']}
         style={styles.backgroundGradient}
       />
       
@@ -178,8 +178,8 @@ export default function InsightsScreen() {
           <View style={styles.overviewCards}>
             <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.overviewCard}>
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.95)', 'rgba(248, 113, 113, 0.1)']
                 : ['rgba(239, 68, 68, 0.08)', 'rgba(239, 68, 68, 0.04)']}
               style={styles.overviewGradient}
             />
@@ -199,8 +199,8 @@ export default function InsightsScreen() {
 
             <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.overviewCard}>
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.95)', 'rgba(52, 211, 153, 0.1)']
                 : ['rgba(16, 185, 129, 0.08)', 'rgba(16, 185, 129, 0.04)']}
               style={styles.overviewGradient}
             />
@@ -223,8 +223,8 @@ export default function InsightsScreen() {
         {/* Weekly Comparison */}
         <BlurView intensity={90} tint={isDark ? 'dark' : 'light'} style={styles.comparisonCard}>
             <LinearGradient
-              colors={isDark 
-                ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
+              colors={isDark
+                ? ['rgba(22, 24, 33, 0.95)', 'rgba(59, 130, 246, 0.12)']
                 : ['rgba(59, 130, 246, 0.05)', 'rgba(59, 130, 246, 0.02)']}
               style={styles.comparisonGradient}
             />
@@ -264,8 +264,8 @@ export default function InsightsScreen() {
         {/* Spending Chart */}
         <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.chartCard}>
           <LinearGradient
-            colors={isDark 
-              ? ['rgba(26, 26, 46, 0.9)', 'rgba(22, 33, 62, 0.7)'] 
+            colors={isDark
+              ? ['rgba(22, 24, 33, 0.95)', 'rgba(251, 191, 36, 0.1)']
               : ['rgba(245, 158, 11, 0.05)', 'rgba(245, 158, 11, 0.02)']}
             style={styles.chartGradient}
           />
@@ -276,8 +276,8 @@ export default function InsightsScreen() {
             
             <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.ringChart}>
                   <LinearGradient
-                    colors={isDark 
-                      ? ['rgba(26, 26, 46, 0.7)', 'rgba(22, 33, 62, 0.5)'] 
+                    colors={isDark
+                      ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                       : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                     style={styles.ringChartGradient}
                   />
@@ -294,8 +294,8 @@ export default function InsightsScreen() {
                   {topCategories.length > 0 ? topCategories.map((category, index) => (
                     <BlurView key={index} intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.categoryItem}>
                       <LinearGradient
-                        colors={isDark 
-                          ? ['rgba(26, 26, 46, 0.7)', 'rgba(22, 33, 62, 0.5)'] 
+                        colors={isDark
+                          ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                           : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                         style={styles.categoryItemGradient}
                       />
@@ -315,8 +315,8 @@ export default function InsightsScreen() {
                   )) : (
                     <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.noData}>
                       <LinearGradient
-                        colors={isDark 
-                          ? ['rgba(26, 26, 46, 0.7)', 'rgba(22, 33, 62, 0.5)'] 
+                        colors={isDark
+                          ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                           : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                         style={styles.noDataGradient}
                       />
@@ -337,8 +337,8 @@ export default function InsightsScreen() {
           {monthlyIncome > 0 && (
                 <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
                   <LinearGradient
-                    colors={isDark 
-                      ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                    colors={isDark
+                      ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                       : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                     style={styles.insightCardGradient}
                   />
@@ -353,8 +353,8 @@ export default function InsightsScreen() {
               {topCategories.length > 0 && (
                 <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
                   <LinearGradient
-                    colors={isDark 
-                      ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                    colors={isDark
+                      ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                       : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                     style={styles.insightCardGradient}
                   />
@@ -370,8 +370,8 @@ export default function InsightsScreen() {
               {weeklyChange !== 0 && (
                 <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
                   <LinearGradient
-                    colors={isDark 
-                      ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                    colors={isDark
+                      ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                       : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                     style={styles.insightCardGradient}
                   />
@@ -387,8 +387,8 @@ export default function InsightsScreen() {
               {monthlySpending === 0 && monthlyIncome === 0 && (
                 <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.insightCard}>
                   <LinearGradient
-                    colors={isDark 
-                      ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                    colors={isDark
+                      ? ['rgba(22, 24, 33, 0.9)', 'rgba(16, 18, 25, 0.8)']
                       : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                     style={styles.insightCardGradient}
                   />

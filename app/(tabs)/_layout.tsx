@@ -41,7 +41,7 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: {
           position: 'absolute',
-          backgroundColor: isDark ? 'rgba(10, 14, 26, 0.95)' : 'transparent',
+          backgroundColor: isDark ? 'rgba(10, 11, 15, 0.95)' : 'transparent',
           borderTopWidth: 0,
           paddingBottom: 16,
           paddingTop: 16,
