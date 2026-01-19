@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState } from 'react';
-import { X, DollarSign, ArrowUp, ArrowDown, Sparkles } from 'lucide-react-native';
+import { X, DollarSign, ArrowUp, ArrowDown, Sparkles, Calendar } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { useTransactions } from '../../hooks/useData';
 import { router } from 'expo-router';
@@ -14,6 +14,8 @@ export default function AddScreen() {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [description, setDescription] = useState('');
   const [saving, setSaving] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const { addTransaction } = useTransactions();
   const { theme, isDark } = useTheme();
@@ -32,14 +34,15 @@ export default function AddScreen() {
           amount: numericAmount,
           type: selectedType,
           category: selectedCategory,
-          date: new Date().toISOString(),
+          date: selectedDate.toISOString(),
           description: description || undefined,
         });
         
         setAmount('');
         setSelectedCategory('');
         setDescription('');
-        
+        setSelectedDate(new Date());
+
         router.push('/(tabs)');
       } catch (error) {
         console.error('Error saving transaction:', error);
@@ -55,6 +58,154 @@ export default function AddScreen() {
       setAmount('');
       setSelectedCategory('');
     }
+  };
+
+  const formatDate = (date: Date) => {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    if (date.toDateString() === today.toDateString()) {
+      return 'Today';
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      return 'Yesterday';
+    } else {
+      return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: date.getFullYear() !== today.getFullYear() ? 'numeric' : undefined
+      });
+    }
+  };
+
+  const DatePickerModal = () => {
+    const [tempDate, setTempDate] = useState(selectedDate);
+    const currentYear = new Date().getFullYear();
+    const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const daysInMonth = new Date(tempDate.getFullYear(), tempDate.getMonth() + 1, 0).getDate();
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
+
+    return (
+      <Modal visible={showDatePicker} transparent animationType="fade">
+        <View style={styles.modalOverlay}>
+          <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.dateModalContent}>
+            <LinearGradient
+              colors={isDark
+               ? ['rgba(26, 26, 46, 0.95)', 'rgba(22, 33, 62, 0.9)']
+                : ['rgba(255, 255, 255, 0.95)', 'rgba(248, 250, 252, 0.9)']}
+              style={styles.modalGradient}
+            />
+            <View style={styles.modalHeader}>
+              <Text style={[styles.modalTitle, { color: theme.colors.text }]}>Select Date</Text>
+              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.closeButtonContainer}>
+                <TouchableOpacity onPress={() => setShowDatePicker(false)} style={styles.closeButton}>
+                  <X size={24} color={theme.colors.textSecondary} />
+                </TouchableOpacity>
+              </BlurView>
+            </View>
+
+            <View style={styles.datePickerContent}>
+              <View style={styles.datePickerRow}>
+                <View style={styles.datePickerColumn}>
+                  <Text style={[styles.datePickerLabel, { color: theme.colors.textSecondary }]}>Month</Text>
+                  <ScrollView style={styles.datePickerScroll} showsVerticalScrollIndicator={false}>
+                    {months.map((month, index) => (
+                      <TouchableOpacity
+                        key={month}
+                        onPress={() => {
+                          const newDate = new Date(tempDate);
+                          newDate.setMonth(index);
+                          setTempDate(newDate);
+                        }}
+                        style={[
+                          styles.datePickerOption,
+                          tempDate.getMonth() === index && styles.datePickerOptionSelected
+                        ]}
+                      >
+                        <Text style={[
+                          styles.datePickerOptionText,
+                          { color: tempDate.getMonth() === index ? theme.colors.primary : theme.colors.text }
+                        ]}>
+                          {month}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+
+                <View style={styles.datePickerColumn}>
+                  <Text style={[styles.datePickerLabel, { color: theme.colors.textSecondary }]}>Day</Text>
+                  <ScrollView style={styles.datePickerScroll} showsVerticalScrollIndicator={false}>
+                    {days.map((day) => (
+                      <TouchableOpacity
+                        key={day}
+                        onPress={() => {
+                          const newDate = new Date(tempDate);
+                          newDate.setDate(day);
+                          setTempDate(newDate);
+                        }}
+                        style={[
+                          styles.datePickerOption,
+                          tempDate.getDate() === day && styles.datePickerOptionSelected
+                        ]}
+                      >
+                        <Text style={[
+                          styles.datePickerOptionText,
+                          { color: tempDate.getDate() === day ? theme.colors.primary : theme.colors.text }
+                        ]}>
+                          {day}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+
+                <View style={styles.datePickerColumn}>
+                  <Text style={[styles.datePickerLabel, { color: theme.colors.textSecondary }]}>Year</Text>
+                  <ScrollView style={styles.datePickerScroll} showsVerticalScrollIndicator={false}>
+                    {years.map((year) => (
+                      <TouchableOpacity
+                        key={year}
+                        onPress={() => {
+                          const newDate = new Date(tempDate);
+                          newDate.setFullYear(year);
+                          setTempDate(newDate);
+                        }}
+                        style={[
+                          styles.datePickerOption,
+                          tempDate.getFullYear() === year && styles.datePickerOptionSelected
+                        ]}
+                      >
+                        <Text style={[
+                          styles.datePickerOptionText,
+                          { color: tempDate.getFullYear() === year ? theme.colors.primary : theme.colors.text }
+                        ]}>
+                          {year}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              </View>
+
+              <TouchableOpacity
+                style={[styles.dateConfirmButton, { backgroundColor: theme.colors.primary }]}
+                onPress={() => {
+                  setSelectedDate(tempDate);
+                  setShowDatePicker(false);
+                }}
+              >
+                <Text style={styles.dateConfirmButtonText}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </BlurView>
+        </View>
+      </Modal>
+    );
   };
 
   return (
@@ -166,6 +317,35 @@ export default function AddScreen() {
           </BlurView>
         </View>
 
+        {/* Date Selection */}
+        <View style={styles.dateSection}>
+          <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Date</Text>
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.dateButton}>
+            <LinearGradient
+              colors={isDark
+               ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)']
+                : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
+              style={styles.dateButtonGradient}
+            />
+            <TouchableOpacity
+              style={styles.dateButtonContent}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <View style={styles.dateButtonLeft}>
+                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.calendarIcon}>
+                  <Calendar size={20} color={theme.colors.primary} />
+                </BlurView>
+                <Text style={[styles.dateButtonText, { color: theme.colors.text }]}>
+                  {formatDate(selectedDate)}
+                </Text>
+              </View>
+              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.dateArrow}>
+                <Text style={[styles.dateArrowText, { color: theme.colors.textSecondary }]}>›</Text>
+              </BlurView>
+            </TouchableOpacity>
+          </BlurView>
+        </View>
+
         {/* Category Selection */}
         <View style={styles.categorySection}>
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Category</Text>
@@ -239,6 +419,9 @@ export default function AddScreen() {
           </TouchableOpacity>
         </BlurView>
       </ScrollView>
+
+      {/* Date Picker Modal */}
+      <DatePickerModal />
 
       {/* Category Modal */}
       <Modal visible={showCategoryModal} transparent animationType="fade">
@@ -430,6 +613,116 @@ const styles = StyleSheet.create({
     fontSize: 42,
     fontWeight: '800',
     letterSpacing: -1.2,
+  },
+  dateSection: {
+    paddingHorizontal: 24,
+    marginBottom: 32,
+  },
+  dateButton: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  dateButtonGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  dateButtonContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 20,
+  },
+  dateButtonLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  calendarIcon: {
+    padding: 8,
+    borderRadius: 10,
+    overflow: 'hidden',
+    borderWidth: 0.5,
+    borderColor: 'rgba(59, 130, 246, 0.3)',
+  },
+  dateButtonText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  dateArrow: {
+    borderRadius: 8,
+    overflow: 'hidden',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  dateArrowText: {
+    fontSize: 18,
+    fontWeight: '600',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  dateModalContent: {
+    borderRadius: 24,
+    maxHeight: '80%',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.2,
+    shadowRadius: 32,
+    elevation: 16,
+  },
+  datePickerContent: {
+    padding: 24,
+  },
+  datePickerRow: {
+    flexDirection: 'row',
+    gap: 16,
+    marginBottom: 24,
+  },
+  datePickerColumn: {
+    flex: 1,
+  },
+  datePickerLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  datePickerScroll: {
+    maxHeight: 200,
+  },
+  datePickerOption: {
+    padding: 12,
+    alignItems: 'center',
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  datePickerOptionSelected: {
+    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+  },
+  datePickerOptionText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  dateConfirmButton: {
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  dateConfirmButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#FFFFFF',
   },
   categorySection: {
     paddingHorizontal: 24,
