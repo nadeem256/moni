@@ -252,12 +252,12 @@ export default function InsightsScreen() {
                   <TrendingDown size={16} color="#EF4444" />
                 )}
                 <Text style={[styles.changeText, { color: weeklyChange <= 0 ? '#10B981' : '#EF4444' }]}>
-                  {weeklyChange <= 0 
+                  {weeklyChange <= 0
                     ? `You saved $${Math.abs(weeklyChange).toFixed(2)} compared to last week`
                     : `You spent $${weeklyChange.toFixed(2)} more than last week`
                   }
                 </Text>
-              </BlurView>
+              </View>
             </View>
           </BlurView>
 
