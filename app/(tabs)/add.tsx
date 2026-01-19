@@ -14,7 +14,11 @@ export default function AddScreen() {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [description, setDescription] = useState('');
   const [saving, setSaving] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    return date;
+  });
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const { addTransaction } = useTransactions();
@@ -30,18 +34,23 @@ export default function AddScreen() {
     if (amount && selectedCategory && !saving && !isNaN(numericAmount) && numericAmount > 0) {
       setSaving(true);
       try {
+        const dateToSave = new Date(selectedDate);
+        dateToSave.setHours(12, 0, 0, 0);
+
         await addTransaction({
           amount: numericAmount,
           type: selectedType,
           category: selectedCategory,
-          date: selectedDate.toISOString(),
+          date: dateToSave.toISOString(),
           description: description || undefined,
         });
         
         setAmount('');
         setSelectedCategory('');
         setDescription('');
-        setSelectedDate(new Date());
+        const resetDate = new Date();
+        resetDate.setHours(12, 0, 0, 0);
+        setSelectedDate(resetDate);
 
         router.push('/(tabs)');
       } catch (error) {
@@ -79,7 +88,11 @@ export default function AddScreen() {
   };
 
   const DatePickerModal = () => {
-    const [tempDate, setTempDate] = useState(selectedDate);
+    const [tempDate, setTempDate] = useState(() => {
+      const date = new Date(selectedDate);
+      date.setHours(12, 0, 0, 0);
+      return date;
+    });
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
     const months = [
@@ -119,6 +132,7 @@ export default function AddScreen() {
                         onPress={() => {
                           const newDate = new Date(tempDate);
                           newDate.setMonth(index);
+                          newDate.setHours(12, 0, 0, 0);
                           setTempDate(newDate);
                         }}
                         style={[
@@ -146,6 +160,7 @@ export default function AddScreen() {
                         onPress={() => {
                           const newDate = new Date(tempDate);
                           newDate.setDate(day);
+                          newDate.setHours(12, 0, 0, 0);
                           setTempDate(newDate);
                         }}
                         style={[
@@ -173,6 +188,7 @@ export default function AddScreen() {
                         onPress={() => {
                           const newDate = new Date(tempDate);
                           newDate.setFullYear(year);
+                          newDate.setHours(12, 0, 0, 0);
                           setTempDate(newDate);
                         }}
                         style={[
