@@ -39,21 +39,29 @@ export default function HomeScreen() {
 
   const formatRenewalDate = (dateString: string) => {
     const date = new Date(dateString);
+    date.setHours(0, 0, 0, 0);
+
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const diffTime = date.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 0) return 'Today';
     if (diffDays === 1) return 'Tomorrow';
     if (diffDays <= 7) return `In ${diffDays} days`;
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
-  // Get upcoming subscriptions (next 7 days)
+  // Get upcoming subscriptions (next 30 days)
   const upcomingSubscriptions = subscriptions
     .filter(sub => {
       const renewDate = new Date(sub.renewDate);
+      renewDate.setHours(0, 0, 0, 0);
+
       const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
       const diffTime = renewDate.getTime() - today.getTime();
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       return diffDays >= 0 && diffDays <= 30; // Show subscriptions renewing in next 30 days
