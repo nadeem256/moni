@@ -308,9 +308,9 @@ export default function AddScreen() {
         <View style={styles.typeSection}>
           <View style={styles.headerContent}>
             <Text style={[styles.title, { color: theme.colors.text }]}>Add Transaction</Text>
-            <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.sparkleContainer}>
+            <View style={[styles.sparkleContainer, { backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.1)' }]}>
               <Sparkles size={20} color={theme.colors.primary} />
-            </BlurView>
+            </View>
           </View>
           
           <Text style={[styles.sectionLabel, { color: theme.colors.text }]}>Transaction Type</Text>
@@ -382,9 +382,9 @@ export default function AddScreen() {
               style={styles.amountGradient}
             />
             <View style={styles.amountInputContent}>
-              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.dollarContainer}>
+              <View style={[styles.dollarContainer, { backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.1)' }]}>
                 <DollarSign size={32} color={theme.colors.primary} />
-              </BlurView>
+              </View>
               <TextInput
                 style={[styles.amountText, { color: theme.colors.text }]}
                 value={amount}
@@ -412,16 +412,16 @@ export default function AddScreen() {
               onPress={() => setShowDatePicker(true)}
             >
               <View style={styles.dateButtonLeft}>
-                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.calendarIcon}>
+                <View style={[styles.calendarIcon, { backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.1)' }]}>
                   <Calendar size={20} color={theme.colors.primary} />
-                </BlurView>
+                </View>
                 <Text style={[styles.dateButtonText, { color: theme.colors.text }]}>
                   {formatDate(selectedDate)}
                 </Text>
               </View>
-              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.dateArrow}>
+              <View style={[styles.dateArrow, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }]}>
                 <Text style={[styles.dateArrowText, { color: theme.colors.textSecondary }]}>›</Text>
-              </BlurView>
+              </View>
             </TouchableOpacity>
           </BlurView>
         </View>
@@ -441,14 +441,14 @@ export default function AddScreen() {
               onPress={() => setShowCategoryModal(true)}
             >
               <Text style={[
-                styles.categoryButtonText, 
+                styles.categoryButtonText,
                 { color: selectedCategory ? theme.colors.text : theme.colors.textSecondary }
               ]}>
                 {selectedCategory || 'Select Category'}
               </Text>
-              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.categoryArrow}>
+              <View style={[styles.categoryArrow, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }]}>
                 <Text style={[styles.categoryArrowText, { color: theme.colors.textSecondary }]}>›</Text>
-              </BlurView>
+              </View>
             </TouchableOpacity>
           </BlurView>
         </View>
@@ -614,9 +614,6 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(59, 130, 246, 0.3)',
   },
   typeSection: {
     paddingHorizontal: 24,
@@ -710,14 +707,6 @@ const styles = StyleSheet.create({
   dollarContainer: {
     padding: 16,
     borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(59, 130, 246, 0.4)',
-    shadowColor: '#3B82F6',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    elevation: 2,
   },
   amountText: {
     flex: 1,
@@ -761,9 +750,6 @@ const styles = StyleSheet.create({
   calendarIcon: {
     padding: 8,
     borderRadius: 10,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(59, 130, 246, 0.3)',
   },
   dateButtonText: {
     fontSize: 16,
@@ -771,15 +757,12 @@ const styles = StyleSheet.create({
   },
   dateArrow: {
     borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   dateArrowText: {
     fontSize: 18,
     fontWeight: '600',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
   },
   dateModalContent: {
     borderRadius: 24,
@@ -869,15 +852,12 @@ const styles = StyleSheet.create({
   },
   categoryArrow: {
     borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
   categoryArrowText: {
     fontSize: 18,
     fontWeight: '600',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
   },
   descriptionSection: {
     paddingHorizontal: 24,

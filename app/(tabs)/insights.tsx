@@ -159,13 +159,13 @@ export default function InsightsScreen() {
             <View>
               <Text style={[styles.title, { color: theme.colors.text }]}>Insights</Text>
               <TouchableOpacity onPress={() => setShowRangeModal(true)}>
-                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.subtitleContainer}>
+                <View style={[styles.subtitleContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }]}>
                   <Calendar size={16} color={theme.colors.primary} />
                   <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>
                     {getDateRangeLabel(selectedRange)}
                   </Text>
                   <ChevronDown size={16} color={theme.colors.textSecondary} />
-                </BlurView>
+                </View>
               </TouchableOpacity>
             </View>
             <TouchableOpacity onPress={() => router.push('/transaction-history')}>
@@ -185,15 +185,15 @@ export default function InsightsScreen() {
             />
             <View style={styles.overviewCardContent}>
               <View style={styles.overviewHeader}>
-                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.overviewIconContainer}>
+                <View style={[styles.overviewIconContainer, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.15)' : 'rgba(239, 68, 68, 0.1)' }]}>
                   <TrendingDown size={18} color="#EF4444" />
-                </BlurView>
+                </View>
                 <Text style={[styles.overviewLabel, { color: theme.colors.textSecondary }]}>Total Spent</Text>
               </View>
               <Text style={[styles.overviewAmount, { color: theme.colors.text }]}>${monthlySpending.toFixed(2)}</Text>
-              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.overviewSubtextContainer}>
+              <View style={[styles.overviewSubtextContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.03)' }]}>
                 <Text style={[styles.overviewSubtext, { color: theme.colors.textSecondary }]}>This month</Text>
-              </BlurView>
+              </View>
             </View>
             </BlurView>
 
@@ -206,15 +206,15 @@ export default function InsightsScreen() {
             />
             <View style={styles.overviewCardContent}>
               <View style={styles.overviewHeader}>
-                <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.overviewIconContainer}>
+                <View style={[styles.overviewIconContainer, { backgroundColor: isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)' }]}>
                   <TrendingUp size={18} color="#10B981" />
-                </BlurView>
+                </View>
                 <Text style={[styles.overviewLabel, { color: theme.colors.textSecondary }]}>Savings Rate</Text>
               </View>
               <Text style={[styles.overviewAmount, { color: '#10B981' }]}>{savingsRate.toFixed(0)}%</Text>
-              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.overviewSubtextContainer}>
+              <View style={[styles.overviewSubtextContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.03)' }]}>
                 <Text style={[styles.overviewSubtext, { color: theme.colors.textSecondary }]}>Of income</Text>
-              </BlurView>
+              </View>
             </View>
             </BlurView>
           </View>
@@ -232,20 +232,20 @@ export default function InsightsScreen() {
               <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Week Comparison</Text>
               <View style={styles.comparisonContent}>
                 <View style={styles.comparisonItem}>
-                  <BlurView intensity={40} tint="light" style={styles.comparisonLabelContainer}>
+                  <View style={[styles.comparisonLabelContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }]}>
                     <Text style={[styles.comparisonLabel, { color: theme.colors.textSecondary }]}>This Week</Text>
-                  </BlurView>
+                  </View>
                   <Text style={[styles.comparisonAmount, { color: theme.colors.text }]}>${thisWeekSpending.toFixed(2)}</Text>
                 </View>
                 <View style={[styles.comparisonDivider, { backgroundColor: theme.colors.border }]} />
                 <View style={styles.comparisonItem}>
-                  <BlurView intensity={40} tint="light" style={styles.comparisonLabelContainer}>
+                  <View style={[styles.comparisonLabelContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }]}>
                     <Text style={[styles.comparisonLabel, { color: theme.colors.textSecondary }]}>Last Week</Text>
-                  </BlurView>
+                  </View>
                   <Text style={[styles.comparisonAmount, { color: theme.colors.text }]}>${lastWeekSpending.toFixed(2)}</Text>
                 </View>
               </View>
-              <BlurView intensity={50} tint="light" style={styles.changeIndicator}>
+              <View style={[styles.changeIndicator, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.03)' }]}>
                 {weeklyChange <= 0 ? (
                   <TrendingUp size={16} color="#10B981" />
                 ) : (
@@ -282,11 +282,11 @@ export default function InsightsScreen() {
                     style={styles.ringChartGradient}
                   />
                   <View style={styles.ringChartContent}>
-                    <BlurView intensity={40} tint="light" style={styles.ringChartInner}>
+                    <View style={[styles.ringChartInner, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.03)' }]}>
                       <DollarSign size={24} color={theme.colors.primary} />
                       <Text style={[styles.ringChartAmount, { color: theme.colors.text }]}>{formatCurrency(monthlySpending)}</Text>
                       <Text style={[styles.ringChartLabel, { color: theme.colors.textSecondary }]}>Total Spent</Text>
-                    </BlurView>
+                    </View>
                   </View>
                 </BlurView>
                 
@@ -306,9 +306,9 @@ export default function InsightsScreen() {
                         </View>
                         <View style={styles.categoryRight}>
                           <Text style={[styles.categoryAmount, { color: theme.colors.text }]}>${category.amount.toFixed(2)}</Text>
-                          <BlurView intensity={30} tint="light" style={styles.categoryPercentageContainer}>
+                          <View style={[styles.categoryPercentageContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }]}>
                             <Text style={[styles.categoryPercentage, { color: theme.colors.textSecondary }]}>{category.percentage}%</Text>
-                          </BlurView>
+                          </View>
                         </View>
                       </View>
                     </BlurView>
@@ -480,10 +480,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
-    overflow: 'hidden',
     gap: 6,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   subtitle: {
     fontSize: 14,
@@ -553,15 +550,7 @@ const styles = StyleSheet.create({
   },
   overviewIconContainer: {
     borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
     padding: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 1,
   },
   overviewLabel: {
     fontSize: 13,
@@ -579,20 +568,12 @@ const styles = StyleSheet.create({
   overviewSubtextContainer: {
     alignSelf: 'flex-start',
     borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   },
   overviewSubtext: {
     fontSize: 11,
     fontWeight: '600',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
     letterSpacing: 0.2,
     opacity: 0.9,
   },
@@ -635,15 +616,12 @@ const styles = StyleSheet.create({
   },
   comparisonLabelContainer: {
     borderRadius: 8,
-    overflow: 'hidden',
     marginBottom: 8,
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
   },
   comparisonLabel: {
     fontSize: 14,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
   },
   comparisonAmount: {
     fontSize: 20,
@@ -659,9 +637,6 @@ const styles = StyleSheet.create({
     gap: 8,
     padding: 16,
     borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   changeText: {
     fontSize: 14,
@@ -726,7 +701,6 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'hidden',
     gap: 4,
   },
   ringChartAmount: {
@@ -782,14 +756,11 @@ const styles = StyleSheet.create({
   },
   categoryPercentageContainer: {
     borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
   },
   categoryPercentage: {
     fontSize: 12,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
   },
   noData: {
     borderRadius: 12,

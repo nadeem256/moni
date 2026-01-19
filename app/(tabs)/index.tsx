@@ -138,12 +138,12 @@ export default function HomeScreen() {
               <Text style={[styles.balanceLabel, { color: theme.colors.textSecondary }]}>Total Balance</Text>
               <Text style={[styles.balanceAmount, { color: theme.colors.text }]}>{formatCurrency(balance)}</Text>
               <View style={styles.balanceInsight}>
-                <BlurView intensity={40} tint="light" style={styles.insightPill}>
+                <View style={[styles.insightPill, { backgroundColor: isDark ? 'rgba(52, 211, 153, 0.15)' : 'rgba(52, 211, 153, 0.1)' }]}>
                   <TrendingUp size={14} color="#34D399" />
                   <Text style={[styles.insightText, { color: theme.colors.success }]}>
                     +2.4% this month
                   </Text>
-                </BlurView>
+                </View>
               </View>
             </View>
           </BlurView>
@@ -188,11 +188,9 @@ export default function HomeScreen() {
         <View style={styles.subscriptionsSection}>
           <View style={styles.sectionHeader}>
             <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Upcoming</Text>
-            <BlurView intensity={40} tint="light" style={styles.viewAllButton}>
-              <TouchableOpacity style={styles.viewAllContent} onPress={() => router.push('/(tabs)/subscriptions')}>
-                <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>View All</Text>
-              </TouchableOpacity>
-            </BlurView>
+            <TouchableOpacity style={[styles.viewAllButton, { backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : 'rgba(59, 130, 246, 0.1)' }]} onPress={() => router.push('/(tabs)/subscriptions')}>
+              <Text style={[styles.viewAllText, { color: theme.colors.primary }]}>View All</Text>
+            </TouchableOpacity>
           </View>
 
           {upcomingSubscriptions.length > 0 ? upcomingSubscriptions.map((subscription, index) => (
@@ -205,21 +203,19 @@ export default function HomeScreen() {
               />
               <View style={styles.subscriptionContent}>
                 <View style={styles.subscriptionLeft}>
-                  <BlurView intensity={30} tint="light" style={styles.subscriptionIconContainer}>
-                    <View style={[styles.subscriptionIcon, { backgroundColor: subscription.color }]}>
-                      <Text style={styles.subscriptionIconText}>
-                        {subscription.name.charAt(0)}
-                      </Text>
-                    </View>
-                  </BlurView>
+                  <View style={[styles.subscriptionIcon, { backgroundColor: subscription.color }]}>
+                    <Text style={styles.subscriptionIconText}>
+                      {subscription.name.charAt(0)}
+                    </Text>
+                  </View>
                   <View style={styles.subscriptionInfo}>
                     <Text style={[styles.subscriptionName, { color: theme.colors.text }]}>{subscription.name}</Text>
                     <Text style={[styles.subscriptionDate, { color: theme.colors.textSecondary }]}>{subscription.renewDate}</Text>
                   </View>
                 </View>
-                <BlurView intensity={30} tint="light" style={styles.amountContainer}>
+                <View style={[styles.amountContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)' }]}>
                   <Text style={[styles.subscriptionAmount, { color: theme.colors.text }]}>${subscription.amount}</Text>
-                </BlurView>
+                </View>
               </View>
             </BlurView>
           )) : (
@@ -328,14 +324,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 16,
     gap: 6,
-    borderWidth: 0.5,
-    borderColor: 'rgba(52, 211, 153, 0.3)',
-    shadowColor: '#10B981',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 2,
-    overflow: 'hidden',
   },
   insightText: {
     fontSize: 13,
@@ -408,16 +396,6 @@ const styles = StyleSheet.create({
   },
   viewAllButton: {
     borderRadius: 20,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(59, 130, 246, 0.4)',
-    shadowColor: '#3B82F6',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  viewAllContent: {
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
@@ -457,17 +435,6 @@ const styles = StyleSheet.create({
     gap: 20,
     flex: 1,
   },
-  subscriptionIconContainer: {
-    borderRadius: 18,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
   subscriptionIcon: {
     width: 52,
     height: 52,
@@ -497,20 +464,12 @@ const styles = StyleSheet.create({
   },
   amountContainer: {
     borderRadius: 16,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 1,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
   subscriptionAmount: {
     fontSize: 17,
     fontWeight: '800',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
     letterSpacing: -0.2,
   },
   emptyState: {

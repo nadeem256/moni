@@ -237,9 +237,9 @@ export default function SubscriptionsScreen() {
           <View style={styles.headerContent}>
             <View>
               <Text style={[styles.title, { color: theme.colors.text }]}>Subscriptions</Text>
-              <BlurView intensity={40} tint={theme.isDark ? 'dark' : 'light'} style={styles.subtitleContainer}>
+              <View style={[styles.subtitleContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)' }]}>
                 <Text style={[styles.subtitle, { color: theme.colors.textSecondary }]}>{subscriptions.length} active</Text>
-              </BlurView>
+              </View>
             </View>
             <BlurView intensity={80} tint={theme.isDark ? 'dark' : 'light'} style={styles.addButton}>
               <TouchableOpacity 
@@ -265,18 +265,18 @@ export default function SubscriptionsScreen() {
               style={styles.totalGradient}
             />
             <View style={styles.totalCardContent}>
-              <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.totalLabelContainer}>
+              <View style={[styles.totalLabelContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)' }]}>
                 <Text style={[styles.totalLabel, { color: theme.colors.textSecondary }]}>Monthly Total</Text>
-              </BlurView>
+              </View>
               <Text style={[styles.totalAmount, { color: theme.colors.text }]}>${totalMonthly.toFixed(2)}</Text>
-              <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.totalSubtextContainer}>
+              <View style={[styles.totalSubtextContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.03)' }]}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                   <Sparkles size={14} color="#34D399" />
                   <Text style={[styles.totalSubtext, { color: theme.colors.textSecondary }]}>
                     Across {subscriptions.length} subscriptions
                   </Text>
                 </View>
-              </BlurView>
+              </View>
             </View>
           </BlurView>
         </View>
@@ -294,36 +294,32 @@ export default function SubscriptionsScreen() {
               />
               <View style={styles.subscriptionCardContent}>
                 <View style={styles.subscriptionLeft}>
-                  <BlurView intensity={50} tint={isDark ? 'dark' : 'light'} style={styles.subscriptionIconContainer}>
-                    <View style={[styles.subscriptionIcon, { backgroundColor: subscription.color }]}>
-                      <Text style={styles.subscriptionIconText}>
-                        {subscription.name.charAt(0)}
-                      </Text>
-                    </View>
-                  </BlurView>
+                  <View style={[styles.subscriptionIcon, { backgroundColor: subscription.color }]}>
+                    <Text style={styles.subscriptionIconText}>
+                      {subscription.name.charAt(0)}
+                    </Text>
+                  </View>
                   <View style={styles.subscriptionInfo}>
                     <Text style={[styles.subscriptionName, { color: theme.colors.text }]}>{subscription.name}</Text>
-                    <BlurView intensity={30} tint={isDark ? 'dark' : 'light'} style={styles.categoryContainer}>
+                    <View style={[styles.categoryContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)' }]}>
                       <Text style={[styles.subscriptionCategory, { color: theme.colors.textSecondary }]}>{subscription.category}</Text>
-                    </BlurView>
+                    </View>
                   </View>
                 </View>
                 <View style={styles.subscriptionRight}>
-                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.amountContainer}>
+                  <View style={[styles.amountContainer, { backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)' }]}>
                     <Text style={[styles.subscriptionAmount, { color: theme.colors.text }]}>${subscription.amount}</Text>
-                  </BlurView>
+                  </View>
                   <View style={styles.renewalInfo}>
                     <Calendar size={14} color={theme.colors.textSecondary} />
                     <Text style={[styles.renewalDate, { color: theme.colors.textSecondary }]}>{formatDate(subscription.renewDate)}</Text>
                   </View>
-                  <BlurView intensity={40} tint={isDark ? 'dark' : 'light'} style={styles.deleteButton}>
-                    <TouchableOpacity 
-                      style={styles.deleteButtonContent}
-                      onPress={() => handleDeleteSubscription(subscription.id, subscription.name)}
-                    >
-                      <Trash2 size={16} color="#EF4444" />
-                    </TouchableOpacity>
-                  </BlurView>
+                  <TouchableOpacity
+                    style={[styles.deleteButton, { backgroundColor: isDark ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.08)' }]}
+                    onPress={() => handleDeleteSubscription(subscription.id, subscription.name)}
+                  >
+                    <Trash2 size={16} color="#EF4444" />
+                  </TouchableOpacity>
                 </View>
               </View>
             </BlurView>
@@ -805,21 +801,13 @@ const styles = StyleSheet.create({
   },
   totalLabelContainer: {
     borderRadius: 20,
-    overflow: 'hidden',
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
   },
   totalLabel: {
     fontSize: 15,
     fontWeight: '600',
-    paddingHorizontal: 20,
-    paddingVertical: 8,
     letterSpacing: 0.5,
     textTransform: 'uppercase',
     opacity: 0.8,
@@ -836,15 +824,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 24,
-    overflow: 'hidden',
     gap: 10,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.25)',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 6,
-    elevation: 2,
   },
   totalSubtext: {
     fontSize: 13,
@@ -889,12 +869,6 @@ const styles = StyleSheet.create({
     gap: 16,
     flex: 1,
   },
-  subscriptionIconContainer: {
-    borderRadius: 16,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
-  },
   subscriptionIcon: {
     width: 48,
     height: 48,
@@ -933,15 +907,12 @@ const styles = StyleSheet.create({
   },
   amountContainer: {
     borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
   },
   subscriptionAmount: {
     fontSize: 18,
     fontWeight: '700',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
   },
   renewalInfo: {
     flexDirection: 'row',
@@ -953,12 +924,7 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     borderRadius: 8,
-    overflow: 'hidden',
-    borderWidth: 0.5,
-    borderColor: 'rgba(239, 68, 68, 0.3)',
     marginTop: 4,
-  },
-  deleteButtonContent: {
     padding: 6,
     alignItems: 'center',
     justifyContent: 'center',
