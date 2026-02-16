@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Platform } from 'react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
-import { ArrowLeft, RotateCcw, Bell, Shield, Circle as HelpCircle, Download, Crown, ChevronRight, LogOut } from 'lucide-react-native';
+import { ArrowLeft, RotateCcw, Bell, Shield, Circle as HelpCircle, Download, Crown, ChevronRight, LogOut, FileText, Scale } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { usePremium } from '../contexts/PremiumContext';
@@ -272,6 +272,39 @@ export default function SettingsScreen() {
         </View>
 
         {/* Subscription Section - Only show if user has premium */}
+
+        {/* Legal Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Legal</Text>
+
+          <TouchableOpacity
+            style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
+            onPress={() => router.push('/privacy-policy')}
+          >
+            <View style={styles.settingLeft}>
+              <Shield size={20} color={theme.colors.textSecondary} />
+              <View style={styles.settingInfo}>
+                <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Privacy Policy</Text>
+                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>How we handle your data</Text>
+              </View>
+            </View>
+            <ChevronRight size={20} color={theme.colors.textSecondary} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
+            onPress={() => router.push('/terms-of-service')}
+          >
+            <View style={styles.settingLeft}>
+              <FileText size={20} color={theme.colors.textSecondary} />
+              <View style={styles.settingInfo}>
+                <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Terms of Service</Text>
+                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>App usage terms and conditions</Text>
+              </View>
+            </View>
+            <ChevronRight size={20} color={theme.colors.textSecondary} />
+          </TouchableOpacity>
+        </View>
 
         {/* Support Section */}
         <View style={styles.section}>
