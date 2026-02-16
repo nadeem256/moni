@@ -12,8 +12,9 @@ export default function SignInScreen() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  const { signIn } = useAuth();
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const { signIn, signInWithGoogle } = useAuth();
   const { theme, isDark } = useTheme();
 
   const handleSignIn = async () => {
@@ -30,6 +31,18 @@ export default function SignInScreen() {
       Alert.alert('Sign In Failed', error.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    try {
+      await signInWithGoogle();
+      router.replace('/(tabs)');
+    } catch (error: any) {
+      Alert.alert('Google Sign In Failed', error.message);
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -129,6 +142,35 @@ export default function SignInScreen() {
                   {loading ? 'Signing In...' : 'Sign In'}
                 </Text>
                 {!loading && <ArrowRight size={20} color="#FFFFFF" />}
+              </View>
+            </TouchableOpacity>
+          </BlurView>
+
+          {/* Divider */}
+          <View style={styles.dividerContainer}>
+            <View style={[styles.divider, { backgroundColor: theme.colors.border }]} />
+            <Text style={[styles.dividerText, { color: theme.colors.textSecondary }]}>or</Text>
+            <View style={[styles.divider, { backgroundColor: theme.colors.border }]} />
+          </View>
+
+          {/* Google Sign In Button */}
+          <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.googleButton}>
+            <TouchableOpacity
+              style={[styles.googleButtonContent, googleLoading && styles.buttonDisabled]}
+              onPress={handleGoogleSignIn}
+              disabled={googleLoading}
+            >
+              <LinearGradient
+                colors={isDark
+                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)']
+                  : ['rgba(255, 255, 255, 0.9)', 'rgba(248, 250, 252, 0.7)']}
+                style={styles.googleButtonGradient}
+              />
+              <View style={styles.googleButtonInner}>
+                <Text style={[styles.googleIcon]}>G</Text>
+                <Text style={[styles.googleButtonText, { color: theme.colors.text }]}>
+                  {googleLoading ? 'Signing in...' : 'Continue with Google'}
+                </Text>
               </View>
             </TouchableOpacity>
           </BlurView>
@@ -249,6 +291,50 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#FFFFFF',
+  },
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  divider: {
+    flex: 1,
+    height: 1,
+  },
+  dividerText: {
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  googleButton: {
+    borderRadius: 16,
+    overflow: 'hidden',
+    borderWidth: 0.5,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+  },
+  googleButtonContent: {
+    padding: 18,
+  },
+  googleButtonGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  googleButtonInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 12,
+  },
+  googleIcon: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#4285F4',
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
   signUpContainer: {
     flexDirection: 'row',
