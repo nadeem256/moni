@@ -1,11 +1,14 @@
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react-native';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Check, Square } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTheme } from '../../contexts/ThemeContext';
+
+const SAVED_EMAIL_KEY = '@moni_saved_email';
 
 export default function SignInScreen() {
   const [email, setEmail] = useState('');
@@ -13,9 +16,41 @@ export default function SignInScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const { signIn, signInWithGoogle } = useAuth();
   const { theme, isDark } = useTheme();
+
+  useEffect(() => {
+    loadSavedEmail();
+  }, []);
+
+  const loadSavedEmail = async () => {
+    try {
+      const savedEmail = await AsyncStorage.getItem(SAVED_EMAIL_KEY);
+      if (savedEmail) {
+        setEmail(savedEmail);
+        setRememberMe(true);
+      }
+    } catch (error) {
+      console.error('Failed to load saved email:', error);
+    }
+  };
+
+  const toggleRememberMe = async () => {
+    const newValue = !rememberMe;
+    setRememberMe(newValue);
+
+    try {
+      if (newValue && email) {
+        await AsyncStorage.setItem(SAVED_EMAIL_KEY, email);
+      } else {
+        await AsyncStorage.removeItem(SAVED_EMAIL_KEY);
+      }
+    } catch (error) {
+      console.error('Failed to save email preference:', error);
+    }
+  };
 
   const handleSignIn = async () => {
     if (!email || !password) {
@@ -26,6 +61,13 @@ export default function SignInScreen() {
     setLoading(true);
     try {
       await signIn(email, password);
+
+      if (rememberMe) {
+        await AsyncStorage.setItem(SAVED_EMAIL_KEY, email);
+      } else {
+        await AsyncStorage.removeItem(SAVED_EMAIL_KEY);
+      }
+
       router.replace('/(tabs)');
     } catch (error: any) {
       Alert.alert('Sign In Failed', error.message);
@@ -98,8 +140,8 @@ export default function SignInScreen() {
             <Text style={[styles.inputLabel, { color: theme.colors.text }]}>Password</Text>
             <BlurView intensity={60} tint={isDark ? 'dark' : 'light'} style={styles.inputContainer}>
               <LinearGradient
-                colors={isDark 
-                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)'] 
+                colors={isDark
+                  ? ['rgba(26, 26, 46, 0.8)', 'rgba(22, 33, 62, 0.6)']
                   : ['rgba(255, 255, 255, 0.8)', 'rgba(248, 250, 252, 0.6)']}
                 style={styles.inputGradient}
               />
@@ -125,6 +167,30 @@ export default function SignInScreen() {
               </View>
             </BlurView>
           </View>
+
+          {/* Remember Me Checkbox */}
+          <TouchableOpacity
+            style={styles.rememberMeContainer}
+            onPress={toggleRememberMe}
+            activeOpacity={0.7}
+          >
+            <View style={[
+              styles.checkbox,
+              {
+                backgroundColor: rememberMe
+                  ? theme.colors.primary
+                  : 'transparent',
+                borderColor: rememberMe
+                  ? theme.colors.primary
+                  : theme.colors.border
+              }
+            ]}>
+              {rememberMe && <Check size={16} color="#FFFFFF" strokeWidth={3} />}
+            </View>
+            <Text style={[styles.rememberMeText, { color: theme.colors.text }]}>
+              Remember my email
+            </Text>
+          </TouchableOpacity>
 
           {/* Sign In Button */}
           <BlurView intensity={80} tint={isDark ? 'dark' : 'light'} style={styles.signInButton}>
@@ -255,6 +321,24 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     fontSize: 16,
+  },
+  rememberMeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 4,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 6,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  rememberMeText: {
+    fontSize: 15,
+    fontWeight: '500',
   },
   signInButton: {
     borderRadius: 16,
