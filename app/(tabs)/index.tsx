@@ -32,10 +32,28 @@ const getWelcomeMessage = () => {
 
 export default function HomeScreen() {
   const { balance, refreshBalance } = useBalance();
-  const { todaySpending, monthlySpending, refreshAnalytics } = useAnalytics();
+  const { todaySpending, monthlySpending, previousMonthSpending, refreshAnalytics } = useAnalytics();
   const { subscriptions, refreshSubscriptions } = useSubscriptions();
   const { theme, isDark } = useTheme();
   const [refreshing, setRefreshing] = useState(false);
+
+  // Calculate month-over-month change
+  const calculateMonthlyChange = () => {
+    if (previousMonthSpending === 0) {
+      if (monthlySpending > 0) {
+        return { percentage: 100, isIncrease: true };
+      }
+      return null;
+    }
+
+    const change = ((monthlySpending - previousMonthSpending) / previousMonthSpending) * 100;
+    return {
+      percentage: Math.abs(change),
+      isIncrease: change > 0,
+    };
+  };
+
+  const monthlyChange = calculateMonthlyChange();
 
   const formatRenewalDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -137,14 +155,30 @@ export default function HomeScreen() {
             <View style={styles.heroContent}>
               <Text style={[styles.balanceLabel, { color: theme.colors.textSecondary }]}>Total Balance</Text>
               <Text style={[styles.balanceAmount, { color: theme.colors.text }]}>{formatCurrency(balance)}</Text>
-              <View style={styles.balanceInsight}>
-                <View style={[styles.insightPill, { backgroundColor: isDark ? 'rgba(52, 211, 153, 0.15)' : 'rgba(52, 211, 153, 0.1)' }]}>
-                  <TrendingUp size={14} color="#34D399" />
-                  <Text style={[styles.insightText, { color: theme.colors.success }]}>
-                    +2.4% this month
-                  </Text>
+              {monthlyChange && (
+                <View style={styles.balanceInsight}>
+                  <View style={[
+                    styles.insightPill,
+                    {
+                      backgroundColor: monthlyChange.isIncrease
+                        ? (isDark ? 'rgba(239, 68, 68, 0.15)' : 'rgba(239, 68, 68, 0.1)')
+                        : (isDark ? 'rgba(52, 211, 153, 0.15)' : 'rgba(52, 211, 153, 0.1)')
+                    }
+                  ]}>
+                    {monthlyChange.isIncrease ? (
+                      <TrendingUp size={14} color="#EF4444" />
+                    ) : (
+                      <TrendingDown size={14} color="#34D399" />
+                    )}
+                    <Text style={[
+                      styles.insightText,
+                      { color: monthlyChange.isIncrease ? theme.colors.error : theme.colors.success }
+                    ]}>
+                      {monthlyChange.isIncrease ? '+' : '-'}{monthlyChange.percentage.toFixed(1)}% this month
+                    </Text>
+                  </View>
                 </View>
-              </View>
+              )}
             </View>
           </BlurView>
         </View>

@@ -1,17 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
-import { 
-  Transaction, 
-  Subscription, 
-  getTransactions, 
-  getSubscriptions, 
-  getBalance, 
-  saveTransaction, 
-  saveSubscription, 
-  deleteTransaction, 
+import {
+  Transaction,
+  Subscription,
+  getTransactions,
+  getSubscriptions,
+  getBalance,
+  saveTransaction,
+  saveSubscription,
+  deleteTransaction,
   deleteSubscription,
   getMonthlySpending,
   getTodaySpending,
-  getCategorySpending
+  getCategorySpending,
+  getPreviousMonthSpending
 } from '../utils/supabaseStorage';
 
 export const useTransactions = () => {
@@ -140,19 +141,22 @@ export const useBalance = () => {
 
 export const useAnalytics = (startDate?: Date, endDate?: Date) => {
   const [monthlySpending, setMonthlySpending] = useState(0);
+  const [previousMonthSpending, setPreviousMonthSpending] = useState(0);
   const [todaySpending, setTodaySpending] = useState(0);
   const [categorySpending, setCategorySpending] = useState<{ [category: string]: number }>({});
   const [loading, setLoading] = useState(true);
 
   const loadAnalytics = useCallback(async () => {
     try {
-      const [monthly, today, categories] = await Promise.all([
+      const [monthly, previousMonthly, today, categories] = await Promise.all([
         getMonthlySpending(startDate, endDate),
+        getPreviousMonthSpending(),
         getTodaySpending(),
         getCategorySpending(startDate, endDate)
       ]);
 
       setMonthlySpending(monthly);
+      setPreviousMonthSpending(previousMonthly);
       setTodaySpending(today);
       setCategorySpending(categories);
     } catch (error) {
@@ -168,6 +172,7 @@ export const useAnalytics = (startDate?: Date, endDate?: Date) => {
 
   return {
     monthlySpending,
+    previousMonthSpending,
     todaySpending,
     categorySpending,
     loading,

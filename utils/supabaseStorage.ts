@@ -235,12 +235,34 @@ export const getTodaySpending = async (): Promise<number> => {
   try {
     const transactions = await getTransactions();
     const today = new Date().toDateString();
-    
+
     return transactions
       .filter(t => t.type === 'expense' && new Date(t.date).toDateString() === today)
       .reduce((sum, t) => sum + t.amount, 0);
   } catch (error) {
     console.error('Error getting today spending:', error);
+    return 0;
+  }
+};
+
+export const getPreviousMonthSpending = async (): Promise<number> => {
+  try {
+    const transactions = await getTransactions();
+
+    const now = new Date();
+    const previousMonth = now.getMonth() === 0 ? 11 : now.getMonth() - 1;
+    const previousYear = now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear();
+
+    return transactions
+      .filter(t => {
+        const transactionDate = new Date(t.date);
+        return t.type === 'expense' &&
+               transactionDate.getMonth() === previousMonth &&
+               transactionDate.getFullYear() === previousYear;
+      })
+      .reduce((sum, t) => sum + t.amount, 0);
+  } catch (error) {
+    console.error('Error getting previous month spending:', error);
     return 0;
   }
 };
