@@ -1,51 +1,16 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Alert, Platform } from 'react-native';
-import { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform } from 'react-native';
+import { useEffect } from 'react';
 import { router } from 'expo-router';
-import { ArrowLeft, RotateCcw, Bell, Shield, Circle as HelpCircle, Download, Crown, ChevronRight, LogOut, FileText, Scale } from 'lucide-react-native';
+import { ArrowLeft, RotateCcw, Circle as HelpCircle, Download, Crown, ChevronRight, LogOut, FileText, Shield } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { usePremium } from '../contexts/PremiumContext';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function SettingsScreen() {
-  const [notifications, setNotifications] = useState(true);
-  const [biometrics, setBiometrics] = useState(false);
   const { theme, isDark } = useTheme();
   const { isPremium, cancelSubscription } = usePremium();
   const { signOut, user, session } = useAuth();
-
-  useEffect(() => {
-    loadSettings();
-  }, []);
-
-  const loadSettings = async () => {
-    try {
-      const notificationsValue = await AsyncStorage.getItem('notifications');
-      const biometricsValue = await AsyncStorage.getItem('biometrics');
-      setNotifications(notificationsValue !== 'false');
-      setBiometrics(biometricsValue === 'true');
-    } catch (error) {
-      console.error('Error loading settings:', error);
-    }
-  };
-
-  const handleNotificationsToggle = async (value: boolean) => {
-    try {
-      setNotifications(value);
-      await AsyncStorage.setItem('notifications', value.toString());
-    } catch (error) {
-      console.error('Error saving notifications setting:', error);
-    }
-  };
-
-  const handleBiometricsToggle = async (value: boolean) => {
-    try {
-      setBiometrics(value);
-      await AsyncStorage.setItem('biometrics', value.toString());
-    } catch (error) {
-      console.error('Error saving biometrics setting:', error);
-    }
-  };
 
   const handleExportData = () => {
     if (isPremium) {
@@ -139,8 +104,6 @@ export default function SettingsScreen() {
         'transactions',
         'subscriptions',
         'balance',
-        'notifications',
-        'biometrics',
         'isPremium',
         'hasCompletedOnboarding'
       ]);
@@ -201,48 +164,6 @@ export default function SettingsScreen() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Notifications Section */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Notifications</Text>
-          
-          <View style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
-            <View style={styles.settingLeft}>
-              <Bell size={20} color={theme.colors.textSecondary} />
-              <View style={styles.settingInfo}>
-                <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Push Notifications</Text>
-                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Get notified about renewals</Text>
-              </View>
-            </View>
-            <Switch
-              value={notifications}
-              onValueChange={handleNotificationsToggle}
-              trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
-              thumbColor="#FFFFFF"
-            />
-          </View>
-        </View>
-
-        {/* Security Section */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Security</Text>
-          
-          <View style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}>
-            <View style={styles.settingLeft}>
-              <Shield size={20} color={theme.colors.textSecondary} />
-              <View style={styles.settingInfo}>
-                <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Biometric Lock</Text>
-                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Use Face ID or fingerprint</Text>
-              </View>
-            </View>
-            <Switch
-              value={biometrics}
-              onValueChange={handleBiometricsToggle}
-              trackColor={{ false: theme.colors.border, true: theme.colors.primary }}
-              thumbColor="#FFFFFF"
-            />
-          </View>
-        </View>
-
         {/* Data Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Data</Text>
