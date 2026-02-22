@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Switch, Image } from 'react-native';
 import { useCallback, useState, useEffect } from 'react';
 import { User, Settings, ChevronRight, TrendingUp, Calendar, DollarSign, Moon, Sun, Crown, Edit } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
@@ -10,6 +10,7 @@ import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../../contexts/AuthContext';
 import { getProfile, Profile } from '../../services/profileService';
+import { CustomRefreshControl } from '../../components/CustomRefreshControl';
 
 export default function ProfileScreen() {
   const { theme, isDark, toggleTheme, canUseDarkMode } = useTheme();
@@ -112,11 +113,9 @@ export default function ProfileScreen() {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl
+          <CustomRefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={theme.colors.primary}
-            colors={[theme.colors.primary]}
           />
         }
       >
