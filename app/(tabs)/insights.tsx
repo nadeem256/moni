@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, Modal } from 'react-native';
 import { useCallback, useState, useMemo } from 'react';
 import { TrendingUp, TrendingDown, DollarSign, Sparkles, ChartBar as BarChart3, History, Calendar, ChevronDown } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
@@ -10,7 +10,6 @@ import { useTheme } from '../../contexts/ThemeContext';
 import { formatCurrency } from '../../utils/storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { CustomRefreshControl } from '../../components/CustomRefreshControl';
 
 type DateRange = 'thisMonth' | 'lastMonth' | 'last3Months' | 'last6Months' | 'thisYear' | 'allTime';
 
@@ -146,9 +145,11 @@ export default function InsightsScreen() {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <CustomRefreshControl
+          <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
           />
         }
       >

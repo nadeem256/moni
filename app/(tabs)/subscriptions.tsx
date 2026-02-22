@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, TextInput, Alert, Platform, RefreshControl } from 'react-native';
 import { useState, useCallback } from 'react';
 import { Plus, Calendar, X, Sparkles, Trash2 } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
@@ -8,7 +8,6 @@ import { usePremium } from '../../contexts/PremiumContext';
 import PremiumLock from '../../components/PremiumLock';
 import { useTheme } from '../../contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
-import { CustomRefreshControl } from '../../components/CustomRefreshControl';
 
 function CustomDatePicker({ selectedDate, onConfirm, theme }: {
   selectedDate: Date;
@@ -225,9 +224,11 @@ export default function SubscriptionsScreen() {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <CustomRefreshControl
+          <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
           />
         }
       >

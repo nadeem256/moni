@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
 import { useEffect, useState } from 'react';
 import { TrendingUp, TrendingDown, Plus } from 'lucide-react-native';
 import { BlurView } from 'expo-blur';
@@ -9,7 +9,6 @@ import { formatCurrency } from '../../utils/storage';
 import { useTheme } from '../../contexts/ThemeContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { CustomRefreshControl } from '../../components/CustomRefreshControl';
 
 const getGreeting = () => {
   const hour = new Date().getHours();
@@ -111,9 +110,11 @@ export default function HomeScreen() {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <CustomRefreshControl
+          <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+            colors={[theme.colors.primary]}
           />
         }
       >
