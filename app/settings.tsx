@@ -8,6 +8,8 @@ import { usePremium } from '../contexts/PremiumContext';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { exportAllData } from '../utils/exportData';
+import { FadeInView } from '../components/FadeInView';
+import { AnimatedPressable } from '../components/AnimatedPressable';
 
 export default function SettingsScreen() {
   const [isExporting, setIsExporting] = useState(false);
@@ -183,24 +185,27 @@ export default function SettingsScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <ArrowLeft size={24} color={theme.colors.text} />
-        </TouchableOpacity>
-        <Text style={[styles.title, { color: theme.colors.text }]}>Settings</Text>
-        <View style={styles.placeholder} />
-      </View>
+      <FadeInView>
+        <View style={styles.header}>
+          <AnimatedPressable style={styles.backButton} onPress={() => router.back()}>
+            <ArrowLeft size={24} color={theme.colors.text} />
+          </AnimatedPressable>
+          <Text style={[styles.title, { color: theme.colors.text }]}>Settings</Text>
+          <View style={styles.placeholder} />
+        </View>
+      </FadeInView>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Data Section */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Data</Text>
-          
-          <TouchableOpacity
-            style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
-            onPress={!isPremium ? () => router.push('/paywall') : handleExportData}
-            disabled={isExporting}
-          >
+        <FadeInView delay={0}>
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Data</Text>
+
+            <AnimatedPressable
+              style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
+              onPress={!isPremium ? () => router.push('/paywall') : handleExportData}
+              disabled={isExporting}
+            >
             <View style={styles.settingLeft}>
               <Download size={20} color={theme.colors.textSecondary} />
               <View style={styles.settingInfo}>
@@ -222,75 +227,79 @@ export default function SettingsScreen() {
             ) : (
               <ChevronRight size={20} color={theme.colors.textSecondary} />
             )}
-          </TouchableOpacity>
-        </View>
+            </AnimatedPressable>
+          </View>
+        </FadeInView>
 
         {/* Subscription Section - Only show if user has premium */}
 
         {/* Legal Section */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Legal</Text>
+        <FadeInView delay={100}>
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Legal</Text>
 
-          <TouchableOpacity
-            style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
-            onPress={() => router.push('/privacy-policy')}
-          >
-            <View style={styles.settingLeft}>
-              <Shield size={20} color={theme.colors.textSecondary} />
-              <View style={styles.settingInfo}>
-                <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Privacy Policy</Text>
-                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>How we handle your data</Text>
+            <AnimatedPressable
+              style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
+              onPress={() => router.push('/privacy-policy')}
+            >
+              <View style={styles.settingLeft}>
+                <Shield size={20} color={theme.colors.textSecondary} />
+                <View style={styles.settingInfo}>
+                  <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Privacy Policy</Text>
+                  <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>How we handle your data</Text>
+                </View>
               </View>
-            </View>
-            <ChevronRight size={20} color={theme.colors.textSecondary} />
-          </TouchableOpacity>
+              <ChevronRight size={20} color={theme.colors.textSecondary} />
+            </AnimatedPressable>
 
-          <TouchableOpacity
-            style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
-            onPress={() => router.push('/terms-of-service')}
-          >
-            <View style={styles.settingLeft}>
-              <FileText size={20} color={theme.colors.textSecondary} />
-              <View style={styles.settingInfo}>
-                <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Terms of Service</Text>
-                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>App usage terms and conditions</Text>
+            <AnimatedPressable
+              style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
+              onPress={() => router.push('/terms-of-service')}
+            >
+              <View style={styles.settingLeft}>
+                <FileText size={20} color={theme.colors.textSecondary} />
+                <View style={styles.settingInfo}>
+                  <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Terms of Service</Text>
+                  <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>App usage terms and conditions</Text>
+                </View>
               </View>
-            </View>
-            <ChevronRight size={20} color={theme.colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
+              <ChevronRight size={20} color={theme.colors.textSecondary} />
+            </AnimatedPressable>
+          </View>
+        </FadeInView>
 
         {/* Danger Zone */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Danger Zone</Text>
+        <FadeInView delay={200}>
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Danger Zone</Text>
 
-          <TouchableOpacity
-            style={[styles.dangerItem, { backgroundColor: theme.colors.surface }]}
-            onPress={handleSignOut}
-            activeOpacity={0.7}
-          >
-            <View style={styles.settingLeft}>
-              <LogOut size={20} color={theme.colors.error} />
-              <View style={styles.settingInfo}>
-                <Text style={[styles.settingTitle, { color: theme.colors.error }]}>Sign Out</Text>
-                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Log out of your account</Text>
+            <AnimatedPressable
+              style={[styles.dangerItem, { backgroundColor: theme.colors.surface }]}
+              onPress={handleSignOut}
+            >
+              <View style={styles.settingLeft}>
+                <LogOut size={20} color={theme.colors.error} />
+                <View style={styles.settingInfo}>
+                  <Text style={[styles.settingTitle, { color: theme.colors.error }]}>Sign Out</Text>
+                  <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Log out of your account</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
+            </AnimatedPressable>
 
-          <TouchableOpacity
-            style={[styles.dangerItem, { backgroundColor: theme.colors.surface }]}
-            onPress={() => handleResetApp()}
-          >
-            <View style={styles.settingLeft}>
-              <RotateCcw size={20} color={theme.colors.error} />
-              <View style={styles.settingInfo}>
-                <Text style={[styles.settingTitle, { color: theme.colors.error }]}>Reset App</Text>
-                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Delete all data and start fresh</Text>
+            <AnimatedPressable
+              style={[styles.dangerItem, { backgroundColor: theme.colors.surface }]}
+              onPress={() => handleResetApp()}
+            >
+              <View style={styles.settingLeft}>
+                <RotateCcw size={20} color={theme.colors.error} />
+                <View style={styles.settingInfo}>
+                  <Text style={[styles.settingTitle, { color: theme.colors.error }]}>Reset App</Text>
+                  <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Delete all data and start fresh</Text>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        </View>
+            </AnimatedPressable>
+          </View>
+        </FadeInView>
 
         {/* App Info */}
         <View style={styles.appInfo}>

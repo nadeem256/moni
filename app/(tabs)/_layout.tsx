@@ -5,29 +5,60 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useTheme } from '../../contexts/ThemeContext';
+import Animated, { useAnimatedStyle, withSpring, useSharedValue } from 'react-native-reanimated';
+import { useEffect } from 'react';
+import { AnimatedTabIcon } from '../../components/AnimatedTabIcon';
 
 function CustomTabBarButton({ children, onPress }: any) {
   const { theme } = useTheme();
-  
+  const scale = useSharedValue(1);
+  const rotation = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      { scale: scale.value },
+      { rotate: `${rotation.value}deg` },
+    ],
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.9, { damping: 10 });
+    rotation.value = withSpring(90, { damping: 15 });
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1, { damping: 10 });
+    rotation.value = withSpring(0, { damping: 15 });
+  };
+
+  const handlePress = () => {
+    onPress();
+    rotation.value = withSpring(0, { damping: 15 });
+  };
+
   return (
     <TouchableOpacity
       style={styles.customButton}
-      onPress={onPress}
-      activeOpacity={0.8}
+      onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      activeOpacity={0.9}
     >
-      <BlurView intensity={80} tint="light" style={styles.customButtonInner}>
-        {Platform.OS !== 'web' ? (
-          <LinearGradient
-            colors={['#34D399', '#10B981']}
-            style={styles.customButtonGradient}
-          />
-        ) : (
-          <View style={[styles.customButtonGradient, { backgroundColor: '#34D399' }]} />
-        )}
-        <View style={styles.iconContainer}>
-          <Plus size={28} color="#FFFFFF" strokeWidth={3} />
-        </View>
-      </BlurView>
+      <Animated.View style={animatedStyle}>
+        <BlurView intensity={80} tint="light" style={styles.customButtonInner}>
+          {Platform.OS !== 'web' ? (
+            <LinearGradient
+              colors={['#34D399', '#10B981']}
+              style={styles.customButtonGradient}
+            />
+          ) : (
+            <View style={[styles.customButtonGradient, { backgroundColor: '#34D399' }]} />
+          )}
+          <View style={styles.iconContainer}>
+            <Plus size={28} color="#FFFFFF" strokeWidth={3} />
+          </View>
+        </BlurView>
+      </Animated.View>
     </TouchableOpacity>
   );
 }
@@ -62,16 +93,16 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <House size={size + 2} color={color} strokeWidth={2.2} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <AnimatedTabIcon Icon={House} size={size} color={color} focused={focused} />
           ),
         }}
       />
       <Tabs.Screen
         name="subscriptions"
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <CreditCard size={size + 2} color={color} strokeWidth={2.2} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <AnimatedTabIcon Icon={CreditCard} size={size} color={color} focused={focused} />
           ),
         }}
       />
@@ -89,16 +120,16 @@ export default function TabLayout() {
       <Tabs.Screen
         name="insights"
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <BarChart3 size={size + 2} color={color} strokeWidth={2.2} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <AnimatedTabIcon Icon={BarChart3} size={size} color={color} focused={focused} />
           ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <User size={size + 2} color={color} strokeWidth={2.2} />
+          tabBarIcon: ({ size, color, focused }) => (
+            <AnimatedTabIcon Icon={User} size={size} color={color} focused={focused} />
           ),
         }}
       />
