@@ -1,20 +1,56 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform } from 'react-native';
-import { useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, ActivityIndicator } from 'react-native';
+import { useState } from 'react';
 import { router } from 'expo-router';
 import { ArrowLeft, RotateCcw, Circle as HelpCircle, Download, Crown, ChevronRight, LogOut, FileText, Shield } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { usePremium } from '../contexts/PremiumContext';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
+import { exportAllData } from '../utils/exportData';
 
 export default function SettingsScreen() {
+  const [isExporting, setIsExporting] = useState(false);
   const { theme, isDark } = useTheme();
   const { isPremium, cancelSubscription } = usePremium();
   const { signOut, user, session } = useAuth();
 
-  const handleExportData = () => {
-    if (isPremium) {
-      Alert.alert('Export Data', 'Data export feature coming soon!', [{ text: 'OK' }]);
+  const handleExportData = async () => {
+    if (!isPremium) return;
+
+    setIsExporting(true);
+    try {
+      const { data: transactions, error: transError } = await supabase
+        .from('transactions')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('date', { ascending: false });
+
+      const { data: subscriptions, error: subsError } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', user?.id)
+        .order('name', { ascending: true });
+
+      if (transError) throw transError;
+      if (subsError) throw subsError;
+
+      await exportAllData(transactions || [], subscriptions || []);
+
+      if (Platform.OS === 'web') {
+        alert('Data exported successfully!');
+      } else {
+        Alert.alert('Success', 'Data exported successfully!');
+      }
+    } catch (error) {
+      console.error('Error exporting data:', error);
+      if (Platform.OS === 'web') {
+        alert('Failed to export data. Please try again.');
+      } else {
+        Alert.alert('Error', 'Failed to export data. Please try again.');
+      }
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -168,21 +204,26 @@ export default function SettingsScreen() {
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Data</Text>
           
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]}
             onPress={!isPremium ? () => router.push('/paywall') : handleExportData}
+            disabled={isExporting}
           >
             <View style={styles.settingLeft}>
               <Download size={20} color={theme.colors.textSecondary} />
               <View style={styles.settingInfo}>
                 <Text style={[
-                  styles.settingTitle, 
+                  styles.settingTitle,
                   { color: !isPremium ? theme.colors.textSecondary : theme.colors.text }
                 ]}>Export Data</Text>
-                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Export your data to CSV</Text>
+                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>
+                  {isExporting ? 'Exporting...' : 'Export your data to CSV'}
+                </Text>
               </View>
             </View>
-            {!isPremium ? (
+            {isExporting ? (
+              <ActivityIndicator size="small" color={theme.colors.primary} />
+            ) : !isPremium ? (
               <View style={styles.premiumBadgeSmall}>
                 <Crown size={14} color="#F59E0B" />
               </View>
