@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, ActivityIndicator } from 'react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
-import { ArrowLeft, RotateCcw, Circle as HelpCircle, Download, Crown, ChevronRight, LogOut, FileText, Shield } from 'lucide-react-native';
+import { ArrowLeft, RotateCcw, Download, Crown, ChevronRight, LogOut, FileText, Shield } from 'lucide-react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTheme } from '../contexts/ThemeContext';
 import { usePremium } from '../contexts/PremiumContext';
@@ -52,14 +52,6 @@ export default function SettingsScreen() {
     } finally {
       setIsExporting(false);
     }
-  };
-
-  const handleHelp = () => {
-    Alert.alert(
-      'Help & Support',
-      'For support, please contact us at support@moni.app or visit our website.',
-      [{ text: 'OK' }]
-    );
   };
 
   const handleCancelSubscription = () => {
@@ -262,25 +254,6 @@ export default function SettingsScreen() {
               <View style={styles.settingInfo}>
                 <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Terms of Service</Text>
                 <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>App usage terms and conditions</Text>
-              </View>
-            </View>
-            <ChevronRight size={20} color={theme.colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-
-        {/* Support Section */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>Support</Text>
-          
-          <TouchableOpacity 
-            style={[styles.settingItem, { backgroundColor: theme.colors.surface, borderColor: theme.colors.border }]} 
-            onPress={() => handleHelp()}
-          >
-            <View style={styles.settingLeft}>
-              <HelpCircle size={20} color={theme.colors.textSecondary} />
-              <View style={styles.settingInfo}>
-                <Text style={[styles.settingTitle, { color: theme.colors.text }]}>Help & Support</Text>
-                <Text style={[styles.settingDescription, { color: theme.colors.textSecondary }]}>Get help or contact us</Text>
               </View>
             </View>
             <ChevronRight size={20} color={theme.colors.textSecondary} />
