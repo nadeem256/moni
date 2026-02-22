@@ -30,6 +30,8 @@ export default function AddScreen() {
   });
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [savedTransactionAmount, setSavedTransactionAmount] = useState(0);
+  const [savedTransactionType, setSavedTransactionType] = useState<'income' | 'expense'>('expense');
 
   const { addTransaction } = useTransactions();
   const { theme, isDark } = useTheme();
@@ -48,9 +50,13 @@ export default function AddScreen() {
     const numericAmount = parseFloat(amount);
     if (amount && selectedCategory && !saving && !isNaN(numericAmount) && numericAmount > 0) {
       setSaving(true);
+
       try {
         const dateToSave = new Date(selectedDate);
         dateToSave.setHours(12, 0, 0, 0);
+
+        setSavedTransactionAmount(numericAmount);
+        setSavedTransactionType(selectedType);
 
         await addTransaction({
           amount: numericAmount,
@@ -569,7 +575,7 @@ export default function AddScreen() {
                   Transaction Added!
                 </Text>
                 <Text style={[styles.successMessage, { color: theme.colors.textSecondary }]}>
-                  ${parseFloat(amount || '0').toFixed(2)} {selectedType === 'income' ? 'received' : 'spent'}
+                  ${savedTransactionAmount.toFixed(2)} {savedTransactionType === 'income' ? 'received' : 'spent'}
                 </Text>
               </BlurView>
             </Animated.View>
